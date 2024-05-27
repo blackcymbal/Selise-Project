@@ -1,10 +1,10 @@
+import { ArrowRight } from "@/assets/icons/icons";
 import courseImage from "@/assets/images/course.jpeg";
 import theme from "@/constants/theme";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { ArrowRight } from "../../assets/icons/icons";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+
 import ProgressBar from "../ui/ProgressBar";
 import Typography from "../ui/Typography";
 

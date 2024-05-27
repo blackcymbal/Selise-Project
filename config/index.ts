@@ -22,3 +22,6 @@ export const navList = [
     icon: UserSquare,
   },
 ];
+
+export const apiEndpoint = "https://api.dev.tajdidacademy.com";
+export const assetsUrl = "https://dev-assets.tajdidacademy.com";
