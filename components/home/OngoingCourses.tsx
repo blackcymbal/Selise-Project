@@ -1,6 +1,5 @@
 import MyCourseCard from "@/components/courses/MyCourseCard";
-import Container from "@/components/ui/Container";
-import Typography from "@/components/ui/Typography";
+import { Container, Typography } from "@/components/ui";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";

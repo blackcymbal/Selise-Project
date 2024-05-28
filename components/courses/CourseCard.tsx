@@ -6,7 +6,7 @@ import { useNavigation } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { File } from "../../assets/icons/icons";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui";
 
 type CourseCardProps = {
   course: Pick<
@@ -24,10 +24,10 @@ export default function CourseCard({ course }: CourseCardProps) {
     (course?.price * (course?.discount ? course?.discount : 0)) / 100;
 
   const handlePress = () => {
-    navigation.navigate("CourseDetails", {
-      id: course?.id,
-      title: course?.title,
-    });
+    // navigation.navigate("CourseDetails", {
+    //   id: course?.id,
+    //   title: course?.title,
+    // });
   };
 
   return (

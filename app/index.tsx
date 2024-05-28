@@ -1,23 +1,23 @@
-import { useNavigation } from "expo-router";
+import { Link } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const Welcome = () => {
-  const navigation = useNavigation();
-
-  const handlePress = () => {
-    navigation.navigate("screens");
-  };
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Welcome</Text>
-      <TouchableOpacity onPress={handlePress}>
-        <Text>Go</Text>
-      </TouchableOpacity>
+      <Text>This is a Welcome screen for new users</Text>
+      <Text>Still under constructed</Text>
+      <Link href="/screens" asChild style={{ marginVertical: 20 }}>
+        <TouchableOpacity>
+          <Text>Go to Home Screen</Text>
+        </TouchableOpacity>
+      </Link>
 
-      <TouchableOpacity onPress={() => navigation.navigate("signin")}>
-        <Text>Sign In</Text>
-      </TouchableOpacity>
+      <Link href="/signin" asChild style={{ marginVertical: 20 }}>
+        <TouchableOpacity>
+          <Text>Go to Sign In Screen</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 };

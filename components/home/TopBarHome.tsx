@@ -11,7 +11,7 @@ import {
 
 import bgImage from "@/assets/images/topbar-bg.png";
 import theme from "@/constants/theme";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui";
 
 const TopBarHome = () => {
   return (

@@ -5,8 +5,7 @@ import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
-import ProgressBar from "../ui/ProgressBar";
-import Typography from "../ui/Typography";
+import { ProgressBar, Typography } from "../ui";
 
 type CourseCardProps = {
   course: Pick<CourseViewModel, "title">;

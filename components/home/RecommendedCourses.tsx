@@ -2,7 +2,7 @@ import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import CourseCard from "../courses/CourseCard";
-import Typography from "../ui/Typography";
+import { Typography } from "../ui";
 
 const courses: Pick<
   CourseViewModel,
