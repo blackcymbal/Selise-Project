@@ -1,18 +1,22 @@
 import courseDetailsBg from "@/assets/images/course-details-bg.png";
 import {
   CourseCardPreview,
+  CourseDetailsContact,
+  CourseDetailsCurriculum,
+  CourseDetailsFaq,
   CourseDetailsInstructors,
+  CourseDetailsPaymentProcess,
+  CourseDetailsPreRequisites,
   CourseDetailsReviews,
   CourseDetailsTopBar,
   CourseLearningOutcomes,
   CoursePromo,
   CourseRequirements,
 } from "@/components/courses";
-import CourseDetailsCurriculum from "@/components/courses/CourseDetailsCurriculum";
 import Loader from "@/components/global/Loader";
 import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { useGetCourse } from "@/services/courseService";
+import { useGetCourse, useGetCourses } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -22,9 +26,14 @@ const CourseDetails = () => {
   const params = useLocalSearchParams();
 
   const { data: course, isLoading, error } = useGetCourse(params?.courseId);
+  const { data: courses } = useGetCourses(true);
 
   const promoUrl = course?.promoUrl;
   const videoId = promoUrl?.split("v=")?.[1];
+
+  const prerequisiteCourses = courses?.filter((item) =>
+    course?.curriculumRequirement?.requiredCourseIds?.includes(item.id)
+  );
 
   return (
     <>
@@ -77,6 +86,16 @@ const CourseDetails = () => {
             <CourseRequirements
               curriculumRequirement={course?.curriculumRequirement}
             />
+
+            <CourseDetailsPreRequisites
+              prerequisiteCourses={prerequisiteCourses as CourseViewModel[]}
+            />
+
+            <CourseDetailsFaq />
+
+            <CourseDetailsPaymentProcess />
+
+            <CourseDetailsContact />
           </View>
 
           <Image

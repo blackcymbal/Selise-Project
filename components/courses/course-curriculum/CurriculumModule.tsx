@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { Container, Typography } from "@/components/ui";
-import Accordion from "@/components/accordion/Accrordion";
+import Accordion from "@/components/accordion/Accordion";
 import AccordionTrigger from "@/components/accordion/AccordionTrigger";
 import { DropdownIcon } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
