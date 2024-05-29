@@ -7,6 +7,7 @@ import {
   CourseDetailsInstructors,
   CourseDetailsPaymentProcess,
   CourseDetailsPreRequisites,
+  CourseDetailsPurchase,
   CourseDetailsReviews,
   CourseDetailsTopBar,
   CourseLearningOutcomes,
@@ -105,6 +106,7 @@ const CourseDetails = () => {
           />
         </ScrollView>
       )}
+      <CourseDetailsPurchase course={course as CourseViewModel} />
     </>
   );
 };
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingHorizontal: 16,
     paddingBottom: 16,
-    marginBottom: 100,
+    marginBottom: 200,
   },
   loader: { marginTop: 200 },
   heroSection: { flexDirection: "column", gap: 34 },

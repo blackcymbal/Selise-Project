@@ -5,6 +5,7 @@ export { default as CourseDetailsFaq } from "./CourseDetailsFaq";
 export { default as CourseDetailsInstructors } from "./course-details-instructor/CourseDetailsInstructors";
 export { default as CourseDetailsPaymentProcess } from "./CourseDetailsPaymentProcess";
 export { default as CourseDetailsPreRequisites } from "./CourseDetailsPreRequisites";
+export { default as CourseDetailsPurchase } from "./CourseDetailsPurchase";
 export { default as CourseDetailsReviews } from "./course-details-review/CourseDetailsReviews";
 export { default as CourseDetailsTopBar } from "./CourseDetailsTopBar";
 
