@@ -18,7 +18,7 @@ import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
-const Coursedetails = () => {
+const CourseDetails = () => {
   const params = useLocalSearchParams();
 
   const { data: course, isLoading, error } = useGetCourse(params?.courseId);
@@ -34,7 +34,6 @@ const Coursedetails = () => {
       ) : (
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.container}>
-            {/* Hero Section Start */}
             <View style={styles.heroSection}>
               <View style={styles.heroContent}>
                 <Typography weight="bold" size="4xl" style={styles.heroTitle}>
@@ -50,7 +49,6 @@ const Coursedetails = () => {
                 </Typography>
               </View>
 
-              {/* Promo Video Section */}
               {!!promoUrl && (
                 <CoursePromo
                   courseId={course?.id}
@@ -60,8 +58,6 @@ const Coursedetails = () => {
                 />
               )}
             </View>
-
-            {/* Hero Section End */}
 
             <CourseCardPreview course={course as CourseViewModel} />
 
@@ -76,15 +72,13 @@ const Coursedetails = () => {
 
             <CourseLearningOutcomes whatWillLearn={course?.whatWillLearn} />
 
-            {/* Learner Review */}
             <CourseDetailsReviews />
 
-            {/* Course Pre Requisites */}
             <CourseRequirements
               curriculumRequirement={course?.curriculumRequirement}
             />
           </View>
-          {/* Top Background Image */}
+
           <Image
             source={courseDetailsBg}
             resizeMode="cover"
@@ -96,7 +90,7 @@ const Coursedetails = () => {
   );
 };
 
-export default Coursedetails;
+export default CourseDetails;
 
 const styles = StyleSheet.create({
   scrollContainer: {
