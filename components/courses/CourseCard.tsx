@@ -2,7 +2,7 @@ import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { FilePathUtils, fallbackImages } from "@/utils";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { router, useNavigation } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { File } from "../../assets/icons/icons";
@@ -23,72 +23,72 @@ export default function CourseCard({ course }: CourseCardProps) {
     course?.price -
     (course?.price * (course?.discount ? course?.discount : 0)) / 100;
 
-  const handlePress = () => {
-    router.navigate("/screens/coursedetails");
-    // navigation.navigate("CourseDetails", {
-    //   id: course?.id,
-    //   title: course?.title,
-    // });
-  };
-
   return (
-    <TouchableOpacity style={styles.container} onPress={handlePress}>
-      <Image
-        source={{
-          uri: course?.thumbnail
-            ? `${FilePathUtils.courseImagePath(course?.id)}/${
-                course?.thumbnail
-              }`
-            : fallbackImages.course,
-        }}
-        resizeMethod="auto"
-        resizeMode="cover"
-        style={styles.image}
-      />
-      <View style={{ padding: 10 }}>
-        <Typography
-          weight="semiBold"
-          size="lg"
-          color="gray900"
-          style={styles.courseTitle}
-        >
-          {course?.title}
-        </Typography>
-        <View style={styles.lessonViewContainer}>
-          <File height={16} width={16} color={theme.colors.gray700} />
+    <Link
+      href={{
+        pathname: "/screens/coursedetails/[id]",
+        params: { id: course?.id, title: course?.title },
+      }}
+      asChild
+    >
+      <TouchableOpacity style={styles.container}>
+        <Image
+          source={{
+            uri: course?.thumbnail
+              ? `${FilePathUtils.courseImagePath(course?.id)}/${
+                  course?.thumbnail
+                }`
+              : fallbackImages.course,
+          }}
+          resizeMethod="auto"
+          resizeMode="cover"
+          style={styles.image}
+        />
+        <View style={{ padding: 10 }}>
           <Typography
-            weight="regular"
-            size="base"
-            color="gray700"
-            style={styles.countLessonText}
+            weight="semiBold"
+            size="lg"
+            color="gray900"
+            style={styles.courseTitle}
           >
-            {numberToDigitFormat(10)} লেসন
+            {course?.title}
           </Typography>
-        </View>
-        <View style={styles.divider} />
-        {course?.isFree ? (
-          <Typography weight="bold" size="2xl" color="primary700">
-            ফ্রি
-          </Typography>
-        ) : (
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Typography weight="bold" size="2xl" color="primary700">
-              ৳ {numberToDigitFormat(discountPrice)}
+          <View style={styles.lessonViewContainer}>
+            <File height={16} width={16} color={theme.colors.gray700} />
+            <Typography
+              weight="regular"
+              size="base"
+              color="gray700"
+              style={styles.countLessonText}
+            >
+              {numberToDigitFormat(10)} লেসন
             </Typography>
-            <View style={styles.priceContainer}>
-              <Typography
-                weight="regular"
-                size="base"
-                color="gray700"
-                style={styles.prevPrice}
-              >
-                ৳ {numberToDigitFormat(course?.price)}
-              </Typography>
-            </View>
           </View>
-        )}
-      </View>
-    </TouchableOpacity>
+          <View style={styles.divider} />
+          {course?.isFree ? (
+            <Typography weight="bold" size="2xl" color="primary700">
+              ফ্রি
+            </Typography>
+          ) : (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Typography weight="bold" size="2xl" color="primary700">
+                ৳ {numberToDigitFormat(discountPrice)}
+              </Typography>
+              <View style={styles.priceContainer}>
+                <Typography
+                  weight="regular"
+                  size="base"
+                  color="gray700"
+                  style={styles.prevPrice}
+                >
+                  ৳ {numberToDigitFormat(course?.price)}
+                </Typography>
+              </View>
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
+    </Link>
   );
 }
 

@@ -25,13 +25,13 @@ export const useGetCourses = (enabled?: boolean, filter?: GetCoursesFilter) => {
   });
 };
 
-export const useGetCourse = (id?: number) => {
+export const useGetCourse = (id?: string | string[] | undefined) => {
   const axios = useAxios();
   return useQuery<CourseViewModel, Error>({
     queryKey: ["course", id],
     queryFn: async () => {
       const { data } = await axios.get<ApiSuccessResponse<CourseViewModel>>(
-        `/courses/${id as number}`
+        `/courses/${id as string}`
       );
       return data.data;
     },

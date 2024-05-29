@@ -2,7 +2,7 @@ import { navList } from "@/config";
 import theme from "@/constants/theme";
 import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export default function TabLayout() {
   return (
@@ -47,9 +47,10 @@ const styles = StyleSheet.create({
   tabBarLabelStyle: {
     fontSize: 12,
     fontFamily: "AnekBangla-Regular",
+    marginBottom: Platform.OS === "ios" ? 0 : 8,
   },
   tabBarItemStyle: {
-    gap: 4,
-    top: 12,
+    gap: Platform.OS === "ios" ? 4 : 0,
+    top: Platform.OS === "ios" ? 12 : 8,
   },
 });
