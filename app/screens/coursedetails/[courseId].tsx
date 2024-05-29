@@ -8,6 +8,7 @@ import {
   CoursePromo,
   CourseRequirements,
 } from "@/components/courses";
+import CourseDetailsCurriculum from "@/components/courses/CourseDetailsCurriculum";
 import Loader from "@/components/global/Loader";
 import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
@@ -63,6 +64,10 @@ const Coursedetails = () => {
             {/* Hero Section End */}
 
             <CourseCardPreview course={course as CourseViewModel} />
+
+            <CourseDetailsCurriculum
+              courseDetails={course as CourseViewModel}
+            />
 
             <CourseDetailsInstructors
               instructors={course?.instructors}
