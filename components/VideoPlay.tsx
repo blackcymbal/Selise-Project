@@ -26,7 +26,7 @@ const PlayVimeoVideo = ({
       videoId={"712158285"}
       params={"api=1&autoplay=0"}
       handlers={videoCallbacks}
-      style={{ height: 200 }}
+      style={{ height: 250 }}
     />
   );
 };

@@ -23,7 +23,7 @@ const PlayYoutubeVideo = ({
 
   return (
     <YoutubePlayer
-      height={200}
+      height={250}
       play={playing}
       videoId={videoId}
       onChangeState={onStateChange}
