@@ -2,7 +2,7 @@ import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { FilePathUtils, fallbackImages } from "@/utils";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { File } from "../../assets/icons/icons";
@@ -24,6 +24,7 @@ export default function CourseCard({ course }: CourseCardProps) {
     (course?.price * (course?.discount ? course?.discount : 0)) / 100;
 
   const handlePress = () => {
+    router.navigate("/screens/coursedetails");
     // navigation.navigate("CourseDetails", {
     //   id: course?.id,
     //   title: course?.title,

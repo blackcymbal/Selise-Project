@@ -23,5 +23,7 @@ export const navList = [
   },
 ];
 
-export const apiEndpoint = process.env.API_ENDPOINT;
-export const assetsUrl = process.env.PUBLIC_ASSETS_URL;
+const apiEndpoint = process.env.API_ENDPOINT;
+const assetsUrl = process.env.PUBLIC_ASSETS_URL;
+
+export { apiEndpoint, assetsUrl };
