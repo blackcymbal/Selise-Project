@@ -1,11 +1,11 @@
-import { LeadInstructor, SupportInstructor } from "@/assets/icons/icons";
-import instructorsBg from "@/assets/images/instructors-bg.png";
-import theme from "@/constants/theme";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
-import { Typography } from "../ui";
+import instructorsBg from "@/assets/images/instructors-bg.png";
 import CourseDetailsInstructorItem from "./CourseDetailsInstructorItem";
+import { Typography } from "@/components/ui";
+import { LeadInstructor, SupportInstructor } from "@/assets/icons/icons";
+import theme from "@/constants/theme";
 
 type CourseDetailsProps = {
   instructors?: CourseViewModel["instructors"];

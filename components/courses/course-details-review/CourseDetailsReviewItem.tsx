@@ -1,8 +1,8 @@
 import { QuoteBgShape, QuoteIcon } from "@/assets/icons/icons";
+import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import React from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
-import { Typography } from "../ui";
+import { View, Image, StyleSheet, Dimensions } from "react-native";
 
 const { width: screenWidth } = Dimensions.get("window");
 

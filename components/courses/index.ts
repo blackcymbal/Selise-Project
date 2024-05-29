@@ -1,6 +1,6 @@
-export { default as CourseCardPreview } from "./CourseCardPreview";
-export { default as CourseDetailsInstructors } from "./CourseDetailsInstructors";
-export { default as CourseDetailsReviews } from "./CourseDetailsReviews";
+export { default as CourseCardPreview } from "./course-card-details-preview/CourseCardPreview";
+export { default as CourseDetailsInstructors } from "./course-details-instructor/CourseDetailsInstructors";
+export { default as CourseDetailsReviews } from "./course-details-review/CourseDetailsReviews";
 export { default as CourseDetailsTopBar } from "./CourseDetailsTopBar";
 
 export { default as CourseLearningOutcomes } from "./CourseLearningOutcomes";

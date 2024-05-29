@@ -1,8 +1,8 @@
+import { Typography } from "@/components/ui";
 import { FilePathUtils, fallbackImages } from "@/utils";
 import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Typography } from "../ui";
 
 export type InstructorsProps = {
   instructor: Pick<UserViewModel, "id" | "name" | "picture" | "designation">;

@@ -45,7 +45,7 @@ const Coursedetails = () => {
                   color="body"
                   style={styles.heroSubTitle}
                 >
-                  {course?.description}
+                  {course?.description?.slice(0, 170)}...
                 </Typography>
               </View>
 

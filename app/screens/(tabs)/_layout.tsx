@@ -1,3 +1,4 @@
+import TabBarButton from "@/components/navigation/TabBarButton";
 import { navList } from "@/config";
 import theme from "@/constants/theme";
 import { Tabs } from "expo-router";
@@ -12,7 +13,6 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: styles.tabBarStyle,
         tabBarLabelStyle: styles.tabBarLabelStyle,
-        tabBarItemStyle: styles.tabBarItemStyle,
       }}
     >
       {navList.map((item, idx) => (
@@ -20,17 +20,8 @@ export default function TabLayout() {
           key={idx}
           name={item.navTo}
           options={{
-            title: item.name,
-            tabBarIcon: ({ color, focused }) => (
-              <item.icon
-                width={30}
-                height={30}
-                color={
-                  focused
-                    ? theme.colors.primaryDefault
-                    : theme.colors.grayDefault
-                }
-              />
+            tabBarButton: (props) => (
+              <TabBarButton {...props} Icon={item.icon} name={item.name} />
             ),
           }}
         />
@@ -43,14 +34,10 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     backgroundColor: theme.colors.white,
     height: 84,
+    paddingTop: Platform.OS === "ios" ? 12 : 0,
   },
   tabBarLabelStyle: {
     fontSize: 12,
     fontFamily: "AnekBangla-Regular",
-    marginBottom: Platform.OS === "ios" ? 0 : 8,
-  },
-  tabBarItemStyle: {
-    gap: Platform.OS === "ios" ? 4 : 0,
-    top: Platform.OS === "ios" ? 12 : 8,
   },
 });
