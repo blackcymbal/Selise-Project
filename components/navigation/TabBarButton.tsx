@@ -1,4 +1,5 @@
 import theme from "@/constants/theme";
+import * as Haptics from "expo-haptics";
 import React from "react";
 import {
   AccessibilityState,
@@ -27,7 +28,15 @@ export default function TabBarButton({
   accessibilityState,
 }: TabBarButtonProps) {
   return (
-    <AnimatedPressable onPress={(e) => onPress?.(e)} style={styles.container}>
+    <AnimatedPressable
+      onPress={(e) => {
+        if (Platform.OS !== "web") {
+          Haptics.selectionAsync();
+        }
+        onPress?.(e);
+      }}
+      style={styles.container}
+    >
       <Icon
         width={30}
         height={30}
