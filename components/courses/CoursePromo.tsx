@@ -72,10 +72,10 @@ export default function CoursePromo({
 }
 
 const styles = StyleSheet.create({
-  container: { height: 250, borderRadius: 16, overflow: "hidden" },
+  container: { height: 250, borderRadius: 16, overflow: "hidden", zIndex: 1 },
   promoUrl: {
     width: "100%",
-    height: 250,
+    height: 200,
     borderRadius: 16,
   },
   promoPlayButton: {

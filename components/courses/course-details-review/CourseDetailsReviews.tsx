@@ -1,19 +1,19 @@
-import { SquareArrowLeft, SquareArrowRight } from "@/assets/icons/icons";
-import theme from "@/constants/theme";
 import React, { useRef, useState } from "react";
 import {
-  Dimensions,
-  FlatList,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StyleSheet,
-  TouchableOpacity,
   View,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  FlatList,
 } from "react-native";
-import { Typography } from "../ui";
 import CourseDetailsReviewItem, {
   ReviewItemProps,
 } from "./CourseDetailsReviewItem";
+import { Typography } from "@/components/ui";
+import { SquareArrowLeft, SquareArrowRight } from "@/assets/icons/icons";
+import theme from "@/constants/theme";
 
 const { width: screenWidth } = Dimensions.get("window");
 

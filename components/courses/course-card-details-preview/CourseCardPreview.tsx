@@ -7,17 +7,24 @@ import {
   QuizIcon,
   UsersIcon,
 } from "@/assets/icons/icons";
+import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { CourseViewModel, groupBy } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Typography } from "../ui";
 
 export default function CourseCardPreview({
   course,
 }: {
   course: CourseViewModel;
 }) {
+  const { curriculum, durationInHour } = course;
+  const contents = curriculum?.flatMap((item) => item.contents) ?? [];
+  const contentGroupByType = groupBy(contents, "type");
+
+  const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
+
   return (
     <View style={styles.container}>
       <View style={styles.previewContainer}>
@@ -61,7 +68,7 @@ export default function CourseCardPreview({
                   সময় লাগবে
                 </Typography>
                 <Typography weight="bold" size="lg" color="title">
-                  {course?.duration}
+                  {durationInHour}
                 </Typography>
               </View>
             </View>
@@ -84,7 +91,7 @@ export default function CourseCardPreview({
                   ভিডিও লেসন
                 </Typography>
                 <Typography weight="bold" size="lg" color="title">
-                  ৩৪
+                  {numberToDigitFormat(contentGroupByType?.LESSON?.length ?? 0)}
                 </Typography>
               </View>
             </View>
@@ -103,7 +110,10 @@ export default function CourseCardPreview({
                   লেসন ডকুমেন্ট
                 </Typography>
                 <Typography weight="bold" size="lg" color="title">
-                  ১০ টি
+                  {numberToDigitFormat(
+                    contentGroupByType?.RESOURCE?.length ?? 0
+                  )}{" "}
+                  টি
                 </Typography>
               </View>
             </View>
@@ -126,7 +136,8 @@ export default function CourseCardPreview({
                   কুইজ সংখ্যা
                 </Typography>
                 <Typography weight="bold" size="lg" color="title">
-                  ৭ টি
+                  {numberToDigitFormat(contentGroupByType?.QUIZ?.length ?? 0)}{" "}
+                  টি
                 </Typography>
               </View>
             </View>
