@@ -1,7 +1,8 @@
 import theme from "@/constants/theme";
 import { useNavigation } from "expo-router";
 import React from "react";
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ArrowLeft } from "../../assets/icons/icons";
 import { Typography } from "../ui";
 
@@ -25,7 +26,7 @@ const CourseDetailsTopBar = ({ title }: props) => {
           {title}
         </Typography>
       </View>
-    </SafeAreaView>
+    </SafeAreaVie>
   );
 };
 

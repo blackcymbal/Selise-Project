@@ -19,8 +19,6 @@ const headerComponent = () => (
   </Typography>
 );
 
-const footerComponent = () => <View style={styles.footerComponent} />;
-
 const CoursesList = () => {
   const { data, isLoading } = useGetCourses(true);
 
@@ -38,7 +36,6 @@ const CoursesList = () => {
           keyExtractor={(item) => item.id?.toString()}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={headerComponent}
-          ListFooterComponent={footerComponent}
         />
       )}
     </View>
@@ -53,5 +50,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   loader: { marginTop: 200 },
-  footerComponent: { height: 200 },
 });

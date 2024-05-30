@@ -3,12 +3,12 @@ import theme from "@/constants/theme";
 import React from "react";
 import {
   Image,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Typography } from "../ui";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const TopBar = () => {
   return (

@@ -1,7 +1,13 @@
 import courseDetailsBg from "@/assets/images/course-details-bg.png";
 import {
   CourseCardPreview,
+  CourseDetailsContact,
+  CourseDetailsCurriculum,
+  CourseDetailsFaq,
   CourseDetailsInstructors,
+  CourseDetailsPaymentProcess,
+  CourseDetailsPreRequisites,
+  CourseDetailsPurchase,
   CourseDetailsReviews,
   CourseDetailsTopBar,
   CourseLearningOutcomes,
@@ -11,19 +17,24 @@ import {
 import Loader from "@/components/global/Loader";
 import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { useGetCourse } from "@/services/courseService";
+import { useGetCourse, useGetCourses } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
-const Coursedetails = () => {
+const CourseDetails = () => {
   const params = useLocalSearchParams();
 
   const { data: course, isLoading, error } = useGetCourse(params?.courseId);
+  const { data: courses } = useGetCourses(true);
 
   const promoUrl = course?.promoUrl;
   const videoId = promoUrl?.split("v=")?.[1];
+
+  const prerequisiteCourses = courses?.filter((item) =>
+    course?.curriculumRequirement?.requiredCourseIds?.includes(item.id)
+  );
 
   return (
     <>
@@ -33,7 +44,6 @@ const Coursedetails = () => {
       ) : (
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.container}>
-            {/* Hero Section Start */}
             <View style={styles.heroSection}>
               <View style={styles.heroContent}>
                 <Typography weight="bold" size="4xl" style={styles.heroTitle}>
@@ -45,11 +55,10 @@ const Coursedetails = () => {
                   color="body"
                   style={styles.heroSubTitle}
                 >
-                  {course?.description}
+                  {course?.description?.slice(0, 170)}...
                 </Typography>
               </View>
 
-              {/* Promo Video Section */}
               {!!promoUrl && (
                 <CoursePromo
                   courseId={course?.id}
@@ -60,9 +69,11 @@ const Coursedetails = () => {
               )}
             </View>
 
-            {/* Hero Section End */}
-
             <CourseCardPreview course={course as CourseViewModel} />
+
+            <CourseDetailsCurriculum
+              courseDetails={course as CourseViewModel}
+            />
 
             <CourseDetailsInstructors
               instructors={course?.instructors}
@@ -71,15 +82,23 @@ const Coursedetails = () => {
 
             <CourseLearningOutcomes whatWillLearn={course?.whatWillLearn} />
 
-            {/* Learner Review */}
             <CourseDetailsReviews />
 
-            {/* Course Pre Requisites */}
             <CourseRequirements
               curriculumRequirement={course?.curriculumRequirement}
             />
+
+            <CourseDetailsPreRequisites
+              prerequisiteCourses={prerequisiteCourses as CourseViewModel[]}
+            />
+
+            <CourseDetailsFaq />
+
+            <CourseDetailsPaymentProcess />
+
+            <CourseDetailsContact />
           </View>
-          {/* Top Background Image */}
+
           <Image
             source={courseDetailsBg}
             resizeMode="cover"
@@ -87,11 +106,12 @@ const Coursedetails = () => {
           />
         </ScrollView>
       )}
+      <CourseDetailsPurchase course={course as CourseViewModel} />
     </>
   );
 };
 
-export default Coursedetails;
+export default CourseDetails;
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -103,7 +123,7 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingHorizontal: 16,
     paddingBottom: 16,
-    marginBottom: 100,
+    marginBottom: 200,
   },
   loader: { marginTop: 200 },
   heroSection: { flexDirection: "column", gap: 34 },
