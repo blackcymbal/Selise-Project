@@ -1,4 +1,7 @@
-import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
+import {
+  UserExistenceResponse,
+  UserViewModel,
+} from "@tajdid-academy/tajdid-corelib";
 import { createContext, useEffect, useState } from "react";
 
 import useAsyncStorage from "../useAsyncStorage";
@@ -10,6 +13,7 @@ type IAuthContext = {
   setAuth: (user: UserViewModel, token: string) => void;
   removeAuth: () => void;
   setUser: (user: UserViewModel) => void;
+  setNewUser: (user: UserExistenceResponse) => void;
 };
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
@@ -32,6 +36,10 @@ export default function AuthProvider({ children }: Props) {
   useEffect(() => {
     if (!token) return;
   }, [token, userState]);
+
+  const setNewUser = (user: UserViewModel) => {
+    setUserState(user);
+  };
 
   const setAuth = (user: UserViewModel, token_: string) => {
     setUserState(user);
@@ -58,6 +66,7 @@ export default function AuthProvider({ children }: Props) {
         setAuth,
         removeAuth,
         setUser,
+        setNewUser,
       }}
     >
       {children}

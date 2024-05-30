@@ -3,7 +3,10 @@ import useAxios, {
   ApiErrorResponse,
   ApiSuccessResponse,
 } from "@/hooks/useAxios";
-import { UserAuth } from "@tajdid-academy/tajdid-corelib";
+import {
+  UserAuth,
+  UserExistenceResponse,
+} from "@tajdid-academy/tajdid-corelib";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Alert } from "react-native";
@@ -61,6 +64,31 @@ export const useLogin = () => {
   });
 };
 
+export const useCheckUserExistence = () => {
+  const { setNewUser } = useAuth();
+  const axiosClient = useAxios();
+
+  return useMutation<
+    ApiSuccessResponse<UserExistenceResponse>,
+    ApiErrorResponse,
+    Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
+  >({
+    mutationFn: (
+      data: Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
+    ) => {
+      return axiosClient
+        .post(`/auth/check-user-existence`, data)
+        .then((response) => response?.data)
+        .catch((err) => console.log(err));
+    },
+    onSuccess: (response) => {
+      console.log(response);
+      setNewUser(response.data);
+      //   router.navigate("/screens");
+    },
+  });
+};
+
 export const useSignUp = () => {
   const { setAuth } = useAuth();
   const axiosClient = useAxios();
@@ -73,7 +101,10 @@ export const useSignUp = () => {
     mutationFn: (data: SignUpRequest) => {
       return axiosClient
         .post(`/auth/signup`, data)
-        .then((response) => response?.data);
+        .then((response) => response?.data)
+        .catch((err) => {
+          console.log(err);
+        });
     },
     onSuccess: (response) => {
       const { user, accessToken } = response.data;

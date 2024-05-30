@@ -4,11 +4,14 @@ import {
   OtpInputs,
   RestOfOtpScreen,
 } from "@/components/user";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
 const OtpScreen = () => {
   const [buttonActive, setButtonActive] = useState(false);
+
+  const params = useLocalSearchParams();
 
   const getCodeFromInput = (codes: string[]) => {
     const fullCode = codes?.join("");
@@ -16,6 +19,11 @@ const OtpScreen = () => {
   };
 
   const handlePress = () => {
+    if (params?.isNewUser === "true") {
+      router.navigate("/createProfileScreen");
+    } else {
+      router.navigate("/screens");
+    }
     //
   };
   return (
