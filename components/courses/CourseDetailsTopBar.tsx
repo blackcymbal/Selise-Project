@@ -26,7 +26,7 @@ const CourseDetailsTopBar = ({ title }: props) => {
           {title}
         </Typography>
       </View>
-    </SafeAreaVie>
+    </SafeAreaView>
   );
 };
 
