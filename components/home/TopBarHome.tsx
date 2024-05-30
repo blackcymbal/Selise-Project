@@ -3,7 +3,6 @@ import React from "react";
 import {
   Image,
   ImageBackground,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -12,6 +11,7 @@ import {
 import bgImage from "@/assets/images/topbar-bg.png";
 import theme from "@/constants/theme";
 import { Typography } from "../ui";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const TopBarHome = () => {
   return (
