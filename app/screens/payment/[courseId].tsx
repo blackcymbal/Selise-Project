@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Container, SectionDivider, Typography } from "@/components/ui";
 import { useGetCourse } from "@/services/courseService";
@@ -179,6 +179,42 @@ export default function CoursePayment() {
           </View>
         </Container>
       </ScrollView>
+
+      <View
+        style={{
+          paddingHorizontal: 16,
+          paddingTop: 8,
+          paddingBottom: 16,
+        }}
+      >
+        <View style={styles.rowCenterBetween}>
+          <Typography weight="semiBold" size="sm">
+            টোটাল পেমেন্ট
+          </Typography>
+          <Typography weight="semiBold" size="lg">
+            ৳ {course?.isFree ? "ফ্রি" : numberToDigitFormat(finalPrice ?? 0)}
+          </Typography>
+        </View>
+
+        <Link
+          style={{
+            backgroundColor: theme.colors.primary600,
+            paddingHorizontal: 20,
+            paddingVertical: 15,
+            borderRadius: 8,
+            textAlign: "center",
+          }}
+          href={
+            course?.isFree
+              ? `/take-payment/${course?.id}`
+              : `/enrolled/${course?.id}`
+          }
+        >
+          <Typography weight="bold" color="white">
+            {course?.isFree ? "এখনই এনরোল করুন " : "পেমেন্ট সম্পন্ন করুন"}
+          </Typography>
+        </Link>
+      </View>
     </>
   );
 }
