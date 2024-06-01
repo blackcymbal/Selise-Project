@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { Link, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Container, SectionDivider, Typography } from "@/components/ui";
 import { useGetCourse } from "@/services/courseService";
@@ -17,6 +17,8 @@ import { DocumentFIleIcon, LockIcon } from "@/assets/icons/icons";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { groupBy } from "@tajdid-academy/tajdid-corelib";
 import { FilePathUtils, fallbackImages } from "@/utils";
+import Radio from "@/components/radio/Radio";
+import RadioItem from "@/components/radio/RadioItem";
 
 export default function CoursePayment() {
   const params = useLocalSearchParams();
@@ -35,6 +37,8 @@ export default function CoursePayment() {
     ? course?.price * (1 - course?.discount / 100)
     : course?.price;
 
+  const isFreeCourse = course?.isFree || finalPrice === 0;
+
   return (
     <>
       <TopBar />
@@ -48,7 +52,7 @@ export default function CoursePayment() {
             <Typography weight="bold" size="xl">
               পেমেন্ট মাধ্যম
             </Typography>
-            {!course?.isFree && (
+            {!isFreeCourse && (
               <View style={styles.paymentTag}>
                 <LockIcon
                   width={16}
@@ -62,7 +66,87 @@ export default function CoursePayment() {
             )}
           </View>
 
-          {!course?.isFree && (
+          {!isFreeCourse && (
+            <Radio style={{ gap: 16 }}>
+              <Radio.Item
+                selected={paymentMethod}
+                setSelected={setPaymentMethod}
+                value="NAGAD"
+                style={styles.radioContainer}
+                radioActiveColor={theme.colors.primary600}
+                radioActiveFillColor={theme.colors.primary50}
+              >
+                <RadioItem.Label>
+                  <View style={styles.labelContainer}>
+                    <View>
+                      <Typography>নগদ</Typography>
+                    </View>
+                    <View>
+                      <Image
+                        width={48}
+                        height={20}
+                        resizeMode="contain"
+                        source={{
+                          uri: "https://iconape.com/wp-content/png_logo_vector/nagad-logo.png",
+                        }}
+                      />
+                    </View>
+                  </View>
+                </RadioItem.Label>
+              </Radio.Item>
+              <Radio.Item
+                selected={paymentMethod}
+                setSelected={setPaymentMethod}
+                value="SSL_COMMERZ"
+                style={styles.radioContainer}
+                radioActiveColor={theme.colors.primary600}
+                radioActiveFillColor={theme.colors.primary50}
+              >
+                <RadioItem.Label>
+                  <View style={styles.labelContainer}>
+                    <View>
+                      <Typography>অন্যান্য পেমেন্ট মাধ্যম</Typography>
+                    </View>
+                    <View
+                      style={{
+                        gap: 16,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Image
+                        width={29}
+                        height={24}
+                        resizeMode="contain"
+                        source={{
+                          uri: "https://pngimg.com/d/visa_PNG30.png",
+                        }}
+                      />
+                      <Image
+                        width={20}
+                        height={16}
+                        resizeMode="contain"
+                        source={{
+                          uri: "https://w7.pngwing.com/pngs/397/885/png-transparent-logo-mastercard-product-font-mastercard-text-orange-logo.png",
+                        }}
+                      />
+                      <Image
+                        width={24}
+                        height={16}
+                        resizeMode="contain"
+                        source={{
+                          uri: "https://i.pinimg.com/474x/30/a4/e4/30a4e42613a30af996ba45510a5150e3.jpg",
+                        }}
+                      />
+                    </View>
+                  </View>
+                </RadioItem.Label>
+              </Radio.Item>
+            </Radio>
+          )}
+
+          {!isFreeCourse && (
             <Pressable
               onPress={() => setIsChecked(!isChecked)}
               style={{
@@ -86,7 +170,7 @@ export default function CoursePayment() {
             </Pressable>
           )}
 
-          {course?.isFree && (
+          {isFreeCourse && (
             <Typography size="lg" mt={2} color="gray700">
               এই কোর্সটি ফ্রী, নিচের বাটনে ক্লিক করে কোর্সে এনরোল করুন এবং শেখা
               শুরু করুন
@@ -193,7 +277,7 @@ export default function CoursePayment() {
             টোটাল পেমেন্ট
           </Typography>
           <Typography weight="semiBold" size="lg">
-            ৳ {course?.isFree ? "ফ্রি" : numberToDigitFormat(finalPrice ?? 0)}
+            ৳ {isFreeCourse ? "ফ্রি" : numberToDigitFormat(finalPrice ?? 0)}
           </Typography>
         </View>
 
@@ -213,7 +297,7 @@ export default function CoursePayment() {
             color="white"
             style={{ textAlign: "center" }}
           >
-            {course?.isFree ? "এখনই এনরোল করুন " : "পেমেন্ট সম্পন্ন করুন"}
+            {isFreeCourse ? "এখনই এনরোল করুন " : "পেমেন্ট সম্পন্ন করুন"}
           </Typography>
         </TouchableOpacity>
       </View>
@@ -236,5 +320,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  radioContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: theme.colors.gray300,
+  },
+  labelContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 8,
+    width: "92%",
   },
 });
