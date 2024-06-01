@@ -3,7 +3,7 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -22,6 +22,7 @@ export default function CoursePayment() {
   const params = useLocalSearchParams();
   const { data: course, isLoading, error } = useGetCourse(params?.courseId);
   const [isChecked, setIsChecked] = useState(true);
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const contents = course?.curriculum?.flatMap((item) => item.contents) ?? [];
   const contentGroupByType = groupBy(contents, "type");
@@ -196,24 +197,25 @@ export default function CoursePayment() {
           </Typography>
         </View>
 
-        <Link
+        <TouchableOpacity
           style={{
             backgroundColor: theme.colors.primary600,
             paddingHorizontal: 20,
             paddingVertical: 15,
             borderRadius: 8,
-            textAlign: "center",
           }}
-          href={
-            course?.isFree
-              ? `/take-payment/${course?.id}`
-              : `/enrolled/${course?.id}`
+          disabled={
+            finalPrice === 0 ? !isChecked : !isChecked || !paymentMethod
           }
         >
-          <Typography weight="bold" color="white">
+          <Typography
+            weight="bold"
+            color="white"
+            style={{ textAlign: "center" }}
+          >
             {course?.isFree ? "এখনই এনরোল করুন " : "পেমেন্ট সম্পন্ন করুন"}
           </Typography>
-        </Link>
+        </TouchableOpacity>
       </View>
     </>
   );
