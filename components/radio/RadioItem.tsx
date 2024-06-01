@@ -1,17 +1,29 @@
-import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
-import React, { ReactNode, useState } from "react";
+import { Pressable, StyleSheet, View, ViewStyle } from "react-native";
+import React, { ReactNode } from "react";
 import theme from "@/constants/theme";
 import Label from "./Label";
 
-type RadioItemProps = { children: ReactNode; style?: ViewStyle };
+type RadioItemProps = {
+  children: ReactNode;
+  style?: ViewStyle;
+  value: string;
+  selected: string | null;
+  setSelected: (value: string) => void;
+};
 
-export default function RadioItem({ children, style }: RadioItemProps) {
-  const [active, setActive] = useState(false);
+export default function RadioItem({
+  children,
+  style,
+  value,
+  selected,
+  setSelected,
+}: RadioItemProps) {
+  const isActive = selected === value;
 
   return (
-    <Pressable onPress={() => setActive(!active)} style={style}>
-      <View style={active ? styles.radioOutline : styles.radioDefault}>
-        {active && <View style={styles.radioInner} />}
+    <Pressable onPress={() => setSelected(value)} style={style}>
+      <View style={isActive ? styles.radioOutline : styles.radioDefault}>
+        {isActive && <View style={styles.radioInner} />}
       </View>
       {children}
     </Pressable>
