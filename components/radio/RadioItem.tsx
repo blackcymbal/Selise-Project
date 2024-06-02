@@ -28,7 +28,7 @@ export default function RadioItem({
   return (
     <Pressable
       onPress={() => setSelected(value)}
-      style={[style, { flexDirection: "row", gap: 8 }]}
+      style={[style, { flexDirection: "row", gap: 8, alignItems: "center" }]}
     >
       <View
         style={
