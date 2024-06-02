@@ -322,9 +322,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   radioContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderWidth: 1,
