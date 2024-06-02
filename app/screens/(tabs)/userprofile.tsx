@@ -1,10 +1,45 @@
-import React from "react";
+import TopBar from "@/components/global/TopBar";
+import Radio from "@/components/radio/Radio";
+import RadioItem from "@/components/radio/RadioItem";
+import { Typography } from "@/components/ui";
+import theme from "@/constants/theme";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const UserProfile = () => {
+  const [gender, setGender] = useState("");
+
   return (
     <View>
+      <TopBar />
       <Text>UserProfile</Text>
+
+      <Radio style={{ flexDirection: "row", gap: 48 }}>
+        <Radio.Item
+          value="M"
+          selected={gender}
+          setSelected={setGender}
+          style={{ flexDirection: "row", gap: 8 }}
+          radioActiveColor={theme.colors.primary600}
+          radioActiveFillColor={theme.colors.primary50}
+        >
+          <RadioItem.Label>
+            <Typography>পুরুষ</Typography>
+          </RadioItem.Label>
+        </Radio.Item>
+        <Radio.Item
+          value="F"
+          selected={gender}
+          setSelected={setGender}
+          style={{ flexDirection: "row", gap: 8 }}
+          radioActiveColor={theme.colors.primary600}
+          radioActiveFillColor={theme.colors.primary50}
+        >
+          <RadioItem.Label>
+            <Typography>মহিলা</Typography>
+          </RadioItem.Label>
+        </Radio.Item>
+      </Radio>
     </View>
   );
 };
