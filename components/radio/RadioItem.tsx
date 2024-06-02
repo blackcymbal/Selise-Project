@@ -26,7 +26,10 @@ export default function RadioItem({
   const isActive = selected === value;
 
   return (
-    <Pressable onPress={() => setSelected(value)} style={style}>
+    <Pressable
+      onPress={() => setSelected(value)}
+      style={[style, { flexDirection: "row", gap: 8 }]}
+    >
       <View
         style={
           isActive
