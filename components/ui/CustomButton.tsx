@@ -8,6 +8,7 @@ type CustomButtonProps = {
   active: boolean;
   buttonStyle?: "outline" | "inline";
   onPress: () => void;
+  style?: ViewStyle;
 };
 
 export default function Button({
@@ -15,11 +16,13 @@ export default function Button({
   active = false,
   buttonStyle = "outline",
   onPress,
+  style,
 }: CustomButtonProps) {
   return (
     <TouchableOpacity
       disabled={!active}
       style={[
+        style,
         styles.container,
         buttonStyle === "outline"
           ? [

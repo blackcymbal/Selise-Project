@@ -1,11 +1,16 @@
+import { Typography } from "@/components/ui";
+import { LoginScreenContainer, ProfileInfo } from "@/components/user";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 const createProfileScreen = () => {
   return (
-    <View>
-      <Text>createProfileScreen</Text>
-    </View>
+    <LoginScreenContainer>
+      <Typography weight="semiBold" size="xl" color="gray900" mt={10}>
+        প্রোফাইল তথ্যাবলি
+      </Typography>
+      <ProfileInfo />
+    </LoginScreenContainer>
   );
 };
 

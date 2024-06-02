@@ -13,9 +13,14 @@ const Welcome = () => {
         </TouchableOpacity>
       </Link>
 
-      <Link href="/signin" asChild style={{ marginVertical: 20 }}>
+      <Link href="/signIn" asChild style={{ marginVertical: 20 }}>
         <TouchableOpacity>
           <Text>Go to Sign In Screen</Text>
+        </TouchableOpacity>
+      </Link>
+      <Link href="/createProfileScreen" asChild style={{ marginVertical: 20 }}>
+        <TouchableOpacity>
+          <Text>Go to Profile Creation Screen</Text>
         </TouchableOpacity>
       </Link>
     </View>
