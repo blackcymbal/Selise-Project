@@ -19,7 +19,6 @@ const UserProfile = () => {
           value="M"
           selected={gender}
           setSelected={setGender}
-          style={{ flexDirection: "row", gap: 8 }}
           radioActiveColor={theme.colors.primary600}
           radioActiveFillColor={theme.colors.primary50}
         >
@@ -31,7 +30,6 @@ const UserProfile = () => {
           value="F"
           selected={gender}
           setSelected={setGender}
-          style={{ flexDirection: "row", gap: 8 }}
           radioActiveColor={theme.colors.primary600}
           radioActiveFillColor={theme.colors.primary50}
         >
