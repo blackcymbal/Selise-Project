@@ -82,7 +82,7 @@ export default function ProfileDetails() {
         </Container>
 
         <SectionDivider marginVertical={16} />
-        
+
         <Container>
           <View style={styles.imageContainer}>
             <Image
@@ -113,7 +113,7 @@ export default function ProfileDetails() {
         </Container>
 
         <SectionDivider marginVertical={24} />
-        
+
         <Container gap={4} pb={4}>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
@@ -264,6 +264,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderWidth: 1,
     borderColor: theme.colors.primary600,
+    backgroundColor: theme.colors.primary50,
     borderRadius: 8,
   },
   fieldContainer: {
