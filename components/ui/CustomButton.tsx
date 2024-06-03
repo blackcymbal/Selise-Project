@@ -60,6 +60,7 @@ export default function Button({
 
 const styles = StyleSheet.create({
   container: {
+    height: 48,
     width: "100%",
     borderRadius: 8,
     paddingVertical: 8,

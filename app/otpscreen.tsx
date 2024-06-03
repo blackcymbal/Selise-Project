@@ -4,27 +4,51 @@ import {
   OtpInputs,
   RestOfOtpScreen,
 } from "@/components/user";
+import { useLogin, useSignUp } from "@/services/authService";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
 const OtpScreen = () => {
   const [buttonActive, setButtonActive] = useState(false);
+  const [otp, setOtp] = useState<number | undefined>(undefined);
+
+  const signUpMutation = useSignUp();
+  const loginMutation = useLogin();
 
   const params = useLocalSearchParams();
 
   const getCodeFromInput = (codes: string[]) => {
     const fullCode = codes?.join("");
+    console.log(fullCode);
+    setOtp(Number(fullCode));
     setButtonActive(fullCode?.length === 4 ? true : false);
   };
 
+  console.log(params);
+
   const handlePress = () => {
+    const signUpData = {
+      phone: params?.phone,
+      countryCode: params?.countryCode,
+      dialCode: params?.dialCode,
+      code: otp,
+    };
+
+    const loginData = {
+      id: Number(params?.id),
+      code: otp,
+    };
+
+    console.log("loginData", loginData);
+
     if (params?.isNewUser === "true") {
+      signUpMutation.mutate(signUpData);
       router.navigate("/createProfileScreen");
     } else {
+      loginMutation.mutate(loginData);
       router.navigate("/screens");
     }
-    //
   };
   return (
     <LoginScreenContainer>

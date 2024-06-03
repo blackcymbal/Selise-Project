@@ -6,6 +6,7 @@ import useAxios, {
 import {
   UserAuth,
   UserExistenceResponse,
+  UserViewModel,
 } from "@tajdid-academy/tajdid-corelib";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -82,9 +83,7 @@ export const useCheckUserExistence = () => {
         .catch((err) => console.log(err));
     },
     onSuccess: (response) => {
-      console.log(response);
       setNewUser(response.data);
-      //   router.navigate("/screens");
     },
   });
 };
@@ -108,8 +107,30 @@ export const useSignUp = () => {
     },
     onSuccess: (response) => {
       const { user, accessToken } = response.data;
-      console.log(user, accessToken);
       setAuth(user, accessToken);
+    },
+  });
+};
+
+export const useUpdateProfile = () => {
+  const { setAuth, token } = useAuth();
+  const axiosClient = useAxios();
+
+  return useMutation<
+    ApiSuccessResponse<UserViewModel>,
+    ApiErrorResponse,
+    SignUpRequest
+  >({
+    mutationFn: (data: SignUpRequest) => {
+      return axiosClient
+        .put(`/auth/me`, data)
+        .then((response) => response?.data)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    onSuccess: (response) => {
+      setAuth(response.data, token as string);
       router.navigate("/screens");
     },
   });

@@ -1,5 +1,5 @@
 import theme from "@/constants/theme";
-import { useCheckUserExistence, useSignUp } from "@/services/authService";
+import { useCheckUserExistence } from "@/services/authService";
 import { router, useNavigation } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
@@ -15,7 +15,6 @@ const LoginInputs = () => {
 
   const navigation = useNavigation();
   const checkUserExistenceMutation = useCheckUserExistence();
-  const signUpMutation = useSignUp();
 
   const handlePress = () => {
     const finalData = {
@@ -28,7 +27,11 @@ const LoginInputs = () => {
       onSuccess: (data) => {
         router.navigate({
           pathname: "/otpScreen",
-          params: data?.data,
+          params: {
+            isNewUser: data?.data?.isNewUser,
+            ...data?.data?.user,
+            ...finalData,
+          },
         });
       },
     });

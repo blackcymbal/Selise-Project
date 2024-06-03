@@ -23,6 +23,6 @@ export const navList = [
   },
 ];
 
-const apiEndpoint = process.env.API_ENDPOINT;
-const assetsUrl = process.env.PUBLIC_ASSETS_URL;
+const apiEndpoint = "https://api.dev.tajdidacademy.com";
+const assetsUrl = "https://dev-assets.tajdidacademy.com";
 export { apiEndpoint, assetsUrl };

@@ -1,4 +1,5 @@
 import theme from "@/constants/theme";
+import { useUpdateProfile } from "@/services/authService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -9,6 +10,8 @@ import { Button, Typography } from "../ui";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
 const ProfileInfo = () => {
+  const updateProfileMutation = useUpdateProfile();
+
   const {
     control,
     register,
@@ -19,7 +22,7 @@ const ProfileInfo = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    updateProfileMutation.mutate(data);
   };
 
   return (
