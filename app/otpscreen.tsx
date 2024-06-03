@@ -28,16 +28,22 @@ const OtpScreen = () => {
   console.log(params);
 
   const handlePress = () => {
+    const phone = typeof params?.phone === "string" ? params.phone : "";
+    const countryCode =
+      typeof params?.countryCode === "string" ? params.countryCode : "";
+    const dialCode =
+      typeof params?.dialCode === "string" ? params.dialCode : "";
+
     const signUpData = {
-      phone: params?.phone,
-      countryCode: params?.countryCode,
-      dialCode: params?.dialCode,
-      code: otp,
+      phone: phone,
+      countryCode: countryCode,
+      dialCode: dialCode,
+      code: otp as number,
     };
 
     const loginData = {
       id: Number(params?.id),
-      code: otp,
+      code: otp as number,
     };
 
     console.log("loginData", loginData);

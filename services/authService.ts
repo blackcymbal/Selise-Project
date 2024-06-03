@@ -24,6 +24,12 @@ export type SignUpRequest = {
   code: number;
 };
 
+export type UserUpdateRequest = {
+  name: string;
+  age: number;
+  gender: string;
+};
+
 export const useLogin = () => {
   const { setAuth } = useAuth();
   const axiosClient = useAxios();
@@ -119,9 +125,9 @@ export const useUpdateProfile = () => {
   return useMutation<
     ApiSuccessResponse<UserViewModel>,
     ApiErrorResponse,
-    SignUpRequest
+    UserUpdateRequest
   >({
-    mutationFn: (data: SignUpRequest) => {
+    mutationFn: (data: UserUpdateRequest) => {
       return axiosClient
         .put(`/auth/me`, data)
         .then((response) => response?.data)

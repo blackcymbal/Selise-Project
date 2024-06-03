@@ -1,6 +1,6 @@
 import theme from "@/constants/theme";
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import Typography from "./Typography";
 
 type CustomButtonProps = {

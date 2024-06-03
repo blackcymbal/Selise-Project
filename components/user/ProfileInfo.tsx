@@ -1,5 +1,5 @@
 import theme from "@/constants/theme";
-import { useUpdateProfile } from "@/services/authService";
+import { UserUpdateRequest, useUpdateProfile } from "@/services/authService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -17,11 +17,11 @@ const ProfileInfo = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<UserUpdateRequest>({
     resolver: zodResolver(profileInfoSchema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: UserUpdateRequest) => {
     updateProfileMutation.mutate(data);
   };
 
@@ -75,7 +75,7 @@ const ProfileInfo = () => {
             style={[styles.input, errors.age && styles.errorInput]}
             onBlur={onBlur}
             onChangeText={(text) => onChange(Number(text))}
-            value={value?.toString}
+            value={value?.toString()}
             keyboardType="numeric"
           />
         )}
