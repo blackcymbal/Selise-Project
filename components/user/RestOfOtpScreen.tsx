@@ -1,10 +1,14 @@
 import { Edit } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
+import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Container, Typography } from "../ui";
 
 const RestOfOtpScreen = () => {
+  const handleGoSignIn = () => {
+    router.replace("/signIn");
+  };
   return (
     <Container px={0} mt={8} style={styles.container}>
       <Typography>কোন কোড পাননি?</Typography>
@@ -26,15 +30,8 @@ const RestOfOtpScreen = () => {
         <Typography style={styles.text1}>
           মোবাইল নম্বরটি ভুল হয়নি তো? 01754558313
         </Typography>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            marginTop: 8,
-          }}
-        >
+
+        <TouchableOpacity style={styles.button} onPress={handleGoSignIn}>
           <Edit color={theme.colors.primary700} height={24} width={24} />
           <Typography weight="semiBold" color="primary700">
             নম্বর পরিবর্তন
@@ -53,4 +50,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   text1: { textAlign: "center" },
+  button: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    marginTop: 8,
+  },
 });

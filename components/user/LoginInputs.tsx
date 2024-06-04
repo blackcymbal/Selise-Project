@@ -1,6 +1,6 @@
 import theme from "@/constants/theme";
 import { useCheckUserExistence } from "@/services/authService";
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
@@ -13,7 +13,6 @@ const LoginInputs = () => {
 
   const phoneInput = useRef<PhoneInput>(null);
 
-  const navigation = useNavigation();
   const checkUserExistenceMutation = useCheckUserExistence();
 
   const handlePress = () => {
@@ -25,7 +24,7 @@ const LoginInputs = () => {
 
     checkUserExistenceMutation.mutate(finalData, {
       onSuccess: (data) => {
-        router.navigate({
+        router.replace({
           pathname: "/otpScreen",
           params: {
             isNewUser: data?.data?.isNewUser,

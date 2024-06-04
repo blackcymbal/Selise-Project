@@ -1,11 +1,14 @@
 import { Typography } from "@/components/ui";
 import { LoginInputs, LoginScreenContainer } from "@/components/user";
 import theme from "@/constants/theme";
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 const SignIn = () => {
+  const handleGotoScreens = () => {
+    router.replace("/screens");
+  };
   return (
     <LoginScreenContainer>
       <Typography weight="semiBold" size="xl" color="gray900" mt={10}>
@@ -20,18 +23,19 @@ const SignIn = () => {
         মোবাইল নম্বর দিয়ে তাজদীদ একাডেমির সাথে শেখা শুরু করুন
       </Typography>
       <LoginInputs />
-      <Link href="/screens" asChild>
-        <TouchableOpacity style={styles.guestModeButton}>
-          <Typography
-            weight="regular"
-            size="base"
-            color="gray900"
-            style={styles.guestTitle}
-          >
-            গেস্ট মোডে প্রবেশ করুন
-          </Typography>
-        </TouchableOpacity>
-      </Link>
+      <TouchableOpacity
+        onPress={handleGotoScreens}
+        style={styles.guestModeButton}
+      >
+        <Typography
+          weight="regular"
+          size="base"
+          color="gray900"
+          style={styles.guestTitle}
+        >
+          গেস্ট মোডে প্রবেশ করুন
+        </Typography>
+      </TouchableOpacity>
     </LoginScreenContainer>
   );
 };

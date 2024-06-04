@@ -13,8 +13,8 @@ import { router } from "expo-router";
 import { Alert } from "react-native";
 
 export type LoginRequest = {
-  email: string;
-  password: string;
+  id: number;
+  code: number;
 };
 
 export type SignUpRequest = {
@@ -72,7 +72,6 @@ export const useLogin = () => {
 };
 
 export const useCheckUserExistence = () => {
-  const { setNewUser } = useAuth();
   const axiosClient = useAxios();
 
   return useMutation<
@@ -88,9 +87,7 @@ export const useCheckUserExistence = () => {
         .then((response) => response?.data)
         .catch((err) => console.log(err));
     },
-    onSuccess: (response) => {
-      setNewUser(response.data);
-    },
+    onSuccess: (response) => {},
   });
 };
 

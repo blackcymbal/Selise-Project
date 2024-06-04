@@ -49,11 +49,17 @@ const OtpScreen = () => {
     console.log("loginData", loginData);
 
     if (params?.isNewUser === "true") {
-      signUpMutation.mutate(signUpData);
-      router.navigate("/createProfileScreen");
+      signUpMutation.mutate(signUpData, {
+        onSuccess: () => {
+          router.navigate("/createProfileScreen");
+        },
+      });
     } else {
-      loginMutation.mutate(loginData);
-      router.navigate("/screens");
+      loginMutation.mutate(loginData, {
+        onSuccess: () => {
+          router.replace("/screens");
+        },
+      });
     }
   };
   return (
