@@ -2,6 +2,7 @@ import useAuth from "@/hooks/auth/useAuth";
 import { useGetMyProfile } from "@/services/authService";
 import { router } from "expo-router";
 import React from "react";
+<<<<<<< HEAD
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const UserProfile = () => {
@@ -25,3 +26,10 @@ const UserProfile = () => {
 export default UserProfile;
 
 const styles = StyleSheet.create({});
+=======
+import ProfileDetails from "@/components/user-profile/ProfileDetails";
+
+export default function UserProfile() {
+  return <ProfileDetails />;
+}
+>>>>>>> main

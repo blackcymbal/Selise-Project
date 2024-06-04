@@ -51,7 +51,12 @@
     "react-native-web": "~0.19.10",
     "react-native-webview": "^13.10.2",
     "react-native-youtube-iframe": "^2.3.0",
+<<<<<<< HEAD
     "zod": "^3.23.8"
+=======
+    "zod": "^3.23.8",
+    "expo-image-picker": "~15.0.5"
+>>>>>>> main
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

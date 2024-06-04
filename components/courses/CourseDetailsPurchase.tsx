@@ -10,6 +10,7 @@ import {
   StopwatchIcon,
   TicketPromoIcon,
 } from "@/assets/icons/icons";
+import { Link } from "expo-router";
 
 type CoursePurchaseProps = {
   course: CourseViewModel;
@@ -22,8 +23,8 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
     : course?.price;
 
   // TODO: have to dynamic
-  const user = true;
-  const isEnrolled = true;
+  const user = false;
+  const isEnrolled = false;
   const [isViewPromo, setIsViewPromo] = useState(true);
 
   return (
@@ -124,22 +125,20 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
             ""
           )}
         </View>
-        <View
+        <Link
           style={{
             backgroundColor: theme.colors.primary600,
             paddingHorizontal: 20,
             paddingVertical: 15,
             borderRadius: 8,
+            textAlign: "center",
           }}
+          href={isEnrolled ? "" : `/screens/payment/${course?.id}`}
         >
-          <Typography
-            weight="bold"
-            color="white"
-            style={{ textAlign: "center" }}
-          >
+          <Typography weight="bold" color="white">
             {user && isEnrolled ? "চালিয়ে যান" : "কোর্সটি কিনুন"}
           </Typography>
-        </View>
+        </Link>
       </View>
     </View>
   );
