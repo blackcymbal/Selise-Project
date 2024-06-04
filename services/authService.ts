@@ -30,6 +30,11 @@ export type UserUpdateRequest = {
   gender: string;
 };
 
+export type UserImageUploadRequest = {
+  fileName: string;
+  fileType: string;
+};
+
 const handleOtpError = (error: ApiErrorResponse) => {
   if (error?.statusCode && error.statusCode === 400) {
     Alert.alert("Error", error?.data?.message, [
@@ -142,6 +147,27 @@ export const useUpdateProfile = () => {
   });
 };
 
+export const useUploadProfilePicture = () => {
+  const axiosClient = useAxios();
+  const { user } = useAuth();
+
+  return useMutation<
+    ApiSuccessResponse<string>,
+    ApiErrorResponse,
+    UserImageUploadRequest
+  >({
+    mutationFn: (data: UserImageUploadRequest) => {
+      return axiosClient
+        .put(`/users/${user?.id}/uploads/profile`, data)
+        .then((response) => response?.data)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    onSuccess: (response) => {},
+  });
+};
+
 export const useGetMyProfile = () => {
   const { setAuth, token } = useAuth();
   const axiosClient = useAxios();
@@ -152,8 +178,8 @@ export const useGetMyProfile = () => {
       const { data } = await axiosClient.get<ApiSuccessResponse<UserViewModel>>(
         `/auth/me`
       );
-      setAuth(data.data, token as string);
-      return data.data;
+      setAuth(data?.data, token as string);
+      return data?.data;
     },
   });
 };

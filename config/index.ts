@@ -13,12 +13,12 @@ export const navList = [
   },
   {
     name: "আমার কোর্স",
-    navTo: "mycourses",
+    navTo: "myCourses",
     icon: MortarBoard,
   },
   {
     name: "প্রোফাইল",
-    navTo: "userprofile",
+    navTo: "userProfile",
     icon: UserSquare,
   },
 ];
