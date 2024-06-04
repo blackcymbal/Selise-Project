@@ -18,11 +18,11 @@ export const navList = [
   },
   {
     name: "প্রোফাইল",
-    navTo: "userprofile",
+    navTo: "userProfile",
     icon: UserSquare,
   },
 ];
 
-const apiEndpoint = process.env.API_ENDPOINT;
-const assetsUrl = process.env.PUBLIC_ASSETS_URL;
+const apiEndpoint = "https://api.dev.tajdidacademy.com";
+const assetsUrl = "https://dev-assets.tajdidacademy.com";
 export { apiEndpoint, assetsUrl };
