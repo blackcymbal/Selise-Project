@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@hookform/resolvers": "^3.4.2",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/native": "^6.0.2",
     "@tajdid-academy/tajdid-corelib": "^0.0.78",
@@ -35,6 +36,7 @@
     "expo-web-browser": "~13.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.51.5",
     "react-native": "0.74.1",
     "react-native-blob-util": "^0.19.9",
     "react-native-gesture-handler": "~2.16.1",
@@ -47,7 +49,8 @@
     "react-native-vimeo-iframe": "^1.2.1",
     "react-native-web": "~0.19.10",
     "react-native-webview": "^13.10.2",
-    "react-native-youtube-iframe": "^2.3.0"
+    "react-native-youtube-iframe": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

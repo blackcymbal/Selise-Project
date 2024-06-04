@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -18,6 +20,9 @@ import { Container, SectionDivider, Typography } from "../ui";
 import theme from "@/constants/theme";
 import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
+import { Controller, useForm } from "react-hook-form";
+import { ProfileSchema, profileSchema } from "./profile-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const user: Pick<
   UserViewModel,
@@ -29,21 +34,47 @@ const user: Pick<
   | "picture"
   | "age"
   | "certificateName"
+  | "designation"
+  | "gender"
 > = {
   id: 52,
   email: "soyeb@gmail.com",
   phone: "01303909304",
-  name: "সোয়েব চান্দানী",
+  name: "সোয়েব চান্দানি",
   certificateName: "Md. Soyeb Chandani",
   role: "LEARNER",
   picture:
     "https://dev.tajdidacademy.com/_next/image?url=https%3A%2F%2Fdev-assets.tajdidacademy.com%2Fuploads%2Fusers%2F52%2Fprofile%2Fimages.jfif&w=96&q=75",
   age: 28,
+  designation: "Student",
+  gender: "M",
 };
 
 export default function ProfileDetails() {
   const [isShow, setIsShow] = useState(true);
-  const [gender, setGender] = useState("");
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<ProfileSchema & { email: string }>({
+    defaultValues: {
+      name: user?.name ?? "",
+      certificateName: user?.certificateName ?? "",
+      phone: user?.phone?.trim(),
+      email: user?.email ?? "",
+      designation: user?.designation ?? "",
+      picture: user?.picture ?? "",
+      age: user?.age ? user?.age : undefined,
+      gender: user?.gender ?? "",
+    },
+    resolver: zodResolver(profileSchema),
+    mode: "onChange",
+  });
+
+  const onSubmit = (data: ProfileSchema) => {
+    Alert.alert("Successful", JSON.stringify(data));
+  };
 
   return (
     <>
@@ -119,93 +150,198 @@ export default function ProfileDetails() {
             <Typography weight="medium" size="sm">
               পুরা নাম*
             </Typography>
-            <TextInput
-              style={styles.inputFieldStyle}
-              defaultValue={user?.name ? user?.name : "নাম"}
+            <Controller
+              control={control}
+              name={"name"}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder={value ? value : "পুরা নাম"}
+                  style={[
+                    styles.inputFieldStyle,
+                    errors.name && styles.errorInput,
+                  ]}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+              )}
             />
+            {errors.name?.message && (
+              <Typography color="error500">{errors.name?.message}</Typography>
+            )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               সার্টিফিকেট নাম*
             </Typography>
-            <TextInput
-              style={styles.inputFieldStyle}
-              defaultValue={
-                user?.certificateName
-                  ? user?.certificateName
-                  : "সার্টিফিকেট নাম"
-              }
+            <Controller
+              control={control}
+              name={"certificateName"}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder={value ? value : "সার্টিফিকেট নাম"}
+                  style={[
+                    styles.inputFieldStyle,
+                    errors.certificateName && styles.errorInput,
+                  ]}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+              )}
             />
+            {errors.certificateName?.message && (
+              <Typography color="error500">
+                {errors.certificateName?.message}
+              </Typography>
+            )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               মোবাইল নম্বর*
             </Typography>
-            <TextInput
-              style={styles.inputFieldStyle}
-              defaultValue={user?.phone ? user?.phone : "মোবাইল নম্বর দিন"}
+            <Controller
+              control={control}
+              name={"phone"}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder={value ? value : "মোবাইল নম্বর দিন"}
+                  style={[
+                    styles.inputFieldStyle,
+                    errors.phone && styles.errorInput,
+                  ]}
+                  keyboardType="numeric"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+              )}
             />
+            {errors.phone?.message && (
+              <Typography color="error500">{errors.phone?.message}</Typography>
+            )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               ইমেইল
             </Typography>
-            <TextInput
-              style={styles.inputFieldStyle}
-              defaultValue={user?.email ? user?.email : "ইমেইল"}
+            <Controller
+              control={control}
+              name={"email"}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder={value ? value : "ইমেইল"}
+                  style={[
+                    styles.inputFieldStyle,
+                    errors.email && styles.errorInput,
+                  ]}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+              )}
             />
+            {errors.email?.message && (
+              <Typography color="error500">{errors.email?.message}</Typography>
+            )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               পেশা
             </Typography>
-            <TextInput
-              style={styles.inputFieldStyle}
-              defaultValue={user?.role ? user?.role : "পেশা"}
+            <Controller
+              control={control}
+              name={"designation"}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder={value ? value : "পেশা"}
+                  style={[
+                    styles.inputFieldStyle,
+                    errors.designation && styles.errorInput,
+                  ]}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+              )}
             />
+            {errors.designation?.message && (
+              <Typography color="error500">
+                {errors.designation?.message}
+              </Typography>
+            )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               বয়স*
             </Typography>
-            <TextInput
-              style={styles.inputFieldStyle}
-              inputMode="decimal"
-              defaultValue={user?.age ? "28" : "বয়স"}
+            <Controller
+              control={control}
+              name={"age"}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  placeholder={value ? value?.toString() : "বয়স"}
+                  style={[
+                    styles.inputFieldStyle,
+                    errors.age && styles.errorInput,
+                  ]}
+                  keyboardType="numeric"
+                  value={value?.toString()}
+                  onChangeText={(text) => onChange(Number(text))}
+                  onBlur={onBlur}
+                />
+              )}
             />
+            {errors.age?.message && (
+              <Typography color="error500">
+                {errors.age?.message}
+              </Typography>
+            )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               জেন্ডার*
             </Typography>
             <View>
-              <Radio style={{ flexDirection: "row", gap: 48 }}>
-                <Radio.Item
-                  value="M"
-                  selected={gender}
-                  setSelected={setGender}
-                  radioActiveColor={theme.colors.primary600}
-                  radioActiveFillColor={theme.colors.primary50}
-                >
-                  <RadioItem.Label>
-                    <Typography>পুরুষ</Typography>
-                  </RadioItem.Label>
-                </Radio.Item>
-                <Radio.Item
-                  value="F"
-                  selected={gender}
-                  setSelected={setGender}
-                  radioActiveColor={theme.colors.primary600}
-                  radioActiveFillColor={theme.colors.primary50}
-                >
-                  <RadioItem.Label>
-                    <Typography>মহিলা</Typography>
-                  </RadioItem.Label>
-                </Radio.Item>
-              </Radio>
+              <Controller
+                control={control}
+                name={"gender"}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <Radio style={{ flexDirection: "row", gap: 48 }}>
+                    <Radio.Item
+                      value="M"
+                      selected={value?.toString()}
+                      setSelected={onChange}
+                      radioActiveColor={theme.colors.primary600}
+                      radioActiveFillColor={theme.colors.primary50}
+                    >
+                      <RadioItem.Label>
+                        <Typography>পুরুষ</Typography>
+                      </RadioItem.Label>
+                    </Radio.Item>
+                    <Radio.Item
+                      value="F"
+                      selected={value?.toString()}
+                      setSelected={onChange}
+                      radioActiveColor={theme.colors.primary600}
+                      radioActiveFillColor={theme.colors.primary50}
+                    >
+                      <RadioItem.Label>
+                        <Typography>মহিলা</Typography>
+                      </RadioItem.Label>
+                    </Radio.Item>
+                  </Radio>
+                )}
+              />
             </View>
           </View>
-          <TouchableOpacity style={styles.updateBtn}>
+          <TouchableOpacity
+            style={styles.updateBtn}
+            onPress={handleSubmit(onSubmit)}
+          >
             <Typography weight="semiBold" color="white">
               প্রোফাইল তথ্য আপডেট করুন
             </Typography>
@@ -277,6 +413,10 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray200,
     backgroundColor: theme.colors.white,
     fontSize: 16,
+    fontFamily: "AnekBangla-Regular",
+  },
+  errorInput: {
+    borderColor: theme.colors.error500,
   },
   updateBtn: {
     paddingHorizontal: 32,

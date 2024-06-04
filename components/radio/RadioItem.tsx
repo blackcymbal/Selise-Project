@@ -6,7 +6,7 @@ type RadioItemProps = {
   children: ReactNode;
   style?: ViewStyle;
   value: string;
-  selected: string | null;
+  selected: string | undefined;
   setSelected: (value: string) => void;
   radioDefaultColor?: string;
   radioActiveColor?: string;
