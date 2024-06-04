@@ -4,7 +4,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -23,6 +22,8 @@ import RadioItem from "../radio/RadioItem";
 import { Controller, useForm } from "react-hook-form";
 import { ProfileSchema, profileSchema } from "./profile-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as ImagePicker from "expo-image-picker";
+import { FilePathUtils, fallbackImages } from "@/utils";
 
 const user: Pick<
   UserViewModel,
@@ -37,14 +38,13 @@ const user: Pick<
   | "designation"
   | "gender"
 > = {
-  id: 52,
+  id: 79,
   email: "soyeb@gmail.com",
   phone: "01303909304",
   name: "সোয়েব চান্দানি",
   certificateName: "Md. Soyeb Chandani",
   role: "LEARNER",
-  picture:
-    "https://dev.tajdidacademy.com/_next/image?url=https%3A%2F%2Fdev-assets.tajdidacademy.com%2Fuploads%2Fusers%2F52%2Fprofile%2Fimages.jfif&w=96&q=75",
+  picture: "soyeb_profile.jpg",
   age: 28,
   designation: "Student",
   gender: "M",
@@ -52,6 +52,20 @@ const user: Pick<
 
 export default function ProfileDetails() {
   const [isShow, setIsShow] = useState(true);
+  const [image, setImage] = useState("");
+
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    } else {
+      alert("You did not select any image.");
+    }
+  };
 
   const {
     handleSubmit,
@@ -118,7 +132,11 @@ export default function ProfileDetails() {
           <View style={styles.imageContainer}>
             <Image
               source={{
-                uri: user?.picture ? user?.picture : "",
+                uri: image
+                  ? image
+                  : user?.picture
+                  ? `${FilePathUtils.userProfilePath(user.id)}/${user.picture}`
+                  : fallbackImages.user,
               }}
               style={styles.imageStyle}
             />
@@ -131,7 +149,10 @@ export default function ProfileDetails() {
               </Typography>
             </View>
           </View>
-          <TouchableOpacity style={styles.profilePicUpdateBtn}>
+          <TouchableOpacity
+            style={styles.profilePicUpdateBtn}
+            onPress={pickImageAsync}
+          >
             <ImageUploadIcon
               width={20}
               height={20}
@@ -296,9 +317,7 @@ export default function ProfileDetails() {
               )}
             />
             {errors.age?.message && (
-              <Typography color="error500">
-                {errors.age?.message}
-              </Typography>
+              <Typography color="error500">{errors.age?.message}</Typography>
             )}
           </View>
           <View style={styles.fieldContainer}>
