@@ -30,6 +30,31 @@ export type UserUpdateRequest = {
   gender: string;
 };
 
+const handleOtpError = (error: ApiErrorResponse) => {
+  if (error?.statusCode && error.statusCode === 400) {
+    Alert.alert("Error", error?.data?.message, [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+  } else {
+    Alert.alert(
+      "Server Error",
+      "Oops! Something went wrong. Please try again later.",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]
+    );
+  }
+};
 export const useLogin = () => {
   const { setAuth } = useAuth();
   const axiosClient = useAxios();
@@ -44,29 +69,7 @@ export const useLogin = () => {
       router.navigate("/screens");
     },
     onError: (error: ApiErrorResponse) => {
-      if (error?.statusCode && error.statusCode === 401) {
-        Alert.alert("Error", `Your email or password didn't match`, [
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") },
-        ]);
-      } else {
-        Alert.alert(
-          "Server Error",
-          "Oops! Something went wrong. Please try again later.",
-          [
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel",
-            },
-            { text: "OK", onPress: () => console.log("OK Pressed") },
-          ]
-        );
-      }
+      handleOtpError(error);
     },
   });
 };
@@ -103,14 +106,14 @@ export const useSignUp = () => {
     mutationFn: (data: SignUpRequest) => {
       return axiosClient
         .post(`/auth/signup`, data)
-        .then((response) => response?.data)
-        .catch((err) => {
-          console.log(err);
-        });
+        .then((response) => response?.data);
     },
     onSuccess: (response) => {
       const { user, accessToken } = response.data;
       setAuth(user, accessToken);
+    },
+    onError: (error: ApiErrorResponse) => {
+      handleOtpError(error);
     },
   });
 };

@@ -1,41 +1,29 @@
-import useAuth from "@/hooks/auth/useAuth";
-import { Link, router } from "expo-router";
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Loader from "@/components/global/Loader";
+import useToken from "@/hooks/useToken";
+import { router } from "expo-router";
+import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
 
 const Welcome = () => {
-  const { token } = useAuth();
+  // const { token } = useAuth();
+  const { token, loading } = useToken("authKey");
 
-  setTimeout(() => {
-    if (token) {
-      router.replace("/screens");
-    } else {
-      router.replace("/signIn");
+  useEffect(() => {
+    if (!loading) {
+      if (token == "null") {
+        router.replace("/signIn");
+      } else {
+        router.replace("/screens");
+      }
     }
-  }, 2000);
+  }, [loading]);
 
   const handleGoSignIn = () => {
     router.replace("/signIn");
   };
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>This is a Welcome screen for new users</Text>
-      <Text>Still under constructed</Text>
-      <Link href="/screens" asChild style={{ marginVertical: 20 }}>
-        <TouchableOpacity>
-          <Text>Go to Home Screen</Text>
-        </TouchableOpacity>
-      </Link>
-
-      <TouchableOpacity onPress={handleGoSignIn}>
-        <Text>Go to Sign In Screen</Text>
-      </TouchableOpacity>
-
-      {/* <Link href="/createProfileScreen" asChild style={{ marginVertical: 20 }}>
-        <TouchableOpacity>
-          <Text>Go to Profile Creation Screen</Text>
-        </TouchableOpacity>
-      </Link> */}
+      <Loader />
     </View>
   );
 };

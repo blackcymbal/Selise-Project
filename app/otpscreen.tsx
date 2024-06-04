@@ -59,6 +59,9 @@ const OtpScreen = () => {
         onSuccess: () => {
           router.replace("/screens");
         },
+        onError: (error) => {
+          console.log(error);
+        },
       });
     }
   };
