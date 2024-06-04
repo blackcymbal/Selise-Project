@@ -8,7 +8,7 @@ import {
   UserExistenceResponse,
   UserViewModel,
 } from "@tajdid-academy/tajdid-corelib";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 
@@ -137,7 +137,23 @@ export const useUpdateProfile = () => {
     },
     onSuccess: (response) => {
       setAuth(response.data, token as string);
-      router.navigate("/screens");
+      router.replace("/screens");
+    },
+  });
+};
+
+export const useGetMyProfile = () => {
+  const { setAuth, token } = useAuth();
+  const axiosClient = useAxios();
+
+  return useQuery<UserViewModel, Error>({
+    queryKey: ["myProfile"],
+    queryFn: async () => {
+      const { data } = await axiosClient.get<ApiSuccessResponse<UserViewModel>>(
+        `/auth/me`
+      );
+      setAuth(data.data, token as string);
+      return data.data;
     },
   });
 };
