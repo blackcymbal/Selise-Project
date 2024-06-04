@@ -332,7 +332,7 @@ export default function ProfileDetails() {
                   <Radio style={{ flexDirection: "row", gap: 48 }}>
                     <Radio.Item
                       value="M"
-                      selected={value?.toString()}
+                      selected={value as string}
                       setSelected={onChange}
                       radioActiveColor={theme.colors.primary600}
                       radioActiveFillColor={theme.colors.primary50}
@@ -343,7 +343,7 @@ export default function ProfileDetails() {
                     </Radio.Item>
                     <Radio.Item
                       value="F"
-                      selected={value?.toString()}
+                      selected={value as string}
                       setSelected={onChange}
                       radioActiveColor={theme.colors.primary600}
                       radioActiveFillColor={theme.colors.primary50}

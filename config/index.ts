@@ -18,7 +18,7 @@ export const navList = [
   },
   {
     name: "প্রোফাইল",
-    navTo: "userprofile",
+    navTo: "userProfile",
     icon: UserSquare,
   },
 ];
