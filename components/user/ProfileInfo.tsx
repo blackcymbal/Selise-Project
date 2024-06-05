@@ -8,6 +8,7 @@ import Radio from "../global/radioButton/Radio";
 import RadioItem from "../global/radioButton/RadioItem";
 import { Button, Typography } from "../ui";
 import ErrorMessage from "../ui/ErrorMessage";
+import ImageUploader from "./ImageUploader";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
 const ProfileInfo = () => {
@@ -29,6 +30,7 @@ const ProfileInfo = () => {
 
   return (
     <View style={styles.container}>
+      <ImageUploader />
       <Typography
         color="gray700"
         weight="medium"

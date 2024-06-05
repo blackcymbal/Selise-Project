@@ -2,6 +2,7 @@ import {
   DotsVerticalIcon,
   ImageUploadIcon,
   LogOutIcon,
+  User,
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
 import useAuth from "@/hooks/auth/useAuth";
@@ -45,7 +46,7 @@ const user: Pick<
   name: "সোয়েব চান্দানি",
   certificateName: "Md. Soyeb Chandani",
   role: "LEARNER",
-  picture: "soyeb_profile.jpg",
+  picture: "",
   age: 28,
   designation: "Student",
   gender: "M",
@@ -136,16 +137,24 @@ export default function ProfileDetails() {
 
         <Container>
           <View style={styles.imageContainer}>
-            <Image
-              source={{
-                uri: image
-                  ? image
-                  : user?.picture
-                  ? `${FilePathUtils.userProfilePath(user.id)}/${user.picture}`
-                  : fallbackImages.user,
-              }}
-              style={styles.imageStyle}
-            />
+            {image || user?.picture ? (
+              <Image
+                source={{
+                  uri: image
+                    ? image
+                    : user?.picture
+                    ? `${FilePathUtils.userProfilePath(user.id)}/${
+                        user.picture
+                      }`
+                    : fallbackImages.user,
+                }}
+                style={styles.imageStyle}
+              />
+            ) : (
+              <View style={styles.imageStyle}>
+                <User color={theme.colors.gray500} height={36} width={36} />
+              </View>
+            )}
             <View>
               <Typography weight="bold" size="xl" color="gray900">
                 {user?.name}
@@ -415,6 +424,9 @@ const styles = StyleSheet.create({
     borderRadius: 200,
     borderWidth: 1,
     borderColor: theme.colors.gray200,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme.colors.gray100,
   },
   profilePicUpdateBtn: {
     gap: 8,

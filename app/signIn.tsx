@@ -1,7 +1,7 @@
 import { Typography } from "@/components/ui";
 import { LoginInputs, LoginScreenContainer } from "@/components/user";
 import theme from "@/constants/theme";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
@@ -36,6 +36,11 @@ const SignIn = () => {
           গেস্ট মোডে প্রবেশ করুন
         </Typography>
       </TouchableOpacity>
+      <Link href={"/createProfileScreen"} asChild>
+        <TouchableOpacity>
+          <Typography>Go To Profile Screen</Typography>
+        </TouchableOpacity>
+      </Link>
     </LoginScreenContainer>
   );
 };
