@@ -1,22 +1,60 @@
 import { Button, Typography } from "@/components/ui";
-import {
-  LoginScreenContainer,
-  OtpInputs,
-  RestOfOtpScreen,
-} from "@/components/user";
+import { LoginScreenContainer, OtpFooter, OtpInputs } from "@/components/user";
+import { useLogin, useSignUp } from "@/services/authService";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
 const OtpScreen = () => {
   const [buttonActive, setButtonActive] = useState(false);
+  const [otp, setOtp] = useState<number | undefined>(undefined);
+
+  const signUpMutation = useSignUp();
+  const loginMutation = useLogin();
+
+  const params = useLocalSearchParams();
 
   const getCodeFromInput = (codes: string[]) => {
     const fullCode = codes?.join("");
+    setOtp(Number(fullCode));
     setButtonActive(fullCode?.length === 4 ? true : false);
   };
 
   const handlePress = () => {
-    //
+    const phone = typeof params?.phone === "string" ? params.phone : "";
+    const countryCode =
+      typeof params?.countryCode === "string" ? params.countryCode : "";
+    const dialCode =
+      typeof params?.dialCode === "string" ? params.dialCode : "";
+
+    const signUpData = {
+      phone: phone,
+      countryCode: countryCode,
+      dialCode: dialCode,
+      code: otp as number,
+    };
+
+    const loginData = {
+      id: Number(params?.id),
+      code: otp as number,
+    };
+
+    if (params?.isNewUser === "true") {
+      signUpMutation.mutate(signUpData, {
+        onSuccess: () => {
+          router.navigate("/createProfileScreen");
+        },
+      });
+    } else {
+      loginMutation.mutate(loginData, {
+        onSuccess: () => {
+          router.replace("/screens");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+    }
   };
   return (
     <LoginScreenContainer>
@@ -35,7 +73,7 @@ const OtpScreen = () => {
       <Button active={buttonActive} buttonStyle="inline" onPress={handlePress}>
         এগিয়ে যান
       </Button>
-      <RestOfOtpScreen />
+      <OtpFooter />
     </LoginScreenContainer>
   );
 };

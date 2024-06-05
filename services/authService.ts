@@ -3,14 +3,18 @@ import useAxios, {
   ApiErrorResponse,
   ApiSuccessResponse,
 } from "@/hooks/useAxios";
-import { UserAuth } from "@tajdid-academy/tajdid-corelib";
-import { useMutation } from "@tanstack/react-query";
+import {
+  UserAuth,
+  UserExistenceResponse,
+  UserViewModel,
+} from "@tajdid-academy/tajdid-corelib";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 
 export type LoginRequest = {
-  email: string;
-  password: string;
+  id: number;
+  code: number;
 };
 
 export type SignUpRequest = {
@@ -20,6 +24,38 @@ export type SignUpRequest = {
   code: number;
 };
 
+export type UserUpdateRequest = Pick<UserViewModel, "name" | "age" | "gender">;
+
+export type UseUploadProfilePictureRequest = {
+  fileName: string;
+  fileType: string;
+};
+
+const handleOtpError = (error: ApiErrorResponse) => {
+  if (error?.statusCode && error.statusCode === 400) {
+    Alert.alert("Error", error?.data?.message, [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+  } else {
+    Alert.alert(
+      "Server Error",
+      "Oops! Something went wrong. Please try again later.",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]
+    );
+  }
+};
 export const useLogin = () => {
   const { setAuth } = useAuth();
   const axiosClient = useAxios();
@@ -34,30 +70,28 @@ export const useLogin = () => {
       router.navigate("/screens");
     },
     onError: (error: ApiErrorResponse) => {
-      if (error?.statusCode && error.statusCode === 401) {
-        Alert.alert("Error", `Your email or password didn't match`, [
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") },
-        ]);
-      } else {
-        Alert.alert(
-          "Server Error",
-          "Oops! Something went wrong. Please try again later.",
-          [
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel",
-            },
-            { text: "OK", onPress: () => console.log("OK Pressed") },
-          ]
-        );
-      }
+      handleOtpError(error);
     },
+  });
+};
+
+export const useCheckUserExistence = () => {
+  const axiosClient = useAxios();
+
+  return useMutation<
+    ApiSuccessResponse<UserExistenceResponse>,
+    ApiErrorResponse,
+    Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
+  >({
+    mutationFn: (
+      data: Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
+    ) => {
+      return axiosClient
+        .post(`/auth/check-user-existence`, data)
+        .then((response) => response?.data)
+        .catch((err) => console.log(err));
+    },
+    onSuccess: (response) => {},
   });
 };
 
@@ -77,9 +111,71 @@ export const useSignUp = () => {
     },
     onSuccess: (response) => {
       const { user, accessToken } = response.data;
-      console.log(user, accessToken);
       setAuth(user, accessToken);
-      router.navigate("/screens");
+    },
+    onError: (error: ApiErrorResponse) => {
+      handleOtpError(error);
+    },
+  });
+};
+
+export const useUpdateProfile = () => {
+  const { setAuth, token } = useAuth();
+  const axiosClient = useAxios();
+
+  return useMutation<
+    ApiSuccessResponse<UserViewModel>,
+    ApiErrorResponse,
+    UserUpdateRequest
+  >({
+    mutationFn: (data: UserUpdateRequest) => {
+      return axiosClient
+        .put(`/auth/me`, data)
+        .then((response) => response?.data)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    onSuccess: (response) => {
+      setAuth(response.data, token as string);
+      router.replace("/screens");
+    },
+  });
+};
+
+export const useUploadProfilePicture = () => {
+  const axiosClient = useAxios();
+  const { user } = useAuth();
+
+  return useMutation<
+    ApiSuccessResponse<string>,
+    ApiErrorResponse,
+    UseUploadProfilePictureRequest
+  >({
+    mutationFn: (data: UseUploadProfilePictureRequest) => {
+      return axiosClient
+        .put(`/users/${user?.id}/uploads/profile`, data)
+        .then((response) => response?.data)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    onSuccess: (response) => {},
+  });
+};
+
+export const useGetMyProfile = () => {
+  const { setAuth, token } = useAuth();
+  const axiosClient = useAxios();
+
+  return useQuery<UserViewModel, Error>({
+    queryKey: ["myProfile"],
+    queryFn: async () => {
+      const { data } = await axiosClient.get<ApiSuccessResponse<UserViewModel>>(
+        `/auth/me`
+      );
+      setAuth(data?.data, token as string);
+      return data?.data;
     },
   });
 };

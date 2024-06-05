@@ -1,18 +1,13 @@
 import { Notification, Search } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
 import React from "react";
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Typography } from "../ui";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Typography } from "../ui";
 
 const TopBar = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top"]} style={styles.container}>
       <View style={styles.inner}>
         <View style={styles.section}>
           <View>
@@ -46,7 +41,7 @@ export default TopBar;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: theme.colors.white,
   },
   inner: {
     flexDirection: "row",
@@ -64,5 +59,5 @@ const styles = StyleSheet.create({
   },
   welcomeView: { marginLeft: 5 },
   buttton: { marginHorizontal: 5 },
-  image: { height: 40, width: 40, borderRadius: 40, marginHorizontal: 5 },
+  image: { height: 32, width: 32, borderRadius: 32, marginHorizontal: 5 },
 });

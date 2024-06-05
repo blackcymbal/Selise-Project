@@ -35,8 +35,9 @@ export default function RootLayout() {
         <ThemeProvider value={DefaultTheme}>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
-            <Stack.Screen name="signin" />
-            <Stack.Screen name="otpscreen" />
+            <Stack.Screen name="signIn" />
+            <Stack.Screen name="otpScreen" />
+            <Stack.Screen name="createProfileScreen" />
           </Stack>
         </ThemeProvider>
       </QueryClientProvider>

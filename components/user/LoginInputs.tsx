@@ -1,5 +1,6 @@
 import theme from "@/constants/theme";
-import { router, useNavigation } from "expo-router";
+import { useCheckUserExistence } from "@/services/authService";
+import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
@@ -12,31 +13,27 @@ const LoginInputs = () => {
 
   const phoneInput = useRef<PhoneInput>(null);
 
-  const navigation = useNavigation();
-  //  const signUpMutation = useSignUp();
+  const checkUserExistenceMutation = useCheckUserExistence();
 
   const handlePress = () => {
     const finalData = {
       phone: "0" + phoneNumer,
       countryCode: countryCode,
       dialCode: dialCode,
-      code: 1234,
     };
 
-    console.log(finalData);
-
-    // signUpMutation.mutate(finalData, {
-    //   onError: error => {
-    //     if (error.data.error === 'UserExistsException') {
-    //       console.log(`${finalData.phone} is already in this workplace.`);
-    //       // setError('phone', {
-    //       //   message: `${finalData.phone} is already in this workplace.`,
-    //       // });
-    //     }
-    //   },
-    // });
-
-    router.navigate("/otpscreen");
+    checkUserExistenceMutation.mutate(finalData, {
+      onSuccess: (data) => {
+        router.replace({
+          pathname: "/otpScreen",
+          params: {
+            isNewUser: data?.data?.isNewUser,
+            ...data?.data?.user,
+            ...finalData,
+          },
+        });
+      },
+    });
   };
 
   return (

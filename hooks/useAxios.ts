@@ -8,6 +8,7 @@ import axios, {
 } from "axios";
 import { useMemo } from "react";
 import { Alert } from "react-native";
+import useAuth from "./auth/useAuth";
 
 export type ApiResponse<T = Record<string, unknown>> = {
   statusCode: number;
@@ -35,6 +36,8 @@ export type ApiSuccessResponse<TData> = Extract<
 export type ApiErrorResponse = Extract<ApiResponse, { status: "error" }>;
 
 export default function useAxios() {
+  const { token, removeAuth } = useAuth();
+
   const axiosClient: Axios = useMemo(() => {
     const axiosInstance = axios.create({
       baseURL: apiEndpoint,
@@ -45,6 +48,11 @@ export default function useAxios() {
 
     axiosInstance.interceptors.request.use(
       (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+        if (token && config.headers) {
+          // eslint-disable-next-line no-param-reassign
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+
         return config;
       }
     );
@@ -56,7 +64,7 @@ export default function useAxios() {
           const statusCode = error.response ? error.response.status : null;
 
           if (statusCode === 401) {
-            //  removeAuth();
+            removeAuth();
           }
 
           if (statusCode && statusCode >= 500) {

@@ -10,12 +10,12 @@ import {
 
 import bgImage from "@/assets/images/topbar-bg.png";
 import theme from "@/constants/theme";
-import { Typography } from "../ui";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Typography } from "../ui";
 
 const TopBarHome = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top"]} style={styles.container}>
       <ImageBackground source={bgImage} resizeMode="cover" style={styles.inner}>
         <View style={styles.section}>
           <View>

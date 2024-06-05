@@ -1,6 +1,6 @@
 import theme from "@/constants/theme";
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import Typography from "./Typography";
 
 type CustomButtonProps = {
@@ -8,6 +8,7 @@ type CustomButtonProps = {
   active: boolean;
   buttonStyle?: "outline" | "inline";
   onPress: () => void;
+  style?: ViewStyle;
 };
 
 export default function Button({
@@ -15,11 +16,13 @@ export default function Button({
   active = false,
   buttonStyle = "outline",
   onPress,
+  style,
 }: CustomButtonProps) {
   return (
     <TouchableOpacity
       disabled={!active}
       style={[
+        style,
         styles.container,
         buttonStyle === "outline"
           ? [
@@ -57,6 +60,7 @@ export default function Button({
 
 const styles = StyleSheet.create({
   container: {
+    height: 48,
     width: "100%",
     borderRadius: 8,
     paddingVertical: 8,

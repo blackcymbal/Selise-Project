@@ -13,7 +13,7 @@ export const navList = [
   },
   {
     name: "আমার কোর্স",
-    navTo: "mycourses",
+    navTo: "myCourses",
     icon: MortarBoard,
   },
   {
