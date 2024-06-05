@@ -83,7 +83,7 @@ export const useCheckUserExistence = () => {
     ApiErrorResponse,
     Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
   >({
-    mutationFn: (data) => {
+    mutationFn: async (data) => {
       return axiosClient
         .post(`/auth/check-user-existence`, data)
         .then((response) => response?.data)
@@ -102,7 +102,7 @@ export const useSignUp = () => {
     ApiErrorResponse,
     SignUpRequest
   >({
-    mutationFn: (data) => {
+    mutationFn: async (data) => {
       return axiosClient
         .post(`/auth/signup`, data)
         .then((response) => response?.data);
@@ -126,7 +126,7 @@ export const useUpdateProfile = () => {
     ApiErrorResponse,
     UserUpdateRequest
   >({
-    mutationFn: (data) => {
+    mutationFn: async (data) => {
       return axiosClient
         .put(`/auth/me`, data)
         .then((response) => response?.data)
@@ -150,7 +150,7 @@ export const useUploadProfilePicture = () => {
     ApiErrorResponse,
     UseUploadProfilePictureRequest
   >({
-    mutationFn: (data) => {
+    mutationFn: async (data) => {
       return axiosClient
         .put(`/users/${user?.id}/uploads/profile`, data)
         .then((response) => response?.data)
