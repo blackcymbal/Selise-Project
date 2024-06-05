@@ -104,18 +104,18 @@ const theme = {
     cyan700: "#0e7490",
   },
   fontSize: {
-    xs: [12, 18],
-    sm: [14, 22], // if we use lineHeight 20, in that case upper symbol cant show
+    xs: [12, 20],
+    sm: [14, 22],
     base: [16, 26],
     lg: [18, 30],
-    xl: [20, 32], // if we use lineHeight 30, in that case upper symbol cant show
-    "2xl": [24, 38], // before: 36
-    "3xl": [28, 40],
-    "4xl": [32, 50], // before: 48
-    "5xl": [40, 56],
-    "6xl": [48, 60],
-    "7xl": [56, 72],
-    "8xl": [60, 72],
+    xl: [20, 32],
+    '2xl': [24, 38],
+    '3xl': [28, 44],
+    '4xl': [32, 50],
+    '5xl': [40, 62],
+    '6xl': [48, 74],
+    '7xl': [56, 86],
+    '8xl': [60, 94],
   },
   fontWeight: {
     regular: "AnekBangla-Regular",
