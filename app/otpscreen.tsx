@@ -1,9 +1,5 @@
 import { Button, Typography } from "@/components/ui";
-import {
-  LoginScreenContainer,
-  OtpInputs,
-  RestOfOtpScreen,
-} from "@/components/user";
+import { LoginScreenContainer, OtpFooter, OtpInputs } from "@/components/user";
 import { useLogin, useSignUp } from "@/services/authService";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -20,12 +16,9 @@ const OtpScreen = () => {
 
   const getCodeFromInput = (codes: string[]) => {
     const fullCode = codes?.join("");
-    console.log(fullCode);
     setOtp(Number(fullCode));
     setButtonActive(fullCode?.length === 4 ? true : false);
   };
-
-  console.log(params);
 
   const handlePress = () => {
     const phone = typeof params?.phone === "string" ? params.phone : "";
@@ -45,8 +38,6 @@ const OtpScreen = () => {
       id: Number(params?.id),
       code: otp as number,
     };
-
-    console.log("loginData", loginData);
 
     if (params?.isNewUser === "true") {
       signUpMutation.mutate(signUpData, {
@@ -82,7 +73,7 @@ const OtpScreen = () => {
       <Button active={buttonActive} buttonStyle="inline" onPress={handlePress}>
         এগিয়ে যান
       </Button>
-      <RestOfOtpScreen />
+      <OtpFooter />
     </LoginScreenContainer>
   );
 };

@@ -24,13 +24,9 @@ export type SignUpRequest = {
   code: number;
 };
 
-export type UserUpdateRequest = {
-  name: string;
-  age: number;
-  gender: string;
-};
+export type UserUpdateRequest = Pick<UserViewModel, "name" | "age" | "gender">;
 
-export type UserImageUploadRequest = {
+export type UseUploadProfilePictureRequest = {
   fileName: string;
   fileType: string;
 };
@@ -154,9 +150,9 @@ export const useUploadProfilePicture = () => {
   return useMutation<
     ApiSuccessResponse<string>,
     ApiErrorResponse,
-    UserImageUploadRequest
+    UseUploadProfilePictureRequest
   >({
-    mutationFn: (data: UserImageUploadRequest) => {
+    mutationFn: (data: UseUploadProfilePictureRequest) => {
       return axiosClient
         .put(`/users/${user?.id}/uploads/profile`, data)
         .then((response) => response?.data)

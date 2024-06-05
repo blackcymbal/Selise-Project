@@ -8,8 +8,6 @@ const UserProfile = () => {
   const { token, user } = useAuth();
   const { data, isLoading } = useGetMyProfile();
 
-  console.log(">>>>>>>>>>>>", token, user);
-
   return (
     <>
       <TopBar />

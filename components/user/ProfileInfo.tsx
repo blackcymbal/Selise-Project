@@ -3,10 +3,11 @@ import { UserUpdateRequest, useUpdateProfile } from "@/services/authService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import Radio from "../global/radioButton/Radio";
 import RadioItem from "../global/radioButton/RadioItem";
 import { Button, Typography } from "../ui";
+import ErrorMessage from "../ui/ErrorMessage";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
 const ProfileInfo = () => {
@@ -19,6 +20,7 @@ const ProfileInfo = () => {
     formState: { errors, isValid },
   } = useForm<UserUpdateRequest>({
     resolver: zodResolver(profileInfoSchema),
+    mode: "onChange",
   });
 
   const onSubmit = (data: UserUpdateRequest) => {
@@ -52,9 +54,7 @@ const ProfileInfo = () => {
         )}
       />
       {errors.name?.message && (
-        <Typography color="error500" style={styles.errorText}>
-          {errors.name?.message}
-        </Typography>
+        <ErrorMessage message={errors.name?.message} style={styles.errorText} />
       )}
       <Typography
         color="gray700"
@@ -81,7 +81,7 @@ const ProfileInfo = () => {
         )}
       />
       {errors.age?.message && (
-        <Text style={styles.errorText}>{errors.age?.message}</Text>
+        <ErrorMessage message={errors.age?.message} style={styles.errorText} />
       )}
 
       <Controller

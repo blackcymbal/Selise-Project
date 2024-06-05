@@ -5,7 +5,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Container, Typography } from "../ui";
 
-const RestOfOtpScreen = () => {
+export default function OtpFooter() {
   const handleGoSignIn = () => {
     router.replace("/signIn");
   };
@@ -40,9 +40,7 @@ const RestOfOtpScreen = () => {
       </Container>
     </Container>
   );
-};
-
-export default RestOfOtpScreen;
+}
 
 const styles = StyleSheet.create({
   container: {
