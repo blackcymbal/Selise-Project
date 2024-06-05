@@ -1,4 +1,17 @@
+import {
+  DotsVerticalIcon,
+  ImageUploadIcon,
+  LogOutIcon,
+} from "@/assets/icons/icons";
+import theme from "@/constants/theme";
+import useAuth from "@/hooks/auth/useAuth";
+import { FilePathUtils, fallbackImages } from "@/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
+import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
 import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   Alert,
   Image,
@@ -8,22 +21,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
-import {
-  DotsVerticalIcon,
-  ImageUploadIcon,
-  LogOutIcon,
-} from "@/assets/icons/icons";
-import TopBar from "../global/TopBar";
-import { Container, SectionDivider, Typography } from "../ui";
-import theme from "@/constants/theme";
 import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
-import { Controller, useForm } from "react-hook-form";
+import { Container, SectionDivider, Typography } from "../ui";
 import { ProfileSchema, profileSchema } from "./profile-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as ImagePicker from "expo-image-picker";
-import { FilePathUtils, fallbackImages } from "@/utils";
 
 const user: Pick<
   UserViewModel,
@@ -53,6 +54,7 @@ const user: Pick<
 export default function ProfileDetails() {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
+  const { removeAuth } = useAuth();
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -90,9 +92,13 @@ export default function ProfileDetails() {
     Alert.alert("Successful", JSON.stringify(data));
   };
 
+  const handleLogout = () => {
+    removeAuth();
+    router.replace("/signIn");
+  };
+
   return (
     <>
-      <TopBar />
       <ScrollView style={{ backgroundColor: theme.colors.white }}>
         <Container pt={4}>
           <View style={styles.profileHeading}>
@@ -115,7 +121,7 @@ export default function ProfileDetails() {
               isShow ? { display: "none" } : { display: "flex" },
             ]}
           >
-            <TouchableOpacity style={styles.logOutBtn}>
+            <TouchableOpacity style={styles.logOutBtn} onPress={handleLogout}>
               <LogOutIcon
                 width={20}
                 height={20}

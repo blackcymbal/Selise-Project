@@ -1,35 +1,21 @@
+import TopBar from "@/components/global/TopBar";
+import ProfileDetails from "@/components/user-profile/ProfileDetails";
 import useAuth from "@/hooks/auth/useAuth";
 import { useGetMyProfile } from "@/services/authService";
-import { router } from "expo-router";
 import React from "react";
-<<<<<<< HEAD
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const UserProfile = () => {
-  const { token, user, removeAuth } = useAuth();
+  const { token, user } = useAuth();
   const { data, isLoading } = useGetMyProfile();
 
   console.log(">>>>>>>>>>>>", token, user);
-  const handlePress = () => {
-    removeAuth();
-    router.replace("/signIn");
-  };
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <TouchableOpacity onPress={handlePress}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <TopBar />
+      <ProfileDetails />
+    </>
   );
 };
 
 export default UserProfile;
-
-const styles = StyleSheet.create({});
-=======
-import ProfileDetails from "@/components/user-profile/ProfileDetails";
-
-export default function UserProfile() {
-  return <ProfileDetails />;
-}
->>>>>>> main
