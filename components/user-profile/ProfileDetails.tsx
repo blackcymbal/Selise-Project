@@ -26,32 +26,11 @@ import RadioItem from "../radio/RadioItem";
 import { Container, SectionDivider, Typography } from "../ui";
 import { ProfileSchema, profileSchema } from "./profile-schema";
 
-const user: Pick<
-  UserViewModel,
-  | "id"
-  | "email"
-  | "phone"
-  | "name"
-  | "role"
-  | "picture"
-  | "age"
-  | "certificateName"
-  | "designation"
-  | "gender"
-> = {
-  id: 79,
-  email: "soyeb@gmail.com",
-  phone: "01303909304",
-  name: "সোয়েব চান্দানি",
-  certificateName: "Md. Soyeb Chandani",
-  role: "LEARNER",
-  picture: "soyeb_profile.jpg",
-  age: 28,
-  designation: "Student",
-  gender: "M",
+type ProfileDetailsProps = {
+  user: UserViewModel | null;
 };
 
-export default function ProfileDetails() {
+export default function ProfileDetails({ user }: ProfileDetailsProps) {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
   const { removeAuth } = useAuth();
@@ -151,7 +130,7 @@ export default function ProfileDetails() {
                 {user?.name}
               </Typography>
               <Typography size="lg" color="gray600">
-                {user?.role}
+                {user?.designation}
               </Typography>
             </View>
           </View>
