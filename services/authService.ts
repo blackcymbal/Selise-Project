@@ -83,13 +83,15 @@ export const useCheckUserExistence = () => {
     ApiErrorResponse,
     Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
   >({
-    mutationFn: async (data) => {
+    mutationFn: (data) => {
       return axiosClient
         .post(`/auth/check-user-existence`, data)
-        .then((response) => response?.data)
-        .catch((err) => console.log(err));
+        .then((response) => response?.data);
     },
     onSuccess: (response) => {},
+    onError: (error: ApiErrorResponse) => {
+      console.log(error);
+    },
   });
 };
 
