@@ -17,7 +17,7 @@ const CourseDetailsTopBar = ({ title }: props) => {
     navigation.goBack();
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top"]} style={styles.container}>
       <View style={styles.innerContainer}>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
           <ArrowLeft height={32} width={32} color={theme.colors.gray600} />
