@@ -25,6 +25,7 @@ import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
 import { Container, SectionDivider, Typography } from "../ui";
 import { ProfileSchema, profileSchema } from "./profile-schema";
+import ErrorMessage from "../ui/ErrorMessage";
 
 type ProfileDetailsProps = {
   user: UserViewModel | null;
@@ -176,7 +177,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
             {errors.name?.message && (
-              <Typography color="error500">{errors.name?.message}</Typography>
+              <ErrorMessage message={errors.name?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -200,9 +201,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
             {errors.certificateName?.message && (
-              <Typography color="error500">
-                {errors.certificateName?.message}
-              </Typography>
+              <ErrorMessage message={errors.certificateName?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -227,7 +226,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
             {errors.phone?.message && (
-              <Typography color="error500">{errors.phone?.message}</Typography>
+              <ErrorMessage message={errors.phone?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -251,7 +250,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
             {errors.email?.message && (
-              <Typography color="error500">{errors.email?.message}</Typography>
+              <ErrorMessage message={errors.email?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -275,9 +274,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
             {errors.designation?.message && (
-              <Typography color="error500">
-                {errors.designation?.message}
-              </Typography>
+              <ErrorMessage message={errors.designation?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -302,45 +299,43 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
             {errors.age?.message && (
-              <Typography color="error500">{errors.age?.message}</Typography>
+              <ErrorMessage message={errors.age?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               জেন্ডার*
             </Typography>
-            <View>
-              <Controller
-                control={control}
-                name={"gender"}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <Radio style={{ flexDirection: "row", gap: 48 }}>
-                    <Radio.Item
-                      value="M"
-                      selected={value as string}
-                      setSelected={onChange}
-                      radioActiveColor={theme.colors.primary600}
-                      radioActiveFillColor={theme.colors.primary50}
-                    >
-                      <RadioItem.Label>
-                        <Typography>পুরুষ</Typography>
-                      </RadioItem.Label>
-                    </Radio.Item>
-                    <Radio.Item
-                      value="F"
-                      selected={value as string}
-                      setSelected={onChange}
-                      radioActiveColor={theme.colors.primary600}
-                      radioActiveFillColor={theme.colors.primary50}
-                    >
-                      <RadioItem.Label>
-                        <Typography>মহিলা</Typography>
-                      </RadioItem.Label>
-                    </Radio.Item>
-                  </Radio>
-                )}
-              />
-            </View>
+            <Controller
+              control={control}
+              name={"gender"}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Radio style={{ flexDirection: "row", gap: 48 }}>
+                  <Radio.Item
+                    value="M"
+                    selected={value as string}
+                    setSelected={onChange}
+                    radioActiveColor={theme.colors.primary600}
+                    radioActiveFillColor={theme.colors.primary50}
+                  >
+                    <RadioItem.Label>
+                      <Typography>পুরুষ</Typography>
+                    </RadioItem.Label>
+                  </Radio.Item>
+                  <Radio.Item
+                    value="F"
+                    selected={value as string}
+                    setSelected={onChange}
+                    radioActiveColor={theme.colors.primary600}
+                    radioActiveFillColor={theme.colors.primary50}
+                  >
+                    <RadioItem.Label>
+                      <Typography>মহিলা</Typography>
+                    </RadioItem.Label>
+                  </Radio.Item>
+                </Radio>
+              )}
+            />
           </View>
           <TouchableOpacity
             style={styles.updateBtn}
