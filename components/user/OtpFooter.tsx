@@ -5,7 +5,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Container, Typography } from "../ui";
 
-export default function OtpFooter() {
+export default function OtpFooter({ phoneNumer }: { phoneNumer: string }) {
   const handleGoSignIn = () => {
     router.replace("/signIn");
   };
@@ -28,7 +28,7 @@ export default function OtpFooter() {
         }}
       >
         <Typography style={styles.text1}>
-          মোবাইল নম্বরটি ভুল হয়নি তো? 01754558313
+          মোবাইল নম্বরটি ভুল হয়নি তো? {phoneNumer}
         </Typography>
 
         <TouchableOpacity style={styles.button} onPress={handleGoSignIn}>

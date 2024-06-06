@@ -143,27 +143,6 @@ export const useUpdateProfile = () => {
   });
 };
 
-export const useUploadProfilePicture = () => {
-  const axiosClient = useAxios();
-  const { user } = useAuth();
-
-  return useMutation<
-    ApiSuccessResponse<string>,
-    ApiErrorResponse,
-    UseUploadProfilePictureRequest
-  >({
-    mutationFn: async (data) => {
-      return axiosClient
-        .put(`/users/${user?.id}/uploads/profile`, data)
-        .then((response) => response?.data)
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    onSuccess: (response) => {},
-  });
-};
-
 export const useGetMyProfile = () => {
   const { setAuth, token } = useAuth();
   const axiosClient = useAxios();
@@ -176,6 +155,25 @@ export const useGetMyProfile = () => {
       );
       setAuth(data?.data, token as string);
       return data?.data;
+    },
+  });
+};
+
+export const useUploadUserProfile = () => {
+  const axiosClient = useAxios();
+  return useMutation<ApiSuccessResponse<string>, ApiErrorResponse, FormData>({
+    mutationFn: (data: FormData) => {
+      return axiosClient
+        .post(`/users/uploads/profile`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          return response.data;
+        })
+        .catch((error) => console.log(error));
     },
   });
 };

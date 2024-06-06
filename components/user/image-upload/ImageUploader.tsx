@@ -1,15 +1,20 @@
 import { ImageUploadIcon, User } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
 import { fallbackImages } from "@/utils";
+import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Typography } from "../ui";
+import { Typography } from "../../ui";
 
-export default function ImageUploader() {
-  const [image, setImage] = useState("");
-
+export default function ImageUploader({
+  bottomSheetRef,
+  image,
+}: {
+  bottomSheetRef: React.RefObject<BottomSheetMethods>;
+  image: string;
+}) {
   useEffect(() => {
     (async () => {
       if (Constants?.platform?.ios) {
@@ -26,41 +31,9 @@ export default function ImageUploader() {
     })();
   }, []);
 
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    handleImagePicked(result);
+  const handleUploadPhoto = () => {
+    bottomSheetRef.current?.snapToIndex(0);
   };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    handleImagePicked(result);
-  };
-
-  const handleImagePicked = async (result: ImagePicker.ImagePickerResult) => {
-    if (!result.canceled) {
-      console.log(result);
-      setImage(result.assets[0].uri);
-    } else {
-      alert("You did not select any image.");
-    }
-  };
-
-  // const formData = new FormData();
-  //     formData.append("file", {
-  //       name: "photo.jpg",
-  //       uri: result.assets[0].uri,
-  //       mime: result.assets[0].mimeType,
-  //       type: result.assets[0].type,
-  //     });
 
   return (
     <View style={styles.container}>
@@ -76,7 +49,10 @@ export default function ImageUploader() {
           <User color={theme.colors.gray500} height={36} width={36} />
         </View>
       )}
-      <TouchableOpacity onPress={pickImage} style={styles.profilePicUploadBtn}>
+      <TouchableOpacity
+        onPress={handleUploadPhoto}
+        style={styles.profilePicUploadBtn}
+      >
         <ImageUploadIcon
           width={20}
           height={20}
@@ -85,9 +61,6 @@ export default function ImageUploader() {
         <Typography weight="semiBold" color="primary700">
           ছবি আপলোড করুন
         </Typography>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={takePhoto}>
-        <Typography>Take Photo from camera</Typography>
       </TouchableOpacity>
     </View>
   );
