@@ -47,6 +47,7 @@ export default function AuthProvider({ children }: Props) {
   const removeAuth = () => {
     setUserState(undefined);
     setToken(null);
+    setUserInfo(null);
     setIsAuthenticated(false);
   };
 

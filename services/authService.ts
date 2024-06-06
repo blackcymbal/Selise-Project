@@ -164,7 +164,7 @@ export const useUploadProfilePicture = () => {
   });
 };
 
-export const useGetMyProfile = () => {
+export const useGetMyProfile = (enabled: boolean) => {
   const { setAuth, token } = useAuth();
   const axiosClient = useAxios();
 
@@ -177,5 +177,6 @@ export const useGetMyProfile = () => {
       setAuth(data?.data, token as string);
       return data?.data;
     },
+    enabled,
   });
 };

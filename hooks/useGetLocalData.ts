@@ -32,7 +32,7 @@ const useGetLocalData = (key: string, isObject = false) => {
     };
 
     checkToken();
-  }, [key, isObject]);
+  }, [key]);
 
   return { data: data, loading };
 };
