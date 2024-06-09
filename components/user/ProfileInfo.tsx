@@ -96,7 +96,7 @@ const ProfileInfo = () => {
           >
             <Radio.Item
               value="M"
-              selected={value}
+              selected={value as string}
               setSelected={onChange}
               radioActiveColor={theme.colors.primary600}
               radioActiveFillColor={theme.colors.primary50}
@@ -107,7 +107,7 @@ const ProfileInfo = () => {
             </Radio.Item>
             <Radio.Item
               value="F"
-              selected={value}
+              selected={value as string}
               setSelected={onChange}
               radioActiveColor={theme.colors.primary600}
               radioActiveFillColor={theme.colors.primary50}

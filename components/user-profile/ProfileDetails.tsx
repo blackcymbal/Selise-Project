@@ -24,18 +24,24 @@ import {
 import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
 import { Container, SectionDivider, Typography } from "../ui";
-import { ProfileSchema, profileSchema } from "./profile-schema";
+import { profileSchema } from "./profile-schema";
 import ErrorMessage from "../ui/ErrorMessage";
+import {
+  UpdateMyProfile2Request,
+  useUpdateMyProfile2,
+} from "@/services/authService";
 
 type ProfileDetailsProps = {
   user: UserViewModel | null;
+  refetch: () => void;
 };
 
-export default function ProfileDetails({ user }: ProfileDetailsProps) {
+export default function ProfileDetails({ user, refetch }: ProfileDetailsProps) {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
   const { removeAuth } = useAuth();
-
+  const updateMyProfile2Mutation = useUpdateMyProfile2();
+  
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -53,7 +59,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<ProfileSchema & { email: string }>({
+  } = useForm<UpdateMyProfile2Request & { email: string }>({
     defaultValues: {
       name: user?.name ?? "",
       certificateName: user?.certificateName ?? "",
@@ -62,14 +68,21 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
       designation: user?.designation ?? "",
       picture: user?.picture ?? "",
       age: user?.age ? user?.age : undefined,
-      gender: user?.gender ?? "",
+      gender: user?.gender,
     },
     resolver: zodResolver(profileSchema),
     mode: "onChange",
   });
 
-  const onSubmit = (data: ProfileSchema) => {
-    Alert.alert("Successful", JSON.stringify(data));
+  const onSubmit = (data: UpdateMyProfile2Request) => {
+    if (!user?.id) return;
+
+    const requestData = {
+      ...data,
+    };
+    updateMyProfile2Mutation.mutate(requestData, {
+      onSuccess: () => refetch(),
+    });
   };
 
   const handleLogout = () => {

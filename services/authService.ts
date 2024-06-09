@@ -1,3 +1,4 @@
+import ShowToast from "@/components/global/ShowTost";
 import useAuth from "@/hooks/auth/useAuth";
 import useAxios, {
   ApiErrorResponse,
@@ -10,7 +11,7 @@ import {
 } from "@tajdid-academy/tajdid-corelib";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 
 export type LoginRequest = {
   id: number;
@@ -25,6 +26,18 @@ export type SignUpRequest = {
 };
 
 export type UserUpdateRequest = Pick<UserViewModel, "name" | "age" | "gender">;
+
+export type UpdateMyProfile2Request = Pick<
+  UserViewModel,
+  | "name"
+  | "certificateName"
+  | "phone"
+  | "email"
+  | "designation"
+  | "age"
+  | "gender"
+  | "picture"
+>;
 
 export type UseUploadProfilePictureRequest = {
   fileName: string;
@@ -143,6 +156,30 @@ export const useUpdateProfile = () => {
   });
 };
 
+export const useUpdateMyProfile2 = () => {
+  const { setAuth, token } = useAuth();
+  const axiosClient = useAxios();
+
+  return useMutation<
+    ApiSuccessResponse<UserViewModel>,
+    ApiErrorResponse,
+    UpdateMyProfile2Request
+  >({
+    mutationFn: (data: UpdateMyProfile2Request) => {
+      return axiosClient
+        .put(`/auth/me`, data)
+        .then((response) => response?.data)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    onSuccess: (response) => {
+      setAuth(response.data, token as string);
+      ShowToast({ message: "Profile Successfully Updated!" });
+    },
+  });
+};
+
 export const useUploadProfilePicture = () => {
   const axiosClient = useAxios();
   const { user } = useAuth();
@@ -168,7 +205,7 @@ export const useGetMyProfile = (enabled: boolean) => {
   const { setAuth, token } = useAuth();
   const axiosClient = useAxios();
 
-  return useQuery<UserViewModel, Error>({
+  const { data, isLoading, refetch, error } = useQuery<UserViewModel, Error>({
     queryKey: ["myProfile"],
     queryFn: async () => {
       const { data } = await axiosClient.get<ApiSuccessResponse<UserViewModel>>(
@@ -179,4 +216,5 @@ export const useGetMyProfile = (enabled: boolean) => {
     },
     enabled,
   });
+  return { data, isLoading, refetch, error };
 };

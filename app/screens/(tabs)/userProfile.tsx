@@ -8,7 +8,7 @@ import { StyleSheet, View } from "react-native";
 
 const UserProfile = () => {
   const { token, user } = useAuth();
-  const { data, error, isLoading } = useGetMyProfile(!!token && !user);
+  const { data, isLoading, refetch } = useGetMyProfile(!!token && !user);
 
   return (
     <>
@@ -18,7 +18,7 @@ const UserProfile = () => {
           <Loader />
         </View>
       ) : (
-        <ProfileDetails user={data as UserViewModel} />
+        <ProfileDetails user={data as UserViewModel} refetch={refetch} />
       )}
     </>
   );
