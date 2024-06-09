@@ -21,27 +21,33 @@ type Props = {
 export default function AuthProvider({ children }: Props) {
   const [userState, setUserState] = useState<UserViewModel>();
   const [token, setToken] = useAsyncStorage<string | null>("authKey", null);
+  const [userInfo, setUserInfo] = useAsyncStorage<UserViewModel | null>(
+    "user",
+    null
+  );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
     undefined
   );
 
   useEffect(() => {
     setIsAuthenticated(!!token);
-  }, [token]);
+  }, [token, userInfo]);
 
   useEffect(() => {
     if (!token) return;
-  }, [token, userState]);
+  }, [token, userState, userInfo]);
 
   const setAuth = (user: UserViewModel, token_: string) => {
     setUserState(user);
     setToken(token_);
+    setUserInfo(user);
     setIsAuthenticated(!!token_);
   };
 
   const removeAuth = () => {
     setUserState(undefined);
     setToken(null);
+    setUserInfo(null);
     setIsAuthenticated(false);
   };
 

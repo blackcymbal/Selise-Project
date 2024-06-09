@@ -1,19 +1,35 @@
+import Loader from "@/components/global/Loader";
 import TopBar from "@/components/global/TopBar";
 import ProfileDetails from "@/components/user-profile/ProfileDetails";
 import useAuth from "@/hooks/auth/useAuth";
 import { useGetMyProfile } from "@/services/authService";
-import React from "react";
+import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
+import { StyleSheet, View } from "react-native";
 
 const UserProfile = () => {
   const { token, user } = useAuth();
-  const { data, isLoading } = useGetMyProfile();
+  const { data, error, isLoading } = useGetMyProfile(!!token && !user);
 
   return (
     <>
       <TopBar />
-      <ProfileDetails />
+      {isLoading ? (
+        <View style={styles.container}>
+          <Loader />
+        </View>
+      ) : (
+        <ProfileDetails user={data as UserViewModel} />
+      )}
     </>
   );
 };
 
 export default UserProfile;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
