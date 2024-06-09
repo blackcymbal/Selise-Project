@@ -67,15 +67,10 @@ export default function ImageUploadBottomSheet({
   const handleImagePicked = async (result: ImagePicker.ImagePickerResult) => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      //   const formData = new FormData();
-      //   formData.append("file", {
-      //     uri: result.assets[0].uri,
-      //     name: result.assets[0].fileName,
-      //     type: result.assets[0].mimeType,
-      //   });
-      //   formData.append("id", user?.id?.toString());
-
-      //   uploadUserProfile.mutate(formData);
+      // const formData = new FormData();
+      // formData.append("file", result.assets[0].uri);
+      // formData.append("id", user?.id?.toString());
+      // uploadUserProfile.mutate(formData);
       bottomSheetRef.current?.close();
     } else {
       alert("You did not select any image.");

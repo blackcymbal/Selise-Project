@@ -163,7 +163,7 @@ export const useGetMyProfile = (enabled: boolean) => {
 export const useUploadUserProfile = () => {
   const axiosClient = useAxios();
   return useMutation<ApiSuccessResponse<string>, ApiErrorResponse, FormData>({
-    mutationFn: (data: FormData) => {
+    mutationFn: (data) => {
       return axiosClient
         .post(`/users/uploads/profile`, data, {
           headers: {

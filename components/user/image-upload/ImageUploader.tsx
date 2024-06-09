@@ -15,20 +15,22 @@ export default function ImageUploader({
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   image: string;
 }) {
-  useEffect(() => {
-    (async () => {
-      if (Constants?.platform?.ios) {
-        const cameraRollStatus =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-        if (
-          cameraRollStatus.status !== "granted" ||
-          cameraStatus.status !== "granted"
-        ) {
-          alert("Sorry, we need these permissions to make this work!");
-        }
+  const requestPermissions = async () => {
+    if (Constants?.platform?.ios) {
+      const cameraRollStatus =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+      if (
+        cameraRollStatus.status !== "granted" ||
+        cameraStatus.status !== "granted"
+      ) {
+        alert("Sorry, we need these permissions to make this work!");
       }
-    })();
+    }
+  };
+
+  useEffect(() => {
+    requestPermissions();
   }, []);
 
   const handleUploadPhoto = () => {
