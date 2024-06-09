@@ -7,7 +7,7 @@ const useGetLocalData = (key: string, isObject = false) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const checkToken = async () => {
+    const getData = async () => {
       try {
         let storedData = null;
         const jsonValue = await AsyncStorage.getItem(key);
@@ -31,7 +31,7 @@ const useGetLocalData = (key: string, isObject = false) => {
       }
     };
 
-    checkToken();
+    getData();
   }, [key]);
 
   return { data: data, loading };

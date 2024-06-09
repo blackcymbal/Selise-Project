@@ -11,12 +11,15 @@ import {
 } from "react-native";
 import { SvgProps } from "react-native-svg";
 import { Typography } from "../ui";
+import useAuth from "@/hooks/auth/useAuth";
+import { router } from "expo-router";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 type TabBarButtonProps = {
   Icon: React.FC<SvgProps>;
   name: string;
+  navTo: string;
   onPress?: (e: GestureResponderEvent) => void;
   accessibilityState?: AccessibilityState;
 };
@@ -24,16 +27,23 @@ type TabBarButtonProps = {
 export default function TabBarButton({
   Icon,
   name,
+  navTo,
   onPress,
   accessibilityState,
 }: TabBarButtonProps) {
+  const { token } = useAuth();
+
   return (
     <AnimatedPressable
       onPress={(e) => {
         if (Platform.OS !== "web") {
           Haptics.selectionAsync();
         }
-        onPress?.(e);
+        if (navTo === "userProfile" && !token) {
+          router.navigate("/signIn");
+        } else {
+          onPress?.(e);
+        }
       }}
       style={styles.container}
     >
