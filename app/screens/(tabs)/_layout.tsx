@@ -21,7 +21,7 @@ export default function TabLayout() {
           name={item.navTo}
           options={{
             tabBarButton: (props) => (
-              <TabBarButton {...props} Icon={item.icon} name={item.name} />
+              <TabBarButton {...props} Icon={item.icon} name={item.name} navTo={item.navTo} />
             ),
           }}
         />

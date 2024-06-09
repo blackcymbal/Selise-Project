@@ -1,11 +1,11 @@
 import Loader from "@/components/global/Loader";
-import useToken from "@/hooks/useToken";
+import useGetLocalData from "@/hooks/useGetLocalData";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 const Welcome = () => {
-  const { token, loading } = useToken("authKey");
+  const { data: token, loading } = useGetLocalData("authKey");
 
   useEffect(() => {
     if (!loading) {

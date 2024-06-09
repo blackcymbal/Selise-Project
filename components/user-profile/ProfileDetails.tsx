@@ -25,33 +25,13 @@ import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
 import { Container, SectionDivider, Typography } from "../ui";
 import { ProfileSchema, profileSchema } from "./profile-schema";
+import ErrorMessage from "../ui/ErrorMessage";
 
-const user: Pick<
-  UserViewModel,
-  | "id"
-  | "email"
-  | "phone"
-  | "name"
-  | "role"
-  | "picture"
-  | "age"
-  | "certificateName"
-  | "designation"
-  | "gender"
-> = {
-  id: 79,
-  email: "soyeb@gmail.com",
-  phone: "01303909304",
-  name: "সোয়েব চান্দানি",
-  certificateName: "Md. Soyeb Chandani",
-  role: "LEARNER",
-  picture: "soyeb_profile.jpg",
-  age: 28,
-  designation: "Student",
-  gender: "M",
+type ProfileDetailsProps = {
+  user: UserViewModel | null;
 };
 
-export default function ProfileDetails() {
+export default function ProfileDetails({ user }: ProfileDetailsProps) {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
   const { removeAuth } = useAuth();
@@ -151,7 +131,7 @@ export default function ProfileDetails() {
                 {user?.name}
               </Typography>
               <Typography size="lg" color="gray600">
-                {user?.role}
+                {user?.designation}
               </Typography>
             </View>
           </View>
@@ -197,7 +177,7 @@ export default function ProfileDetails() {
               )}
             />
             {errors.name?.message && (
-              <Typography color="error500">{errors.name?.message}</Typography>
+              <ErrorMessage message={errors.name?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -221,9 +201,7 @@ export default function ProfileDetails() {
               )}
             />
             {errors.certificateName?.message && (
-              <Typography color="error500">
-                {errors.certificateName?.message}
-              </Typography>
+              <ErrorMessage message={errors.certificateName?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -248,7 +226,7 @@ export default function ProfileDetails() {
               )}
             />
             {errors.phone?.message && (
-              <Typography color="error500">{errors.phone?.message}</Typography>
+              <ErrorMessage message={errors.phone?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -272,7 +250,7 @@ export default function ProfileDetails() {
               )}
             />
             {errors.email?.message && (
-              <Typography color="error500">{errors.email?.message}</Typography>
+              <ErrorMessage message={errors.email?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -296,9 +274,7 @@ export default function ProfileDetails() {
               )}
             />
             {errors.designation?.message && (
-              <Typography color="error500">
-                {errors.designation?.message}
-              </Typography>
+              <ErrorMessage message={errors.designation?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
@@ -323,45 +299,43 @@ export default function ProfileDetails() {
               )}
             />
             {errors.age?.message && (
-              <Typography color="error500">{errors.age?.message}</Typography>
+              <ErrorMessage message={errors.age?.message} />
             )}
           </View>
           <View style={styles.fieldContainer}>
             <Typography weight="medium" size="sm">
               জেন্ডার*
             </Typography>
-            <View>
-              <Controller
-                control={control}
-                name={"gender"}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <Radio style={{ flexDirection: "row", gap: 48 }}>
-                    <Radio.Item
-                      value="M"
-                      selected={value as string}
-                      setSelected={onChange}
-                      radioActiveColor={theme.colors.primary600}
-                      radioActiveFillColor={theme.colors.primary50}
-                    >
-                      <RadioItem.Label>
-                        <Typography>পুরুষ</Typography>
-                      </RadioItem.Label>
-                    </Radio.Item>
-                    <Radio.Item
-                      value="F"
-                      selected={value as string}
-                      setSelected={onChange}
-                      radioActiveColor={theme.colors.primary600}
-                      radioActiveFillColor={theme.colors.primary50}
-                    >
-                      <RadioItem.Label>
-                        <Typography>মহিলা</Typography>
-                      </RadioItem.Label>
-                    </Radio.Item>
-                  </Radio>
-                )}
-              />
-            </View>
+            <Controller
+              control={control}
+              name={"gender"}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Radio style={{ flexDirection: "row", gap: 48 }}>
+                  <Radio.Item
+                    value="M"
+                    selected={value as string}
+                    setSelected={onChange}
+                    radioActiveColor={theme.colors.primary600}
+                    radioActiveFillColor={theme.colors.primary50}
+                  >
+                    <RadioItem.Label>
+                      <Typography>পুরুষ</Typography>
+                    </RadioItem.Label>
+                  </Radio.Item>
+                  <Radio.Item
+                    value="F"
+                    selected={value as string}
+                    setSelected={onChange}
+                    radioActiveColor={theme.colors.primary600}
+                    radioActiveFillColor={theme.colors.primary50}
+                  >
+                    <RadioItem.Label>
+                      <Typography>মহিলা</Typography>
+                    </RadioItem.Label>
+                  </Radio.Item>
+                </Radio>
+              )}
+            />
           </View>
           <TouchableOpacity
             style={styles.updateBtn}
