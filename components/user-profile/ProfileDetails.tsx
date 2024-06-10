@@ -13,7 +13,6 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -27,21 +26,20 @@ import { Container, SectionDivider, Typography } from "../ui";
 import { profileSchema } from "./profile-schema";
 import ErrorMessage from "../ui/ErrorMessage";
 import {
-  UpdateMyProfile2Request,
-  useUpdateMyProfile2,
+  UpdateMyProfileRequest,
+  useUpdateMyProfile,
 } from "@/services/authService";
 
 type ProfileDetailsProps = {
   user: UserViewModel | null;
-  refetch: () => void;
 };
 
-export default function ProfileDetails({ user, refetch }: ProfileDetailsProps) {
+export default function ProfileDetails({ user }: ProfileDetailsProps) {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
   const { removeAuth } = useAuth();
-  const updateMyProfile2Mutation = useUpdateMyProfile2();
-  
+  const updateMyProfileMutation = useUpdateMyProfile();
+
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -59,7 +57,7 @@ export default function ProfileDetails({ user, refetch }: ProfileDetailsProps) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<UpdateMyProfile2Request & { email: string }>({
+  } = useForm<UpdateMyProfileRequest & { email: string }>({
     defaultValues: {
       name: user?.name ?? "",
       certificateName: user?.certificateName ?? "",
@@ -74,15 +72,13 @@ export default function ProfileDetails({ user, refetch }: ProfileDetailsProps) {
     mode: "onChange",
   });
 
-  const onSubmit = (data: UpdateMyProfile2Request) => {
+  const onSubmit = (data: UpdateMyProfileRequest) => {
     if (!user?.id) return;
 
     const requestData = {
       ...data,
     };
-    updateMyProfile2Mutation.mutate(requestData, {
-      onSuccess: () => refetch(),
-    });
+    updateMyProfileMutation.mutate(requestData);
   };
 
   const handleLogout = () => {

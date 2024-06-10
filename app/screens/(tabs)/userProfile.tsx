@@ -8,17 +8,17 @@ import { StyleSheet, View } from "react-native";
 
 const UserProfile = () => {
   const { token, user } = useAuth();
-  const { data, isLoading, refetch } = useGetMyProfile(!!token && !user);
+  const { data, isPending } = useGetMyProfile(!!token && !user);
 
   return (
     <>
       <TopBar />
-      {isLoading ? (
+      {isPending ? (
         <View style={styles.container}>
           <Loader />
         </View>
       ) : (
-        <ProfileDetails user={data as UserViewModel} refetch={refetch} />
+        <ProfileDetails user={data as UserViewModel} />
       )}
     </>
   );
