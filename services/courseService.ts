@@ -1,11 +1,9 @@
-import useAuth from "@/hooks/auth/useAuth";
 import useAxios, { ApiSuccessResponse } from "@/hooks/useAxios";
 import {
   CourseViewModel,
   LessonViewModel,
 } from "@tajdid-academy/tajdid-corelib";
 import { useQuery } from "@tanstack/react-query";
-import { usePathname, useRouter } from "expo-router";
 
 export type GetCoursesFilter = {
   search?: string;
@@ -46,17 +44,6 @@ export const useGetCourse = (id?: string | string[] | undefined) => {
 
 export const useGetLessonDetails = (id?: string | string[] | undefined) => {
   const axios = useAxios();
-  const { token } = useAuth();
-  const router = useRouter();
-
-  const targetedRoute = usePathname();
-
-  if (!token) {
-    router.navigate({
-      pathname: "signIn",
-      params: { targetedRoute },
-    });
-  }
 
   return useQuery<LessonViewModel, Error>({
     queryKey: ["lessonDetails", id],
@@ -66,6 +53,6 @@ export const useGetLessonDetails = (id?: string | string[] | undefined) => {
       );
       return data?.data;
     },
-    enabled: !!id && !!token,
+    enabled: !!id,
   });
 };
