@@ -1,8 +1,12 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { CourseCurriculum } from "@tajdid-academy/tajdid-corelib";
+import {
+  ActivityStatus,
+  ActivityType,
+  ValueOf,
+} from "@tajdid-academy/tajdid-corelib";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { Container, Typography } from "@/components/ui";
+import { Typography } from "@/components/ui";
 import {
   DocumentFIleIcon,
   LockedIcon,
@@ -10,97 +14,113 @@ import {
   QuizIcon,
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
+import { Link } from "expo-router";
+import { CourseUtils } from "@/utils/courseUtils";
 
 type CurriculumModuleContentProps = {
-  item: CourseCurriculum;
+  type: ValueOf<typeof ActivityType>;
+  isFree?: boolean;
+  label: string;
+  id: number;
+  slug: string;
+  courseSlug: string;
+  index?: number;
+  contentLength?: number;
   moduleIndex?: number;
+  status?: ValueOf<typeof ActivityStatus>;
 };
 
 export default function CurriculumContent({
-  item,
+  type,
+  isFree,
+  label,
+  id,
+  slug,
+  courseSlug,
+  index,
+  contentLength,
   moduleIndex,
+  status,
 }: CurriculumModuleContentProps) {
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
   return (
-    <Container py={4} gap={4} style={styles.contentStyle}>
-      {item?.contents?.map((content, idx) => (
-        <View style={styles.iconAndLessonTitle} key={idx}>
-          <View style={{ zIndex: 1 }}>
-            {content.type !== "QUIZ" && content?.isFree === true ? (
-              <View>
-                {content?.type === "LESSON" ? (
-                  <View
-                    style={[
-                      styles.iconBgStyle,
-                      { backgroundColor: theme.colors.primary50 },
-                    ]}
-                  >
-                    <PlayCircleIcon width={20} height={20} />
-                  </View>
-                ) : content?.type === "RESOURCE" ? (
-                  <View
-                    style={[
-                      styles.iconBgStyle,
-                      { backgroundColor: theme.colors.warning50 },
-                    ]}
-                  >
-                    <DocumentFIleIcon width={20} height={20} />
-                  </View>
-                ) : (
-                  <View
-                    style={[
-                      styles.iconBgStyle,
-                      { backgroundColor: theme.colors.purple50 },
-                    ]}
-                  >
-                    <QuizIcon width={20} height={20} />
-                  </View>
-                )}
+    <View style={styles.iconAndLessonTitle}>
+      <View style={{ zIndex: 1 }}>
+        {type !== "QUIZ" && isFree ? (
+          <View>
+            {type === "LESSON" ? (
+              <View
+                style={[
+                  styles.iconBgStyle,
+                  { backgroundColor: theme.colors.primary50 },
+                ]}
+              >
+                <PlayCircleIcon width={20} height={20} />
+              </View>
+            ) : type === "RESOURCE" ? (
+              <View
+                style={[
+                  styles.iconBgStyle,
+                  { backgroundColor: theme.colors.warning50 },
+                ]}
+              >
+                <DocumentFIleIcon width={20} height={20} />
               </View>
             ) : (
               <View
                 style={[
                   styles.iconBgStyle,
-                  { backgroundColor: theme.colors.gray100 },
+                  { backgroundColor: theme.colors.purple50 },
                 ]}
               >
-                <LockedIcon
-                  width={20}
-                  height={20}
-                  color={theme.colors.gray400}
-                />
+                <QuizIcon width={20} height={20} />
               </View>
             )}
           </View>
-          {idx !== item?.contents.length - 1 && (
-            <View style={styles.dottedLine} />
-          )}
-          <View style={{ width: "92%" }}>
-            <Typography>
-              {numberToDigitFormat((moduleIndex ?? 0) + 1)}.
-              {numberToDigitFormat(idx + 1)}. {content?.title}
-            </Typography>
-            {content.type !== "QUIZ" && content?.isFree && (
-              <Typography px={1} color="white" style={styles.freeCourseLabel}>
-                ফ্রি প্রিভিউ
-              </Typography>
-            )}
+        ) : (
+          <View
+            style={[
+              styles.iconBgStyle,
+              { backgroundColor: theme.colors.gray100 },
+            ]}
+          >
+            <LockedIcon width={20} height={20} color={theme.colors.gray400} />
           </View>
-        </View>
-      ))}
-    </Container>
+        )}
+      </View>
+      {index !== (contentLength ?? 0) - 1 && <View style={styles.dottedLine} />}
+      <View style={{ width: "92%" }}>
+        {isFree ? (
+          <Link
+            href={CourseUtils.curriculumContentTypeToLinkMap[type](
+              courseSlug,
+              id.toString()
+            )}
+          >
+            <Typography>
+              {numberToDigitFormat(moduleIndex ?? 0)}.
+              {numberToDigitFormat((index ?? 0) + 1)}. {label}
+            </Typography>
+          </Link>
+        ) : (
+          <Typography>
+            {numberToDigitFormat(moduleIndex ?? 0)}.
+            {numberToDigitFormat((index ?? 0) + 1)}. {label}
+          </Typography>
+        )}
+
+        {type !== "QUIZ" && isFree && (
+          <Typography px={1} color="white" style={styles.freeCourseLabel}>
+            ফ্রি প্রিভিউ
+          </Typography>
+        )}
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  contentStyle: {
-    backgroundColor: theme.colors.white,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.gray100,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
-  },
   iconAndLessonTitle: {
     display: "flex",
     flexDirection: "row",

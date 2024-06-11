@@ -48,7 +48,23 @@ export default function CurriculumModule({
               </Accordion.Trigger>
 
               <Accordion.Content>
-                <CurriculumContent item={item} moduleIndex={index} />
+                <Container py={4} gap={4} style={styles.contentStyle}>
+                  {item?.contents.map((content, idx) => (
+                    <CurriculumContent
+                      key={content?.id}
+                      label={content?.title}
+                      type={content?.type}
+                      id={content?.id}
+                      slug={content?.slug}
+                      courseSlug={courseDetails?.slug}
+                      index={idx}
+                      moduleIndex={index + 1}
+                      contentLength={item?.contents?.length}
+                      isFree={content?.type !== "QUIZ" && content?.isFree}
+                      status={content?.activityStatus}
+                    />
+                  ))}
+                </Container>
               </Accordion.Content>
             </Accordion.Item>
           </Accordion>
@@ -106,5 +122,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: theme.colors.primaryDefault,
     marginTop: 3,
+  },
+  contentStyle: {
+    backgroundColor: theme.colors.white,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.gray100,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
   },
 });

@@ -51,11 +51,11 @@ export const CourseUtils = {
   },
   curriculumContentTypeToLinkMap: {
     LESSON: (courseSlug: string, slug: string) =>
-      `/my-curriculum/${courseSlug}/contents/${slug}`,
+      `/screens/myCurriculum/${courseSlug}/contents/${slug}`,
     QUIZ: (courseSlug: string, slug: string) =>
-      `/my-curriculum/${courseSlug}/quizzes/${slug}`,
+      `/screens/myCurriculum/${courseSlug}/quizzes/${slug}`,
     RESOURCE: (courseSlug: string, slug: string) =>
-      `/my-curriculum/${courseSlug}/resources/${slug}`,
+      `/screens/myCurriculum/${courseSlug}/resources/${slug}`,
   },
   calculateDiscountedPrice: (price: number, discountPercentage = 0) => {
     const discountAmount = price * (discountPercentage / 100);
