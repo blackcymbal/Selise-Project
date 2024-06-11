@@ -11,7 +11,7 @@ import { Typography } from "../ui";
 type CourseCardProps = {
   course: Pick<
     CourseViewModel,
-    "id" | "title" | "price" | "discount" | "isFree" | "thumbnail"
+    "id" | "title" | "price" | "discount" | "isFree" | "thumbnail" | "slug"
   >;
 };
 
@@ -26,8 +26,8 @@ export default function CourseCard({ course }: CourseCardProps) {
   return (
     <Link
       href={{
-        pathname: "/screens/coursedetails/[id]",
-        params: { id: course?.id, title: course?.title },
+        pathname: "/screens/coursedetails/[courseSlug]",
+        params: { courseSlug: course?.slug, title: course?.title },
       }}
       asChild
     >

@@ -5,7 +5,10 @@ import RadioItem from "@/components/radio/RadioItem";
 import { Container, SectionDivider, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { useGetCourse, usePharchaseCourse } from "@/services/courseService";
+import {
+  useGetCourseBySlug,
+  usePharchaseCourse,
+} from "@/services/courseService";
 import { FilePathUtils, fallbackImages } from "@/utils";
 import { MaterialIcons } from "@expo/vector-icons";
 import { groupBy } from "@tajdid-academy/tajdid-corelib";
@@ -25,7 +28,12 @@ import {
 export default function CoursePayment() {
   const params = useLocalSearchParams();
 
-  const { data: course, isLoading, error } = useGetCourse(params?.courseId);
+  const {
+    data: course,
+    isLoading,
+    error,
+  } = useGetCourseBySlug(params?.courseSlug);
+
   const [isChecked, setIsChecked] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState("");
 
@@ -52,7 +60,7 @@ export default function CoursePayment() {
       courseSlug: params?.courseSlug,
       paymentMethod: "NAGAD",
       curriculumType: "COURSE",
-      successRedirectUrl: redirectUrl,
+      redirectUrl: redirectUrl,
     };
     pharchaseMutation.mutate(requestBody, {
       onSuccess: async (data) => {
