@@ -48,7 +48,11 @@ const OtpScreen = () => {
     } else {
       loginMutation.mutate(loginData, {
         onSuccess: () => {
-          router.replace("/screens");
+          if (params?.path) {
+            router.navigate(params?.path as string);
+          } else {
+            router.replace("/screens");
+          }
         },
         onError: (error) => {
           console.log(error);

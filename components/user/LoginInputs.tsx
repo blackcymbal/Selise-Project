@@ -1,6 +1,6 @@
 import theme from "@/constants/theme";
 import { useCheckUserExistence } from "@/services/authService";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
@@ -10,6 +10,7 @@ const LoginInputs = () => {
   const [phoneNumer, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("BD");
   const [dialCode, setDialCode] = useState("+88");
+  const params = useLocalSearchParams();
 
   const phoneInput = useRef<PhoneInput>(null);
 
@@ -30,6 +31,7 @@ const LoginInputs = () => {
             isNewUser: data?.data?.isNewUser,
             ...data?.data?.user,
             ...finalData,
+            path: params?.path,
           },
         });
       },

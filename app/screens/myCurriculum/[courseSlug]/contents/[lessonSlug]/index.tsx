@@ -3,17 +3,19 @@ import { CourseDetailsTopBar } from "@/components/courses";
 import CurriculumModule from "@/components/courses/course-curriculum/CurriculumModule";
 import { Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
+import useAuth from "@/hooks/auth/useAuth";
 import {
   useGetCourseBySlug,
   useGetLessonDetails,
 } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function LessonDetailsScreen() {
   const params = useLocalSearchParams();
+  const { token } = useAuth();
   const { data } = useGetLessonDetails(params?.lessonSlug);
   const [playing, setPlaying] = useState(false);
   const videoId = data?.url?.split("v=")?.[1];
@@ -21,6 +23,17 @@ export default function LessonDetailsScreen() {
   const { data: courseDetails } = useGetCourseBySlug(
     params?.courseSlug as string
   );
+
+  useEffect(() => {
+    if (!token) {
+      router.navigate({
+        pathname: "signIn",
+        params: {
+          path: `/screens/myCurriculum/${params?.courseSlug}/contents/${params?.lessonSlug}`,
+        },
+      });
+    }
+  }, []);
 
   return (
     <>
