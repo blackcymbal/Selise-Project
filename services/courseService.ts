@@ -42,6 +42,22 @@ export const useGetCourse = (id?: string | string[] | undefined) => {
   });
 };
 
+export const useGetCourseBySlug = (
+  courseSlug?: string | string[] | undefined
+) => {
+  const axios = useAxios();
+  return useQuery<CourseViewModel, Error>({
+    queryKey: ["courseDetails", courseSlug],
+    queryFn: async () => {
+      const { data } = await axios.get<ApiSuccessResponse<CourseViewModel>>(
+        `/courses/by-slug/${courseSlug as string}`
+      );
+      return data.data;
+    },
+    enabled: !!courseSlug,
+  });
+};
+
 export const useGetLessonDetails = (id?: string | string[] | undefined) => {
   const axios = useAxios();
 
