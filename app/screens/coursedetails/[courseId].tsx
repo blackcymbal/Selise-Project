@@ -19,12 +19,15 @@ import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useGetCourse, useGetCourses } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, usePathname } from "expo-router";
 import React from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
 const CourseDetails = () => {
   const params = useLocalSearchParams();
+  const pathName = usePathname();
+
+  console.log(pathName);
 
   const { data: course, isLoading, error } = useGetCourse(params?.courseId);
   const { data: courses } = useGetCourses(true);

@@ -1,6 +1,6 @@
 import useAxios, { ApiSuccessResponse } from "@/hooks/useAxios";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export type GetCoursesFilter = {
   search?: string;
@@ -36,5 +36,22 @@ export const useGetCourse = (id?: string | string[] | undefined) => {
       return data.data;
     },
     enabled: !!id,
+  });
+};
+
+export const usePharchaseCourse = () => {
+  const axiosClient = useAxios();
+
+  return useMutation({
+    mutationFn: (requestBody) =>
+      axiosClient
+        .post(`/transactions`, requestBody)
+        .then((response) => response?.data),
+    onSuccess: (response) => {
+      console.log(response);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
   });
 };

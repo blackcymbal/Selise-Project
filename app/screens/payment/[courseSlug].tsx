@@ -1,3 +1,18 @@
+import { DocumentFIleIcon, LockIcon } from "@/assets/icons/icons";
+import TopBar from "@/components/global/TopBar";
+import Radio from "@/components/radio/Radio";
+import RadioItem from "@/components/radio/RadioItem";
+import { Container, SectionDivider, Typography } from "@/components/ui";
+import theme from "@/constants/theme";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { useGetCourse, usePharchaseCourse } from "@/services/courseService";
+import { FilePathUtils, fallbackImages } from "@/utils";
+import { MaterialIcons } from "@expo/vector-icons";
+import { groupBy } from "@tajdid-academy/tajdid-corelib";
+import * as Linking from "expo-linking";
+import { useLocalSearchParams, usePathname } from "expo-router";
+import * as WebBrowser from "expo-web-browser";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Pressable,
@@ -6,22 +21,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
-import { useLocalSearchParams } from "expo-router";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Container, SectionDivider, Typography } from "@/components/ui";
-import { useGetCourse } from "@/services/courseService";
-import theme from "@/constants/theme";
-import TopBar from "@/components/global/TopBar";
-import { DocumentFIleIcon, LockIcon } from "@/assets/icons/icons";
-import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { groupBy } from "@tajdid-academy/tajdid-corelib";
-import { FilePathUtils, fallbackImages } from "@/utils";
-import Radio from "@/components/radio/Radio";
-import RadioItem from "@/components/radio/RadioItem";
 
 export default function CoursePayment() {
   const params = useLocalSearchParams();
+
   const { data: course, isLoading, error } = useGetCourse(params?.courseId);
   const [isChecked, setIsChecked] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -38,6 +41,44 @@ export default function CoursePayment() {
     : course?.price;
 
   const isFreeCourse = course?.isFree || finalPrice === 0;
+
+  const pharchaseMutation = usePharchaseCourse();
+
+  const pathName = usePathname();
+  const redirectUrl = Linking.createURL(pathName);
+
+  const handlePayment = () => {
+    const requestBody = {
+      courseSlug: params?.courseSlug,
+      paymentMethod: "NAGAD",
+      curriculumType: "COURSE",
+      successRedirectUrl: redirectUrl,
+    };
+    pharchaseMutation.mutate(requestBody, {
+      onSuccess: async (data) => {
+        const result = await WebBrowser.openBrowserAsync(
+          data?.data?.redirectGatewayURL
+        );
+        console.log(result);
+      },
+    });
+  };
+
+  useEffect(() => {
+    const handleRedirect = (event) => {
+      const { url } = event;
+      console.log("Redirect URL:", url);
+
+      // Parse the URL and extract needed data
+      const parsedUrl = Linking.parse(url);
+      console.log("parsedUrl data: ", parsedUrl);
+      WebBrowser.dismissBrowser();
+    };
+
+    const subscription = Linking.addEventListener("url", handleRedirect);
+
+    return () => subscription.remove();
+  }, []);
 
   return (
     <>
@@ -282,15 +323,16 @@ export default function CoursePayment() {
         </View>
 
         <TouchableOpacity
+          onPress={handlePayment}
           style={{
             backgroundColor: theme.colors.primary600,
             paddingHorizontal: 20,
             paddingVertical: 15,
             borderRadius: 8,
           }}
-          disabled={
-            finalPrice === 0 ? !isChecked : !isChecked || !paymentMethod
-          }
+          // disabled={
+          //   finalPrice === 0 ? !isChecked : !isChecked || !paymentMethod
+          // }
         >
           <Typography
             weight="bold"
