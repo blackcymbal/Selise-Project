@@ -14,7 +14,7 @@ import {
   QuizIcon,
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
-import { Link } from "expo-router";
+import { Link, usePathname } from "expo-router";
 import { CourseUtils } from "@/utils/courseUtils";
 
 type CurriculumModuleContentProps = {
@@ -43,6 +43,9 @@ export default function CurriculumContent({
   status,
 }: CurriculumModuleContentProps) {
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
+
+  const path = usePathname();
+  const lessonSlug = decodeURIComponent(path.split("/")[5]);
 
   return (
     <View style={styles.iconAndLessonTitle}>
@@ -98,7 +101,16 @@ export default function CurriculumContent({
               id.toString()
             )}
           >
-            <Typography>
+            <Typography
+              style={
+                lessonSlug === id.toString() ? {
+                  textDecorationLine: "underline",
+                  textDecorationStyle: "solid",
+                  textDecorationColor: theme.colors.primary600,
+                  color: theme.colors.primary600,
+                } : undefined
+              }
+            >
               {numberToDigitFormat(moduleIndex ?? 0)}.
               {numberToDigitFormat((index ?? 0) + 1)}. {label}
             </Typography>
