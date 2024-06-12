@@ -178,7 +178,6 @@ export const useUpdateMyProfile = () => {
       queryClient.setQueryData(["myProfile"], data.data);
       setAuth(data.data, token as string);
       ShowAlert({ message: "Profile Successfully Updated!", type: "Success" });
-      console.log(data.data);
     },
 
     onError: (error) => {
