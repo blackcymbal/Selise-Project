@@ -1,14 +1,14 @@
 import { ArrowRight } from "@/assets/icons/icons";
-import courseImage from "@/assets/images/course.jpeg";
 import theme from "@/constants/theme";
-import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
+import { EnrollmentViewModel } from "@tajdid-academy/tajdid-corelib";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
+import { FilePathUtils, fallbackImages } from "@/utils";
 import { ProgressBar, Typography } from "../ui";
 
 type CourseCardProps = {
-  course: Pick<CourseViewModel, "title">;
+  course: Pick<EnrollmentViewModel, "course">;
   isOnGoingCourse: boolean;
 };
 
@@ -19,15 +19,32 @@ export default function MyCourseCard({
   return (
     <TouchableOpacity style={styles.container}>
       <View style={{ flex: 1 }}>
-        <Image source={courseImage} resizeMode="cover" style={styles.image} />
+        <Image
+          source={{
+            uri: course?.course?.thumbnail
+              ? `${FilePathUtils.courseImagePath(course?.course?.id)}/${
+                  course?.course?.thumbnail
+                }`
+              : fallbackImages.course,
+          }}
+          resizeMode="cover"
+          style={styles.image}
+        />
       </View>
       <View style={{ flex: 2 }}>
         <View style={styles.courseContainer}>
           <Typography weight="semiBold" size="sm" color="gray900">
-            {course?.title.slice(0, 28)} {course?.title.length >= 28 && "..."}
+            {course?.course?.title.slice(0, 28)}{" "}
+            {course?.course?.title.length >= 28 && "..."}
           </Typography>
           <ProgressBar
-            progress={isOnGoingCourse ? 60 : 100}
+            progress={
+              isOnGoingCourse
+                ? course?.status === "NOT_STARTED"
+                  ? 0
+                  : 20
+                : 100
+            }
             height={8}
             width={173}
             color={theme.colors.primary700}
