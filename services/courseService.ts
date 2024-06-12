@@ -2,6 +2,7 @@ import useAxios, { ApiSuccessResponse } from "@/hooks/useAxios";
 import {
   CourseViewModel,
   LessonViewModel,
+  ResourceViewModel,
 } from "@tajdid-academy/tajdid-corelib";
 import { useQuery } from "@tanstack/react-query";
 
@@ -66,6 +67,21 @@ export const useGetLessonDetails = (id?: string | string[] | undefined) => {
     queryFn: async () => {
       const { data } = await axios.get<ApiSuccessResponse<LessonViewModel>>(
         `/lessons/${id}`
+      );
+      return data?.data;
+    },
+    enabled: !!id,
+  });
+};
+
+export const useGetResourceDetails = (id?: string | undefined) => {
+  const axios = useAxios();
+
+  return useQuery<ResourceViewModel, Error>({
+    queryKey: ["resourceDetails", id],
+    queryFn: async () => {
+      const { data } = await axios.get<ApiSuccessResponse<ResourceViewModel>>(
+        `/resources/${id}`
       );
       return data?.data;
     },
