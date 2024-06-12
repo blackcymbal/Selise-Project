@@ -42,7 +42,10 @@ const OtpScreen = () => {
     if (params?.isNewUser === "true") {
       signUpMutation.mutate(signUpData, {
         onSuccess: () => {
-          router.navigate("/createProfileScreen");
+          router.navigate({
+            pathname: "/createProfileScreen",
+            params: { path: params?.path },
+          });
         },
       });
     } else {

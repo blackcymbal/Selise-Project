@@ -10,8 +10,12 @@ import { Button, Typography } from "../ui";
 import ErrorMessage from "../ui/ErrorMessage";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
-const ProfileInfo = () => {
-  const updateProfileMutation = useUpdateProfile();
+type ProfileInfoProps = {
+  path?: string;
+};
+
+const ProfileInfo = ({ path }: ProfileInfoProps) => {
+  const updateProfileMutation = useUpdateProfile(path);
 
   const {
     control,
@@ -96,7 +100,7 @@ const ProfileInfo = () => {
           >
             <Radio.Item
               value="M"
-              selected={value}
+              selected={value as string}
               setSelected={onChange}
               radioActiveColor={theme.colors.primary600}
               radioActiveFillColor={theme.colors.primary50}
@@ -107,7 +111,7 @@ const ProfileInfo = () => {
             </Radio.Item>
             <Radio.Item
               value="F"
-              selected={value}
+              selected={value as string}
               setSelected={onChange}
               radioActiveColor={theme.colors.primary600}
               radioActiveFillColor={theme.colors.primary50}
