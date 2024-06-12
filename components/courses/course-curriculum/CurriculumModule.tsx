@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
@@ -26,15 +26,15 @@ export default function CurriculumModule({
     <Container px={0} gap={4}>
       {courseDetails?.curriculum
         ?.slice(0, isShow ? undefined : 3)
-        .map((item, index) => (
-          <Accordion key={index}>
+        .map((item, moduleIndex) => (
+          <Accordion key={item?.id}>
             <Accordion.Item style={styles.accordionContainer}>
               <Accordion.Trigger style={styles.accordionTriggerContainer}>
                 <AccordionTrigger.Content>
                   <View style={styles.moduleCuntContainer}>
                     <View style={styles.moduleCuntLeftDot} />
                     <Typography size="xs" color="primary700">
-                      মডিউল {numberToDigitFormat(index + 1)}
+                      মডিউল {numberToDigitFormat(moduleIndex + 1)}
                     </Typography>
                   </View>
                   <Typography weight="semiBold" color="gray900" py={1}>
@@ -49,7 +49,7 @@ export default function CurriculumModule({
 
               <Accordion.Content>
                 <Container py={4} gap={4} style={styles.contentStyle}>
-                  {item?.contents.map((content, idx) => (
+                  {item?.contents.map((content, index) => (
                     <CurriculumContent
                       key={content?.id}
                       label={content?.title}
@@ -57,8 +57,8 @@ export default function CurriculumModule({
                       id={content?.id}
                       slug={content?.slug}
                       courseSlug={courseDetails?.slug}
-                      index={idx}
-                      moduleIndex={index + 1}
+                      index={index}
+                      moduleIndex={moduleIndex + 1}
                       contentLength={item?.contents?.length}
                       isFree={content?.type !== "QUIZ" && content?.isFree}
                       status={content?.activityStatus}
