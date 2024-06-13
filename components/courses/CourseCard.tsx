@@ -26,7 +26,7 @@ export default function CourseCard({ course }: CourseCardProps) {
   return (
     <Link
       href={{
-        pathname: "/screens/coursedetails/[courseSlug]",
+        pathname: "/screens/courseDetails/[courseSlug]",
         params: { courseSlug: course?.slug, title: course?.title },
       }}
       asChild

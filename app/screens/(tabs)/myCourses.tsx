@@ -4,54 +4,16 @@ import TopBar from "@/components/global/TopBar";
 import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useGetEnrolledCourses } from "@/services/enrollmentService";
-import { EnrollmentViewModel } from "@tajdid-academy/tajdid-corelib";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const MyCourses = () => {
   const [isOnGoingCourse, setIsOnGoingCourse] = useState(true);
 
-  const { data: onGoingCourses, isLoading } = useGetEnrolledCourses();
+  const { data, isLoading } = useGetEnrolledCourses();
 
-  // Have to dynamic
-  const myCourses: Pick<EnrollmentViewModel, "course">[] = [
-    {
-      batch: null,
-      course: {
-        title: "হজ্জ ও উমরাহ প্রশিক্ষণ ২০২৪",
-      },
-    },
-    {
-      batch: null,
-      course: {
-        title: "রমাদানের গুরুত্ব ও ফযীলত",
-      },
-    },
-    {
-      batch: null,
-      course: {
-        title: "৩০ দিনে কুরআন শিক্ষা ও নামাজ শিক্ষা",
-      },
-    },
-    {
-      batch: null,
-      course: {
-        title: "রমাদানের গুরুত্ব ও ফযীলত",
-      },
-    },
-    {
-      batch: null,
-      course: {
-        title: "৩০ দিনে কুরআন শিক্ষা ও নামাজ শিক্ষা",
-      },
-    },
-    {
-      batch: null,
-      course: {
-        title: "রমাদানের গুরুত্ব ও ফযীলত",
-      },
-    },
-  ];
+  const completedCourses = data?.filter((item) => item?.status === "COMPLETED");
+  const onGoingCourses = data?.filter((item) => item?.status !== "COMPLETED");
 
   return (
     <View style={styles.container}>
@@ -91,7 +53,7 @@ const MyCourses = () => {
         <Loader style={{ marginTop: 200 }} />
       ) : (
         <FlatList
-          data={isOnGoingCourse ? onGoingCourses : myCourses}
+          data={isOnGoingCourse ? onGoingCourses : completedCourses}
           style={styles.courseCardContainer}
           renderItem={({ item, index }) => (
             <MyCourseCard
