@@ -11,8 +11,6 @@ export default function ResourceDetailsScreen() {
   const { token } = useAuth();
   const { data } = useGetResourceDetails(resourceSlug as string);
 
-  console.log(data);
-
   useEffect(() => {
     if (!token) {
       router.navigate({
