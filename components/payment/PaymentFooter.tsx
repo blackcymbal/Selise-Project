@@ -1,6 +1,6 @@
 import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { usePharchaseCourse } from "@/services/courseService";
+import { useCreateTransactions } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import * as Linking from "expo-linking";
 import { useLocalSearchParams, usePathname } from "expo-router";
@@ -20,7 +20,7 @@ export default function PaymentFooter({
 }: PaymentFooterProps) {
   const params = useLocalSearchParams();
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
-  const pharchaseMutation = usePharchaseCourse();
+  const transactionsMutation = useCreateTransactions();
 
   const pathName = usePathname();
   const redirectUrl = Linking.createURL(pathName);
@@ -36,7 +36,7 @@ export default function PaymentFooter({
       curriculumType: "COURSE",
       redirectUrl: redirectUrl,
     };
-    pharchaseMutation.mutate(requestBody, {
+    transactionsMutation.mutate(requestBody, {
       onSuccess: async (data) => {
         const result = await WebBrowser.openBrowserAsync(
           data?.data?.redirectGatewayURL

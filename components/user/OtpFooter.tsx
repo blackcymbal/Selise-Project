@@ -5,7 +5,9 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Container, Typography } from "../ui";
 
-export default function OtpFooter({ phoneNumer }: { phoneNumer: string }) {
+type OtpFooterProps = { phoneNumer: string };
+
+export default function OtpFooter({ phoneNumer }: OtpFooterProps) {
   const handleGoSignIn = () => {
     router.replace("/signIn");
   };

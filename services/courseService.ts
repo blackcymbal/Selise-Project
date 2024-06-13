@@ -10,7 +10,7 @@ export type GetCoursesFilter = {
   status?: CourseViewModel["status"];
 };
 
-export const useGetCourses = (enabled?: boolean, filter?: GetCoursesFilter) => {
+export const useGetCourses = (filter?: GetCoursesFilter) => {
   const axios = useAxios();
   return useQuery<CourseViewModel[], Error>({
     queryKey: ["courses"],
@@ -21,7 +21,7 @@ export const useGetCourses = (enabled?: boolean, filter?: GetCoursesFilter) => {
       );
       return data.data;
     },
-    enabled,
+    enabled: true,
   });
 };
 
@@ -39,9 +39,7 @@ export const useGetCourse = (id?: string | string[] | undefined) => {
   });
 };
 
-export const useGetCourseBySlug = (
-  courseSlug?: string | string[] | undefined
-) => {
+export const useGetCourseBySlug = (courseSlug?: string | undefined) => {
   const axios = useAxios();
   return useQuery<CourseViewModel, Error>({
     queryKey: ["course", courseSlug],
@@ -55,7 +53,7 @@ export const useGetCourseBySlug = (
   });
 };
 
-export const usePharchaseCourse = () => {
+export const useCreateTransactions = () => {
   const axiosClient = useAxios();
 
   return useMutation({

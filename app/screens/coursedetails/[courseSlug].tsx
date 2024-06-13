@@ -30,7 +30,7 @@ const CourseDetails = () => {
     data: course,
     isLoading,
     error,
-  } = useGetCourseBySlug(params?.courseSlug);
+  } = useGetCourseBySlug(params?.courseSlug as string);
   const { data: courses } = useGetCourses(true);
 
   const promoUrl = course?.promoUrl;
