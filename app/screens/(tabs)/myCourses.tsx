@@ -58,6 +58,7 @@ const MyCourses = () => {
           renderItem={({ item, index }) => (
             <MyCourseCard
               course={item}
+              courseSlug={item?.course?.slug}
               key={index}
               isOnGoingCourse={isOnGoingCourse}
             />
@@ -106,6 +107,5 @@ const styles = StyleSheet.create({
   courseCardContainer: {
     paddingTop: 24,
     paddingHorizontal: 16,
-    marginBottom: 92,
   },
 });
