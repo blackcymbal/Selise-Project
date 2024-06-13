@@ -21,7 +21,6 @@ export const useGetCourses = (filter?: GetCoursesFilter) => {
       );
       return data.data;
     },
-    enabled: true,
   });
 };
 
