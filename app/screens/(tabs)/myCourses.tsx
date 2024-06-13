@@ -1,35 +1,19 @@
 import MyCourseCard from "@/components/courses/MyCourseCard";
+import Loader from "@/components/global/Loader";
 import TopBar from "@/components/global/TopBar";
 import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
+import { useGetEnrolledCourses } from "@/services/enrollmentService";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const MyCourses = () => {
   const [isOnGoingCourse, setIsOnGoingCourse] = useState(true);
 
-  // Have to dynamic
-  const myCourses: Pick<CourseViewModel, "title">[] = [
-    {
-      title: "হজ্জ ও উমরাহ প্রশিক্ষণ ২০২৪",
-    },
-    {
-      title: "রমাদানের গুরুত্ব ও ফযীলত",
-    },
-    {
-      title: "৩০ দিনে কুরআন শিক্ষা ও নামাজ শিক্ষা",
-    },
-    {
-      title: "রমাদানের গুরুত্ব ও ফযীলত",
-    },
-    {
-      title: "৩০ দিনে কুরআন শিক্ষা ও নামাজ শিক্ষা",
-    },
-    {
-      title: "রমাদানের গুরুত্ব ও ফযীলত",
-    },
-  ];
+  const { data, isLoading } = useGetEnrolledCourses();
+
+  const completedCourses = data?.filter((item) => item?.status === "COMPLETED");
+  const onGoingCourses = data?.filter((item) => item?.status !== "COMPLETED");
 
   return (
     <View style={styles.container}>
@@ -65,17 +49,21 @@ const MyCourses = () => {
       </View>
 
       {/* courses list */}
-      <FlatList
-        data={myCourses}
-        style={styles.courseCardContainer}
-        renderItem={({ item, index }) => (
-          <MyCourseCard
-            course={item}
-            key={index}
-            isOnGoingCourse={isOnGoingCourse}
-          />
-        )}
-      />
+      {isLoading ? (
+        <Loader style={{ marginTop: 200 }} />
+      ) : (
+        <FlatList
+          data={isOnGoingCourse ? onGoingCourses : completedCourses}
+          style={styles.courseCardContainer}
+          renderItem={({ item, index }) => (
+            <MyCourseCard
+              course={item}
+              key={index}
+              isOnGoingCourse={isOnGoingCourse}
+            />
+          )}
+        />
+      )}
     </View>
   );
 };

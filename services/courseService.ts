@@ -4,7 +4,7 @@ import {
   LessonViewModel,
   ResourceViewModel,
 } from "@tajdid-academy/tajdid-corelib";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export type GetCoursesFilter = {
   search?: string;
@@ -14,7 +14,7 @@ export type GetCoursesFilter = {
   status?: CourseViewModel["status"];
 };
 
-export const useGetCourses = (enabled?: boolean, filter?: GetCoursesFilter) => {
+export const useGetCourses = (filter?: GetCoursesFilter) => {
   const axios = useAxios();
   return useQuery<CourseViewModel[], Error>({
     queryKey: ["courses"],
@@ -25,7 +25,7 @@ export const useGetCourses = (enabled?: boolean, filter?: GetCoursesFilter) => {
       );
       return data.data;
     },
-    enabled,
+    enabled: true,
   });
 };
 
@@ -43,12 +43,10 @@ export const useGetCourse = (id?: string | string[] | undefined) => {
   });
 };
 
-export const useGetCourseBySlug = (
-  courseSlug?: string | string[] | undefined
-) => {
+export const useGetCourseBySlug = (courseSlug?: string | undefined) => {
   const axios = useAxios();
   return useQuery<CourseViewModel, Error>({
-    queryKey: ["courseDetails", courseSlug],
+    queryKey: ["course", courseSlug],
     queryFn: async () => {
       const { data } = await axios.get<ApiSuccessResponse<CourseViewModel>>(
         `/courses/by-slug/${courseSlug as string}`
@@ -86,5 +84,22 @@ export const useGetResourceDetails = (id?: string | undefined) => {
       return data?.data;
     },
     enabled: !!id,
+  });
+};
+    
+export const useCreateTransactions = () => {
+  const axiosClient = useAxios();
+
+  return useMutation({
+    mutationFn: (requestBody) =>
+      axiosClient
+        .post(`/transactions`, requestBody)
+        .then((response) => response?.data),
+    onSuccess: (response) => {
+      console.log(response);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
   });
 };

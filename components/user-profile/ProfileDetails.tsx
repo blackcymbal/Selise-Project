@@ -2,6 +2,7 @@ import {
   DotsVerticalIcon,
   ImageUploadIcon,
   LogOutIcon,
+  User,
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
 import useAuth from "@/hooks/auth/useAuth";
@@ -24,8 +25,8 @@ import {
 import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
 import { Container, SectionDivider, Typography } from "../ui";
-import { ProfileSchema, profileSchema } from "./profile-schema";
 import ErrorMessage from "../ui/ErrorMessage";
+import { ProfileSchema, profileSchema } from "./profile-schema";
 
 type ProfileDetailsProps = {
   user: UserViewModel | null;
@@ -116,16 +117,24 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
 
         <Container>
           <View style={styles.imageContainer}>
-            <Image
-              source={{
-                uri: image
-                  ? image
-                  : user?.picture
-                  ? `${FilePathUtils.userProfilePath(user.id)}/${user.picture}`
-                  : fallbackImages.user,
-              }}
-              style={styles.imageStyle}
-            />
+            {image || user?.picture ? (
+              <Image
+                source={{
+                  uri: image
+                    ? image
+                    : user?.picture
+                    ? `${FilePathUtils.userProfilePath(user.id)}/${
+                        user.picture
+                      }`
+                    : fallbackImages.user,
+                }}
+                style={styles.imageStyle}
+              />
+            ) : (
+              <View style={styles.imageStyle}>
+                <User color={theme.colors.gray500} height={36} width={36} />
+              </View>
+            )}
             <View>
               <Typography weight="bold" size="xl" color="gray900">
                 {user?.name}
@@ -389,6 +398,9 @@ const styles = StyleSheet.create({
     borderRadius: 200,
     borderWidth: 1,
     borderColor: theme.colors.gray200,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme.colors.gray100,
   },
   profilePicUpdateBtn: {
     gap: 8,

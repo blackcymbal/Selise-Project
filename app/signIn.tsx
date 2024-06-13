@@ -36,6 +36,11 @@ const SignIn = () => {
           গেস্ট মোডে প্রবেশ করুন
         </Typography>
       </TouchableOpacity>
+      {/* <Link href={"/createProfileScreen"} asChild>
+        <TouchableOpacity>
+          <Typography>Go To Profile Screen</Typography>
+        </TouchableOpacity>
+      </Link> */}
     </LoginScreenContainer>
   );
 };

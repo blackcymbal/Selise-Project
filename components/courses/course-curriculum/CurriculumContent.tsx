@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
 import {
   ActivityStatus,
@@ -103,12 +102,14 @@ export default function CurriculumContent({
           >
             <Typography
               style={
-                lessonSlug === id.toString() ? {
-                  textDecorationLine: "underline",
-                  textDecorationStyle: "solid",
-                  textDecorationColor: theme.colors.primary600,
-                  color: theme.colors.primary600,
-                } : undefined
+                lessonSlug === id.toString()
+                  ? {
+                      textDecorationLine: "underline",
+                      textDecorationStyle: "solid",
+                      textDecorationColor: theme.colors.primary600,
+                      color: theme.colors.primary600,
+                    }
+                  : undefined
               }
             >
               {numberToDigitFormat(moduleIndex ?? 0)}.
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     top: 18,
     zIndex: 0,
     borderRightWidth: 1,
-    borderStyle: "dashed",
+    // borderStyle: "dashed",
     borderRightColor: theme.colors.gray400,
   },
 });

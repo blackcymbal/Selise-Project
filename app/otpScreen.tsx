@@ -42,7 +42,7 @@ const OtpScreen = () => {
     if (params?.isNewUser === "true") {
       signUpMutation.mutate(signUpData, {
         onSuccess: () => {
-          router.navigate({
+          router.replace({
             pathname: "/createProfileScreen",
             params: { path: params?.path },
           });
@@ -52,13 +52,10 @@ const OtpScreen = () => {
       loginMutation.mutate(loginData, {
         onSuccess: () => {
           if (params?.path) {
-            router.navigate(params?.path as string);
+            router.replace(params?.path as string);
           } else {
             router.replace("/screens");
           }
-        },
-        onError: (error) => {
-          console.log(error);
         },
       });
     }
@@ -74,13 +71,14 @@ const OtpScreen = () => {
         color="gray900"
         style={styles.subTitle}
       >
-        আপনার 01878044600 মোবাইল নম্বরে পাঠানো ৪ ডিজিটের কোডটি লিখুন
+        আপনার {params?.phone as string} মোবাইল নম্বরে পাঠানো ৪ ডিজিটের কোডটি
+        লিখুন
       </Typography>
       <OtpInputs getCodeFromInput={getCodeFromInput} />
       <Button active={buttonActive} buttonStyle="inline" onPress={handlePress}>
         এগিয়ে যান
       </Button>
-      <OtpFooter />
+      <OtpFooter phoneNumer={params?.phone as string} />
     </LoginScreenContainer>
   );
 };

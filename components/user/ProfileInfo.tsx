@@ -1,20 +1,23 @@
 import theme from "@/constants/theme";
 import { UserUpdateRequest, useUpdateProfile } from "@/services/authService";
+import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, TextInput, View } from "react-native";
 import Radio from "../global/radioButton/Radio";
 import RadioItem from "../global/radioButton/RadioItem";
 import { Button, Typography } from "../ui";
 import ErrorMessage from "../ui/ErrorMessage";
+import ImageUploader from "./image-upload/ImageUploader";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
 type ProfileInfoProps = {
   path?: string;
+  bottomSheetRef: React.RefObject<BottomSheetMethods>;
+  image: string;
 };
 
-const ProfileInfo = ({ path }: ProfileInfoProps) => {
+const ProfileInfo = ({ path, bottomSheetRef, image }: ProfileInfoProps) => {
   const updateProfileMutation = useUpdateProfile(path);
 
   const {
@@ -33,6 +36,7 @@ const ProfileInfo = ({ path }: ProfileInfoProps) => {
 
   return (
     <View style={styles.container}>
+      <ImageUploader bottomSheetRef={bottomSheetRef} image={image} />
       <Typography
         color="gray700"
         weight="medium"
