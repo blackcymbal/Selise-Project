@@ -5,11 +5,13 @@ import React, { useRef, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import { Button, Typography } from "../ui";
+import ErrorMessage from "../ui/ErrorMessage";
 
 const LoginInputs = () => {
   const [phoneNumer, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("BD");
   const [dialCode, setDialCode] = useState("+88");
+  const [errorMessage, setErrorMessage] = useState<string | null>();
 
   const phoneInput = useRef<PhoneInput>(null);
 
@@ -24,6 +26,7 @@ const LoginInputs = () => {
 
     checkUserExistenceMutation.mutate(finalData, {
       onSuccess: (data) => {
+        setErrorMessage(undefined);
         router.replace({
           pathname: "/otpScreen",
           params: {
@@ -33,11 +36,15 @@ const LoginInputs = () => {
           },
         });
       },
+      onError: (error) => {
+        setErrorMessage(error?.data?.message);
+      },
     });
   };
 
   return (
     <View style={styles.container}>
+      {errorMessage && <ErrorMessage message={errorMessage} />}
       <Typography mt={4} color="gray900">
         মোবাইল নম্বর *
       </Typography>

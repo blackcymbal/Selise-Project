@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 
 const queryClient = new QueryClient();
@@ -29,18 +30,21 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider value={DefaultTheme}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="signIn" />
-            <Stack.Screen name="otpScreen" />
-            <Stack.Screen name="createProfileScreen" />
-          </Stack>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider value={DefaultTheme}>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="signIn" />
+              <Stack.Screen name="otpScreen" />
+              <Stack.Screen name="createProfileScreen" />
+            </Stack>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

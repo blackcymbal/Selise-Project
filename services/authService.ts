@@ -96,15 +96,15 @@ export const useCheckUserExistence = () => {
     ApiErrorResponse,
     Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
   >({
-    mutationFn: (
-      data: Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
-    ) => {
+    mutationFn: (data) => {
       return axiosClient
         .post(`/auth/check-user-existence`, data)
-        .then((response) => response?.data)
-        .catch((err) => console.log(err));
+        .then((response) => response?.data);
     },
     onSuccess: (response) => {},
+    onError: (error: ApiErrorResponse) => {
+      console.log(error);
+    },
   });
 };
 
@@ -117,7 +117,7 @@ export const useSignUp = () => {
     ApiErrorResponse,
     SignUpRequest
   >({
-    mutationFn: (data: SignUpRequest) => {
+    mutationFn: async (data) => {
       return axiosClient
         .post(`/auth/signup`, data)
         .then((response) => response?.data);
@@ -141,7 +141,7 @@ export const useUpdateProfile = () => {
     ApiErrorResponse,
     UserUpdateRequest
   >({
-    mutationFn: (data: UserUpdateRequest) => {
+    mutationFn: async (data) => {
       return axiosClient
         .put(`/auth/me`, data)
         .then((response) => response?.data)
@@ -178,10 +178,6 @@ export const useUpdateMyProfile = () => {
       queryClient.setQueryData(["myProfile"], data.data);
       setAuth(data.data, token as string);
       ShowAlert({ message: "Profile Successfully Updated!", type: "Success" });
-    },
-
-    onError: (error) => {
-      console.log(error);
     },
   });
 };
@@ -221,5 +217,24 @@ export const useGetMyProfile = (enabled: boolean) => {
       return data?.data;
     },
     enabled,
+  });
+};
+
+export const useUploadUserProfile = () => {
+  const axiosClient = useAxios();
+  return useMutation<ApiSuccessResponse<string>, ApiErrorResponse, FormData>({
+    mutationFn: (data) => {
+      return axiosClient
+        .post(`/users/uploads/profile`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          return response.data;
+        })
+        .catch((error) => console.log(error));
+    },
   });
 };

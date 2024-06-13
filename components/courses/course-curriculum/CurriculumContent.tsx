@@ -1,15 +1,15 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { CourseCurriculum } from "@tajdid-academy/tajdid-corelib";
-import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { Container, Typography } from "@/components/ui";
 import {
   DocumentFIleIcon,
   LockedIcon,
   PlayCircleIcon,
   QuizIcon,
 } from "@/assets/icons/icons";
+import { Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { CourseCurriculum } from "@tajdid-academy/tajdid-corelib";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
 type CurriculumModuleContentProps = {
   item: CourseCurriculum;
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     top: 18,
     zIndex: 0,
     borderRightWidth: 1,
-    borderStyle: "dashed",
+    // borderStyle: "dashed",
     borderRightColor: theme.colors.gray400,
   },
 });

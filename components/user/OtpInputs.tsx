@@ -1,5 +1,5 @@
 import theme from "@/constants/theme";
-import { useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { StyleSheet, TextInput } from "react-native";
 import { Container } from "../ui";
 
@@ -17,6 +17,10 @@ export default function OtpInputs({ getCodeFromInput }: OtpInputsProps) {
     useRef<TextInput>(null),
     useRef<TextInput>(null),
   ];
+
+  useEffect(() => {
+    refs[0]?.current?.focus();
+  }, []);
 
   const handleFocus = (index: number) => setFocusedIndex(index);
   const handleBlur = () => setFocusedIndex(null);

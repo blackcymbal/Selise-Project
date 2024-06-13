@@ -1,9 +1,9 @@
+import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Container, Typography } from "../ui";
 import { paymentSteps } from "./payment-steps";
-import theme from "@/constants/theme";
 
 export default function CourseDetailsPaymentProcess() {
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     top: 18,
     zIndex: 0,
     borderRightWidth: 1,
-    borderStyle: "dashed",
+    // borderStyle: "dashed",
     borderRightColor: theme.colors.primaryDefault,
   },
 });
