@@ -1,16 +1,16 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
-import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { Container, Typography } from "../ui";
-import theme from "@/constants/theme";
 import {
   CancelCircleIcon,
   DiscountIcon,
   StopwatchIcon,
   TicketPromoIcon,
 } from "@/assets/icons/icons";
+import theme from "@/constants/theme";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { Link } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Container, Typography } from "../ui";
 
 type CoursePurchaseProps = {
   course: CourseViewModel;
@@ -133,7 +133,7 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
             borderRadius: 8,
             textAlign: "center",
           }}
-          href={isEnrolled ? "" : `/screens/payment/${course?.id}`}
+          href={isEnrolled ? "" : `/screens/payment/${course?.slug}`}
         >
           <Typography weight="bold" color="white">
             {user && isEnrolled ? "চালিয়ে যান" : "কোর্সটি কিনুন"}

@@ -1,11 +1,11 @@
+import { useGetCourses } from "@/services/courseService";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import CourseCard from "../courses/CourseCard";
 import { Typography } from "../ui";
-import { useGetCourses } from "@/services/courseService";
 
 export default function RecommendedCourses() {
-  const { data: courses } = useGetCourses(true);
+  const { data: courses } = useGetCourses();
 
   return (
     <View style={styles.container}>

@@ -83,15 +83,15 @@ export const useCheckUserExistence = () => {
     ApiErrorResponse,
     Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
   >({
-    mutationFn: (
-      data: Pick<SignUpRequest, "phone" | "countryCode" | "dialCode">
-    ) => {
+    mutationFn: (data) => {
       return axiosClient
         .post(`/auth/check-user-existence`, data)
-        .then((response) => response?.data)
-        .catch((err) => console.log(err));
+        .then((response) => response?.data);
     },
     onSuccess: (response) => {},
+    onError: (error: ApiErrorResponse) => {
+      console.log(error);
+    },
   });
 };
 
@@ -104,7 +104,7 @@ export const useSignUp = () => {
     ApiErrorResponse,
     SignUpRequest
   >({
-    mutationFn: (data: SignUpRequest) => {
+    mutationFn: async (data) => {
       return axiosClient
         .post(`/auth/signup`, data)
         .then((response) => response?.data);
@@ -128,7 +128,7 @@ export const useUpdateProfile = () => {
     ApiErrorResponse,
     UserUpdateRequest
   >({
-    mutationFn: (data: UserUpdateRequest) => {
+    mutationFn: async (data) => {
       return axiosClient
         .put(`/auth/me`, data)
         .then((response) => response?.data)
@@ -140,27 +140,6 @@ export const useUpdateProfile = () => {
       setAuth(response.data, token as string);
       router.replace("/screens");
     },
-  });
-};
-
-export const useUploadProfilePicture = () => {
-  const axiosClient = useAxios();
-  const { user } = useAuth();
-
-  return useMutation<
-    ApiSuccessResponse<string>,
-    ApiErrorResponse,
-    UseUploadProfilePictureRequest
-  >({
-    mutationFn: (data: UseUploadProfilePictureRequest) => {
-      return axiosClient
-        .put(`/users/${user?.id}/uploads/profile`, data)
-        .then((response) => response?.data)
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    onSuccess: (response) => {},
   });
 };
 
@@ -178,5 +157,24 @@ export const useGetMyProfile = (enabled: boolean) => {
       return data?.data;
     },
     enabled,
+  });
+};
+
+export const useUploadUserProfile = () => {
+  const axiosClient = useAxios();
+  return useMutation<ApiSuccessResponse<string>, ApiErrorResponse, FormData>({
+    mutationFn: (data) => {
+      return axiosClient
+        .post(`/users/uploads/profile`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          return response.data;
+        })
+        .catch((error) => console.log(error));
+    },
   });
 };

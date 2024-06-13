@@ -1,5 +1,7 @@
 import theme from "@/constants/theme";
+import useAuth from "@/hooks/auth/useAuth";
 import * as Haptics from "expo-haptics";
+import { router } from "expo-router";
 import React from "react";
 import {
   AccessibilityState,
@@ -11,8 +13,6 @@ import {
 } from "react-native";
 import { SvgProps } from "react-native-svg";
 import { Typography } from "../ui";
-import useAuth from "@/hooks/auth/useAuth";
-import { router } from "expo-router";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -39,7 +39,7 @@ export default function TabBarButton({
         if (Platform.OS !== "web") {
           Haptics.selectionAsync();
         }
-        if (navTo === "userProfile" && !token) {
+        if ((navTo === "userProfile" || navTo === "myCourses") && !token) {
           router.navigate("/signIn");
         } else {
           onPress?.(e);
