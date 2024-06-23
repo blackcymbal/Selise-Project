@@ -11,10 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -26,7 +25,11 @@ import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
 import { Container, SectionDivider, Typography } from "../ui";
 import ErrorMessage from "../ui/ErrorMessage";
-import { ProfileSchema, profileSchema } from "./profile-schema";
+import { profileSchema } from "./profile-schema";
+import {
+  UpdateMyProfileRequest,
+  useUpdateMyProfile,
+} from "@/services/authService";
 
 type ProfileDetailsProps = {
   user: UserViewModel | null;
@@ -36,6 +39,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
   const { removeAuth } = useAuth();
+  const updateMyProfileMutation = useUpdateMyProfile();
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,7 +58,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<ProfileSchema & { email: string }>({
+  } = useForm<UpdateMyProfileRequest & { email: string }>({
     defaultValues: {
       name: user?.name ?? "",
       certificateName: user?.certificateName ?? "",
@@ -63,14 +67,19 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
       designation: user?.designation ?? "",
       picture: user?.picture ?? "",
       age: user?.age ? user?.age : undefined,
-      gender: user?.gender ?? "",
+      gender: user?.gender,
     },
     resolver: zodResolver(profileSchema),
     mode: "onChange",
   });
 
-  const onSubmit = (data: ProfileSchema) => {
-    Alert.alert("Successful", JSON.stringify(data));
+  const onSubmit = (data: UpdateMyProfileRequest) => {
+    if (!user?.id) return;
+
+    const requestData = {
+      ...data,
+    };
+    updateMyProfileMutation.mutate(requestData);
   };
 
   const handleLogout = () => {

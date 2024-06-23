@@ -8,12 +8,12 @@ import { StyleSheet, View } from "react-native";
 
 const UserProfile = () => {
   const { token, user } = useAuth();
-  const { data, error, isLoading } = useGetMyProfile(!!token && !user);
+  const { data, isPending } = useGetMyProfile(!!token && !user);
 
   return (
     <>
       <TopBar />
-      {isLoading ? (
+      {isPending ? (
         <View style={styles.container}>
           <Loader />
         </View>
