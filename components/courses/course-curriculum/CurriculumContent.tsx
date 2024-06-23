@@ -44,7 +44,7 @@ export default function CurriculumContent({
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
   const path = usePathname();
-  const lessonSlug = decodeURIComponent(path.split("/")[5]);
+  const lessonId = decodeURIComponent(path.split("/")[5]);
 
   return (
     <View style={styles.iconAndLessonTitle}>
@@ -97,12 +97,12 @@ export default function CurriculumContent({
           <Link
             href={CourseUtils.curriculumContentTypeToLinkMap[type](
               courseSlug,
-              id.toString()
+              id
             )}
           >
             <Typography
               style={
-                lessonSlug === id.toString()
+                parseInt(lessonId) === id
                   ? {
                       textDecorationLine: "underline",
                       textDecorationStyle: "solid",

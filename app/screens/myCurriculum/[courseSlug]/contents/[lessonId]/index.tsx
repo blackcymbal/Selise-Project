@@ -14,22 +14,21 @@ import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function LessonDetailsScreen() {
-  const params = useLocalSearchParams();
+  const { courseSlug, lessonId } = useLocalSearchParams();
+  const lessonIdNumber = Number(lessonId);
   const { token } = useAuth();
-  const { data } = useGetLessonDetails(params?.lessonSlug);
+  const { data } = useGetLessonDetails(lessonIdNumber);
   const [playing, setPlaying] = useState(false);
   const videoId = data?.url?.split("v=")?.[1];
 
-  const { data: courseDetails } = useGetCourseBySlug(
-    params?.courseSlug as string
-  );
+  const { data: courseDetails } = useGetCourseBySlug(courseSlug as string);
 
   useEffect(() => {
     if (!token) {
       router.navigate({
         pathname: "signIn",
         params: {
-          path: `/screens/myCurriculum/${params?.courseSlug}/contents/${params?.lessonSlug}`,
+          path: `/screens/myCurriculum/${courseSlug}/contents/${lessonId}`,
         },
       });
     }

@@ -7,16 +7,17 @@ import { useEffect } from "react";
 import { ScrollView } from "react-native";
 
 export default function ResourceDetailsScreen() {
-  const { courseSlug, resourceSlug } = useLocalSearchParams();
+  const { courseSlug, resourceId } = useLocalSearchParams();
+  const resourceIdNumber = Number(resourceId);
   const { token } = useAuth();
-  const { data } = useGetResourceDetails(resourceSlug as string);
+  const { data } = useGetResourceDetails(resourceIdNumber);
 
   useEffect(() => {
     if (!token) {
       router.navigate({
         pathname: "signIn",
         params: {
-          path: `/screens/myCurriculum/${courseSlug}/resources/${resourceSlug}`,
+          path: `/screens/myCurriculum/${courseSlug}/resources/${resourceId}`,
         },
       });
     }

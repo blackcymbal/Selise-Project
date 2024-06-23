@@ -57,7 +57,7 @@ export const useGetCourseBySlug = (courseSlug?: string | undefined) => {
   });
 };
 
-export const useGetLessonDetails = (id?: string | string[] | undefined) => {
+export const useGetLessonDetails = (id: number) => {
   const axios = useAxios();
 
   return useQuery<LessonViewModel, Error>({
@@ -72,7 +72,7 @@ export const useGetLessonDetails = (id?: string | string[] | undefined) => {
   });
 };
 
-export const useGetResourceDetails = (id?: string | undefined) => {
+export const useGetResourceDetails = (id: number) => {
   const axios = useAxios();
 
   return useQuery<ResourceViewModel, Error>({
@@ -86,7 +86,7 @@ export const useGetResourceDetails = (id?: string | undefined) => {
     enabled: !!id,
   });
 };
-    
+
 export const useCreateTransactions = () => {
   const axiosClient = useAxios();
 
