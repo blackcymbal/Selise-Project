@@ -24,7 +24,7 @@ export const useGetCourses = (filter?: GetCoursesFilter) => {
   });
 };
 
-export const useGetCourse = (id?: string | string[] | undefined) => {
+export const useGetCourse = (id: string | string[] | undefined) => {
   const axios = useAxios();
   return useQuery<CourseViewModel, Error>({
     queryKey: ["course", id],
@@ -38,7 +38,7 @@ export const useGetCourse = (id?: string | string[] | undefined) => {
   });
 };
 
-export const useGetCourseBySlug = (courseSlug?: string | undefined) => {
+export const useGetCourseBySlug = (courseSlug: string | undefined) => {
   const axios = useAxios();
   return useQuery<CourseViewModel, Error>({
     queryKey: ["course", courseSlug],

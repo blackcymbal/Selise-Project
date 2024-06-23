@@ -16,7 +16,6 @@ export default function MyCourseCard({
   course,
   isOnGoingCourse,
 }: CourseCardProps) {
-  console.log(course);
   return (
     <TouchableOpacity style={styles.container}>
       <View style={{ flex: 1 }}>
