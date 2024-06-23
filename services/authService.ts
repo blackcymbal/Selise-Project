@@ -170,9 +170,6 @@ export const useUpdateMyProfile = () => {
       return axiosClient
         .put(`/auth/me`, data)
         .then((response) => response?.data)
-        .catch((err) => {
-          console.log(err);
-        });
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["myProfile"], data.data);
@@ -195,9 +192,6 @@ export const useUploadProfilePicture = () => {
       return axiosClient
         .put(`/users/${user?.id}/uploads/profile`, data)
         .then((response) => response?.data)
-        .catch((err) => {
-          console.log(err);
-        });
     },
     onSuccess: (response) => {},
   });
