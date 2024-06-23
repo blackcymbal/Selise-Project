@@ -9,8 +9,8 @@ import {
   useGetLessonDetails,
 } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { Redirect, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function LessonDetailsScreen() {
@@ -23,16 +23,13 @@ export default function LessonDetailsScreen() {
 
   const { data: courseDetails } = useGetCourseBySlug(courseSlug as string);
 
-  useEffect(() => {
-    if (!token) {
-      router.navigate({
-        pathname: "signIn",
-        params: {
-          path: `/screens/myCurriculum/${courseSlug}/contents/${lessonId}`,
-        },
-      });
-    }
-  }, []);
+  if (!token) {
+    return (
+      <Redirect
+        href={`/signIn?path=/screens/myCurriculum/${courseSlug}/contents/${lessonId}`}
+      />
+    );
+  }
 
   return (
     <>

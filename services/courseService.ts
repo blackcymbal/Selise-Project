@@ -6,22 +6,13 @@ import {
 } from "@tajdid-academy/tajdid-corelib";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export type GetCoursesFilter = {
-  search?: string;
-  limit?: number;
-  offset?: number;
-  categoryId?: number;
-  status?: CourseViewModel["status"];
-};
-
-export const useGetCourses = (filter?: GetCoursesFilter) => {
+export const useGetCourses = () => {
   const axios = useAxios();
   return useQuery<CourseViewModel[], Error>({
     queryKey: ["courses"],
     queryFn: async () => {
       const { data } = await axios.get<ApiSuccessResponse<CourseViewModel[]>>(
-        `/courses`,
-        { params: { status: "PUBLISHED", ...filter } }
+        `/courses?status=PUBLISHED&includeLessonCount=true`
       );
       return data.data;
     },

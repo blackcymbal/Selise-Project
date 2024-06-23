@@ -2,8 +2,7 @@ import { CourseDetailsTopBar } from "@/components/courses";
 import { Container, Typography } from "@/components/ui";
 import useAuth from "@/hooks/auth/useAuth";
 import { useGetResourceDetails } from "@/services/courseService";
-import { router, useLocalSearchParams } from "expo-router";
-import { useEffect } from "react";
+import { Redirect, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native";
 
 export default function ResourceDetailsScreen() {
@@ -12,16 +11,13 @@ export default function ResourceDetailsScreen() {
   const { token } = useAuth();
   const { data } = useGetResourceDetails(resourceIdNumber);
 
-  useEffect(() => {
-    if (!token) {
-      router.navigate({
-        pathname: "signIn",
-        params: {
-          path: `/screens/myCurriculum/${courseSlug}/resources/${resourceId}`,
-        },
-      });
-    }
-  }, []);
+  if (!token) {
+    return (
+      <Redirect
+        href={`/signIn?path=/screens/myCurriculum/${courseSlug}/contents/${resourceId}`}
+      />
+    );
+  }
 
   return (
     <>

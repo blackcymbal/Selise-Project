@@ -15,6 +15,7 @@ import {
 import theme from "@/constants/theme";
 import { Link, usePathname } from "expo-router";
 import { CourseUtils } from "@/utils/courseUtils";
+import { ReactNode } from "react";
 
 type CurriculumModuleContentProps = {
   type: ValueOf<typeof ActivityType>;
@@ -46,40 +47,41 @@ export default function CurriculumContent({
   const path = usePathname();
   const lessonId = decodeURIComponent(path.split("/")[5]);
 
+  const typeToIconMap: Record<ValueOf<typeof ActivityType>, ReactNode> = {
+    LESSON: (
+      <View
+        style={[
+          styles.iconBgStyle,
+          { backgroundColor: theme.colors.primary50 },
+        ]}
+      >
+        <PlayCircleIcon />
+      </View>
+    ),
+    QUIZ: (
+      <View
+        style={[styles.iconBgStyle, { backgroundColor: theme.colors.purple50 }]}
+      >
+        <QuizIcon />
+      </View>
+    ),
+    RESOURCE: (
+      <View
+        style={[
+          styles.iconBgStyle,
+          { backgroundColor: theme.colors.warning50 },
+        ]}
+      >
+        <DocumentFIleIcon />
+      </View>
+    ),
+  };
+
   return (
     <View style={styles.iconAndLessonTitle}>
       <View style={{ zIndex: 1 }}>
-        {type !== "QUIZ" && isFree ? (
-          <View>
-            {type === "LESSON" ? (
-              <View
-                style={[
-                  styles.iconBgStyle,
-                  { backgroundColor: theme.colors.primary50 },
-                ]}
-              >
-                <PlayCircleIcon width={20} height={20} />
-              </View>
-            ) : type === "RESOURCE" ? (
-              <View
-                style={[
-                  styles.iconBgStyle,
-                  { backgroundColor: theme.colors.warning50 },
-                ]}
-              >
-                <DocumentFIleIcon width={20} height={20} />
-              </View>
-            ) : (
-              <View
-                style={[
-                  styles.iconBgStyle,
-                  { backgroundColor: theme.colors.purple50 },
-                ]}
-              >
-                <QuizIcon width={20} height={20} />
-              </View>
-            )}
-          </View>
+        {isFree ? (
+          <>{typeToIconMap[type]}</>
         ) : (
           <View
             style={[

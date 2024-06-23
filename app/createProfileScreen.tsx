@@ -1,7 +1,6 @@
 import { Typography } from "@/components/ui";
 import { LoginScreenContainer, ProfileInfo } from "@/components/user";
 import { useLocalSearchParams } from "expo-router";
-import { StyleSheet } from "react-native";
 import ImageUploadBottomSheet from "@/components/user/image-upload/ImageUploadBottomSheet";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useRef, useState } from "react";
@@ -18,7 +17,11 @@ const createProfileScreen = () => {
         <Typography weight="semiBold" size="xl" color="gray900" mt={10}>
           প্রোফাইল তথ্যাবলি
         </Typography>
-        <ProfileInfo bottomSheetRef={bottomSheetRef} image={image} />
+        <ProfileInfo
+          bottomSheetRef={bottomSheetRef}
+          image={image}
+          path={params?.path as string}
+        />
       </LoginScreenContainer>
 
       <ImageUploadBottomSheet
@@ -31,5 +34,3 @@ const createProfileScreen = () => {
 };
 
 export default createProfileScreen;
-
-const styles = StyleSheet.create({});

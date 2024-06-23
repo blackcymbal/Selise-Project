@@ -21,6 +21,7 @@ const headerComponent = () => (
 
 const CoursesList = () => {
   const { data, isLoading } = useGetCourses();
+  
 
   const renderItem = ({ item }: CourseCardProps) => (
     <CourseCard course={item} />
