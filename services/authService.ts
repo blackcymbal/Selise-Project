@@ -1,3 +1,4 @@
+import ShowAlert from "@/components/global/ShowAlert";
 import useAuth from "@/hooks/auth/useAuth";
 import useAxios, {
   ApiErrorResponse,
@@ -8,7 +9,7 @@ import {
   UserExistenceResponse,
   UserViewModel,
 } from "@tajdid-academy/tajdid-corelib";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 
@@ -25,6 +26,18 @@ export type SignUpRequest = {
 };
 
 export type UserUpdateRequest = Pick<UserViewModel, "name" | "age" | "gender">;
+
+export type UpdateMyProfileRequest = Pick<
+  UserViewModel,
+  | "name"
+  | "certificateName"
+  | "phone"
+  | "email"
+  | "designation"
+  | "age"
+  | "gender"
+  | "picture"
+>;
 
 export type UseUploadProfilePictureRequest = {
   fileName: string;
@@ -140,6 +153,47 @@ export const useUpdateProfile = () => {
       setAuth(response.data, token as string);
       router.replace("/screens");
     },
+  });
+};
+
+export const useUpdateMyProfile = () => {
+  const { setAuth, token } = useAuth();
+  const axiosClient = useAxios();
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    ApiSuccessResponse<UserViewModel>,
+    ApiErrorResponse,
+    UpdateMyProfileRequest
+  >({
+    mutationFn: (data) => {
+      return axiosClient
+        .put(`/auth/me`, data)
+        .then((response) => response?.data)
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["myProfile"], data.data);
+      setAuth(data.data, token as string);
+      ShowAlert({ message: "Profile Successfully Updated!", type: "Success" });
+    },
+  });
+};
+
+export const useUploadProfilePicture = () => {
+  const axiosClient = useAxios();
+  const { user } = useAuth();
+
+  return useMutation<
+    ApiSuccessResponse<string>,
+    ApiErrorResponse,
+    UseUploadProfilePictureRequest
+  >({
+    mutationFn: (data: UseUploadProfilePictureRequest) => {
+      return axiosClient
+        .put(`/users/${user?.id}/uploads/profile`, data)
+        .then((response) => response?.data)
+    },
+    onSuccess: (response) => {},
   });
 };
 
