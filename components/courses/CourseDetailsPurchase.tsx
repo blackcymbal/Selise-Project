@@ -140,13 +140,7 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
             borderRadius: 8,
             textAlign: "center",
           }}
-          href={
-            user
-              ? isEnrolled
-                ? ""
-                : `/screens/payment/${course?.slug}`
-              : "/signIn"
-          }
+          href={isEnrolled ? "" : `/screens/payment/${course?.id}`}
         >
           <Typography weight="bold" color="white">
             {user && isEnrolled ? "চালিয়ে যান" : "কোর্সটি কিনুন"}

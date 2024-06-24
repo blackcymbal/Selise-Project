@@ -2,7 +2,6 @@ import theme from "@/constants/theme";
 import { UserUpdateRequest, useUpdateProfile } from "@/services/authService";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, TextInput, View } from "react-native";
 import Radio from "../global/radioButton/Radio";
@@ -12,14 +11,14 @@ import ErrorMessage from "../ui/ErrorMessage";
 import ImageUploader from "./image-upload/ImageUploader";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
-const ProfileInfo = ({
-  bottomSheetRef,
-  image,
-}: {
+type ProfileInfoProps = {
+  path?: string;
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   image: string;
-}) => {
-  const updateProfileMutation = useUpdateProfile();
+};
+
+const ProfileInfo = ({ path, bottomSheetRef, image }: ProfileInfoProps) => {
+  const updateProfileMutation = useUpdateProfile(path);
 
   const {
     control,
