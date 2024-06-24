@@ -11,17 +11,16 @@ import { Link } from "expo-router";
 type CourseCardProps = {
   course: Pick<EnrollmentViewModel, "course">;
   isOnGoingCourse: boolean;
-  courseSlug?: string;
+  courseId: number;
 };
 
 export default function MyCourseCard({
   course,
   isOnGoingCourse,
-  courseSlug,
+  courseId,
 }: CourseCardProps) {
-
   return (
-    <Link href={`/screens/myCurriculum/${courseSlug}`} asChild>
+    <Link href={`/screens/myCurriculum/myCourse/${courseId}`} asChild>
       <TouchableOpacity style={styles.container}>
         <View style={{ flex: 1 }}>
           <Image

@@ -58,7 +58,7 @@ const MyCourses = () => {
           renderItem={({ item, index }) => (
             <MyCourseCard
               course={item}
-              courseSlug={item?.course?.slug}
+              courseId={item?.course?.id}
               key={index}
               isOnGoingCourse={isOnGoingCourse}
             />

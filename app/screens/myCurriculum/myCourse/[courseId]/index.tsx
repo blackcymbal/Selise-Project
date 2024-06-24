@@ -1,6 +1,5 @@
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { useGetCourseBySlug } from "@/services/courseService";
 import { CourseDetailsTopBar } from "@/components/courses";
 import theme from "@/constants/theme";
 import { Container, ProgressBar, Typography } from "@/components/ui";
@@ -9,11 +8,12 @@ import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { CourseUtils } from "@/utils/courseUtils";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import Loader from "@/components/global/Loader";
+import { useGetCourse } from "@/services/courseService";
 
 export default function MyCourseDetailsScreen() {
-  const { courseSlug } = useLocalSearchParams();
-  const { data: courseDetails, isPending } = useGetCourseBySlug(
-    courseSlug as string
+  const { courseId } = useLocalSearchParams();
+  const { data: courseDetails, isPending } = useGetCourse(
+    courseId ? +courseId : undefined
   );
   const { width: screenWidth } = Dimensions.get("window");
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
