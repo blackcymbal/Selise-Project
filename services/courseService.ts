@@ -1,9 +1,5 @@
 import useAxios, { ApiSuccessResponse } from "@/hooks/useAxios";
-import {
-  CourseViewModel,
-  LessonViewModel,
-  ResourceViewModel,
-} from "@tajdid-academy/tajdid-corelib";
+import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetCourses = () => {
@@ -20,61 +16,16 @@ export const useGetCourses = () => {
   });
 };
 
-export const useGetCourse = (id?: string | string[] | undefined) => {
+export const useGetCourse = (id: number | undefined) => {
   const axios = useAxios();
   return useQuery<CourseViewModel, Error>({
     queryKey: ["course", id],
     queryFn: async () => {
       const { data } = await axios.get<ApiSuccessResponse<CourseViewModel>>(
-        `/courses/${id as string}`
+        `/courses/${id}`
       );
       return data.data;
     },
-    enabled: !!id,
-  });
-};
-
-export const useGetCourseBySlug = (courseSlug?: string | undefined) => {
-  const axios = useAxios();
-  return useQuery<CourseViewModel, Error>({
-    queryKey: ["course", courseSlug],
-    queryFn: async () => {
-      const { data } = await axios.get<ApiSuccessResponse<CourseViewModel>>(
-        `/courses/by-slug/${courseSlug as string}`
-      );
-      return data.data;
-    },
-    enabled: !!courseSlug,
-  });
-};
-
-export const useGetLessonDetails = (id: number) => {
-  const axios = useAxios();
-
-  return useQuery<LessonViewModel, Error>({
-    queryKey: ["lessonDetails", id],
-    queryFn: async () => {
-      const { data } = await axios.get<ApiSuccessResponse<LessonViewModel>>(
-        `/lessons/${id}`
-      );
-      return data?.data;
-    },
-    enabled: !!id,
-  });
-};
-
-export const useGetResourceDetails = (id: number) => {
-  const axios = useAxios();
-
-  return useQuery<ResourceViewModel, Error>({
-    queryKey: ["resourceDetails", id],
-    queryFn: async () => {
-      const { data } = await axios.get<ApiSuccessResponse<ResourceViewModel>>(
-        `/resources/${id}`
-      );
-      return data?.data;
-    },
-    enabled: !!id,
   });
 };
 

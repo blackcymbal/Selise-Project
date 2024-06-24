@@ -23,7 +23,7 @@ type CurriculumModuleContentProps = {
   label: string;
   id: number;
   slug: string;
-  courseSlug: string;
+  courseId: number;
   index?: number;
   contentLength?: number;
   moduleIndex?: number;
@@ -36,7 +36,7 @@ export default function CurriculumContent({
   label,
   id,
   slug,
-  courseSlug,
+  courseId,
   index,
   contentLength,
   moduleIndex,
@@ -98,13 +98,13 @@ export default function CurriculumContent({
         {isFree ? (
           <Link
             href={CourseUtils.curriculumContentTypeToLinkMap[type](
-              courseSlug,
+              courseId,
               id
             )}
           >
             <Typography
               style={
-                parseInt(lessonId) === id
+                Number(lessonId) === id
                   ? {
                       textDecorationLine: "underline",
                       textDecorationStyle: "solid",

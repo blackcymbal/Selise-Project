@@ -42,20 +42,22 @@ export const CourseUtils = {
     }, 0);
     return totalLessons;
   },
+
   calculateTotalLessonsUsingModules: (modules?: ModuleViewModel[]) => {
     const totalLessons = modules?.reduce(
       (acc, module) => acc + (module._count?.lessons ?? 0),
-      0
+      0,
     );
     return totalLessons;
   },
+
   curriculumContentTypeToLinkMap: {
-    LESSON: (courseSlug: string, id: number) =>
-      `/screens/myCurriculum/${courseSlug}/contents/${id}`,
-    QUIZ: (courseSlug: string, id: number) =>
-      `/screens/myCurriculum/${courseSlug}/quizzes/${id}`,
-    RESOURCE: (courseSlug: string, id: number) =>
-      `/screens/myCurriculum/${courseSlug}/resources/${id}`,
+    LESSON: (courseId: number, id: number) =>
+      `/screens/myCurriculum/${courseId}/contents/${id}`,
+    QUIZ: (courseId: number, id: number) =>
+      `/screens/myCurriculum/${courseId}/quizzes/${id}`,
+    RESOURCE: (courseId: number, id: number) =>
+      `/screens/myCurriculum/${courseId}/resources/${id}`,
   },
   calculateDiscountedPrice: (price: number, discountPercentage = 0) => {
     const discountAmount = price * (discountPercentage / 100);
