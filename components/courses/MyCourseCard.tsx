@@ -6,74 +6,78 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { FilePathUtils, fallbackImages } from "@/utils";
 import { ProgressBar, Typography } from "../ui";
+import { Link } from "expo-router";
 
 type CourseCardProps = {
   course: Pick<EnrollmentViewModel, "course">;
   isOnGoingCourse: boolean;
+  courseId: number;
 };
 
 export default function MyCourseCard({
   course,
   isOnGoingCourse,
+  courseId,
 }: CourseCardProps) {
-  console.log(course);
   return (
-    <TouchableOpacity style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <Image
-          source={{
-            uri: course?.course?.thumbnail
-              ? `${FilePathUtils.courseImagePath(course?.course?.id)}/${
-                  course?.course?.thumbnail
-                }`
-              : fallbackImages.course,
-          }}
-          resizeMode="cover"
-          style={styles.image}
-        />
-      </View>
-      <View style={{ flex: 2 }}>
-        <View style={styles.courseContainer}>
-          <Typography weight="semiBold" size="sm" color="gray900">
-            {course?.course?.title.slice(0, 28)}{" "}
-            {course?.course?.title.length >= 28 && "..."}
-          </Typography>
-          <ProgressBar
-            progress={
-              isOnGoingCourse
-                ? course?.status === "NOT_STARTED"
-                  ? 0
-                  : 20
-                : 100
-            }
-            height={8}
-            width={173}
-            color={theme.colors.primary700}
+    <Link href={`/screens/myCurriculum/myCourse/${courseId}`} asChild>
+      <TouchableOpacity style={styles.container}>
+        <View style={{ flex: 1 }}>
+          <Image
+            source={{
+              uri: course?.course?.thumbnail
+                ? `${FilePathUtils.courseImagePath(course?.course?.id)}/${
+                    course?.course?.thumbnail
+                  }`
+                : fallbackImages.course,
+            }}
+            resizeMode="cover"
+            style={styles.image}
           />
+        </View>
+        <View style={{ flex: 2 }}>
+          <View style={styles.courseContainer}>
+            <Typography weight="semiBold" size="sm" color="gray900">
+              {course?.course?.title.slice(0, 28)}{" "}
+              {course?.course?.title.length >= 28 && "..."}
+            </Typography>
+            <ProgressBar
+              progress={
+                isOnGoingCourse
+                  ? course?.status === "NOT_STARTED"
+                    ? 0
+                    : 20
+                  : 100
+              }
+              height={8}
+              width={173}
+              color={theme.colors.primary700}
+            />
 
-          {isOnGoingCourse && (
-            <View style={styles.button}>
-              <Typography
-                weight="semiBold"
-                size="sm"
-                color="primary700"
-                style={styles.buttonText}
-              >
-                শুরু করুন
+            {isOnGoingCourse && (
+              <View style={styles.button}>
+                <Typography
+                  weight="semiBold"
+                  size="sm"
+                  color="primary700"
+                  style={styles.buttonText}
+                >
+                  শুরু করুন
+                </Typography>
+                <ArrowRight color={theme.colors.primary700} />
+              </View>
+            )}
+          </View>
+          {!isOnGoingCourse && (
+            <View style={styles.completedButton}>
+              <Typography weight="semiBold" size="xs" color="white">
+                কমপ্লিটেড
               </Typography>
-              <ArrowRight color={theme.colors.primary700} />
             </View>
           )}
         </View>
-        {!isOnGoingCourse && (
-          <View style={styles.completedButton}>
-            <Typography weight="semiBold" size="xs" color="white">
-              কমপ্লিটেড
-            </Typography>
-          </View>
-        )}
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Link>
   );
 }
 
