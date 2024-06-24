@@ -8,7 +8,7 @@ import {
 } from "@/components/payment";
 import { Container, SectionDivider } from "@/components/ui";
 import theme from "@/constants/theme";
-import { useGetCourseBySlug } from "@/services/courseService";
+import { useGetCourse } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -21,7 +21,7 @@ export default function CoursePayment() {
     data: course,
     isLoading,
     error,
-  } = useGetCourseBySlug(params?.courseSlug);
+  } = useGetCourse(params?.courseId ? +params?.courseId : undefined);
 
   const [isChecked, setIsChecked] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState("");

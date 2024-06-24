@@ -56,7 +56,7 @@ export default function CurriculumModule({
                       type={content?.type}
                       id={content?.id}
                       slug={content?.slug}
-                      courseSlug={courseDetails?.slug}
+                      courseId={courseDetails?.id}
                       index={index}
                       moduleIndex={moduleIndex + 1}
                       contentLength={item?.contents?.length}

@@ -17,7 +17,7 @@ import {
 import Loader from "@/components/global/Loader";
 import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { useGetCourseBySlug, useGetCourses } from "@/services/courseService";
+import { useGetCourse, useGetCourses } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -30,8 +30,8 @@ const CourseDetails = () => {
     data: course,
     isLoading,
     error,
-  } = useGetCourseBySlug(params?.courseSlug as string);
-  const { data: courses } = useGetCourses(true);
+  } = useGetCourse(params?.courseId ? +params?.courseId : undefined);
+  const { data: courses } = useGetCourses();
 
   const promoUrl = course?.promoUrl;
   const videoId = promoUrl?.split("v=")?.[1];

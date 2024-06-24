@@ -15,6 +15,7 @@ import {
 import theme from "@/constants/theme";
 import { Link, usePathname } from "expo-router";
 import { CourseUtils } from "@/utils/courseUtils";
+import { ReactNode } from "react";
 
 type CurriculumModuleContentProps = {
   type: ValueOf<typeof ActivityType>;
@@ -22,7 +23,7 @@ type CurriculumModuleContentProps = {
   label: string;
   id: number;
   slug: string;
-  courseSlug: string;
+  courseId: number;
   index?: number;
   contentLength?: number;
   moduleIndex?: number;
@@ -35,7 +36,7 @@ export default function CurriculumContent({
   label,
   id,
   slug,
-  courseSlug,
+  courseId,
   index,
   contentLength,
   moduleIndex,
@@ -44,42 +45,43 @@ export default function CurriculumContent({
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
   const path = usePathname();
-  const lessonSlug = decodeURIComponent(path.split("/")[5]);
+  const lessonId = decodeURIComponent(path.split("/")[5]);
+
+  const typeToIconMap: Record<ValueOf<typeof ActivityType>, ReactNode> = {
+    LESSON: (
+      <View
+        style={[
+          styles.iconBgStyle,
+          { backgroundColor: theme.colors.primary50 },
+        ]}
+      >
+        <PlayCircleIcon />
+      </View>
+    ),
+    QUIZ: (
+      <View
+        style={[styles.iconBgStyle, { backgroundColor: theme.colors.purple50 }]}
+      >
+        <QuizIcon />
+      </View>
+    ),
+    RESOURCE: (
+      <View
+        style={[
+          styles.iconBgStyle,
+          { backgroundColor: theme.colors.warning50 },
+        ]}
+      >
+        <DocumentFIleIcon />
+      </View>
+    ),
+  };
 
   return (
     <View style={styles.iconAndLessonTitle}>
       <View style={{ zIndex: 1 }}>
-        {type !== "QUIZ" && isFree ? (
-          <View>
-            {type === "LESSON" ? (
-              <View
-                style={[
-                  styles.iconBgStyle,
-                  { backgroundColor: theme.colors.primary50 },
-                ]}
-              >
-                <PlayCircleIcon width={20} height={20} />
-              </View>
-            ) : type === "RESOURCE" ? (
-              <View
-                style={[
-                  styles.iconBgStyle,
-                  { backgroundColor: theme.colors.warning50 },
-                ]}
-              >
-                <DocumentFIleIcon width={20} height={20} />
-              </View>
-            ) : (
-              <View
-                style={[
-                  styles.iconBgStyle,
-                  { backgroundColor: theme.colors.purple50 },
-                ]}
-              >
-                <QuizIcon width={20} height={20} />
-              </View>
-            )}
-          </View>
+        {isFree ? (
+          <>{typeToIconMap[type]}</>
         ) : (
           <View
             style={[
@@ -96,13 +98,13 @@ export default function CurriculumContent({
         {isFree ? (
           <Link
             href={CourseUtils.curriculumContentTypeToLinkMap[type](
-              courseSlug,
-              id.toString()
+              courseId,
+              id
             )}
           >
             <Typography
               style={
-                lessonSlug === id.toString()
+                Number(lessonId) === id
                   ? {
                       textDecorationLine: "underline",
                       textDecorationStyle: "solid",

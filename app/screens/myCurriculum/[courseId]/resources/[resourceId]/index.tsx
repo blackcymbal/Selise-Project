@@ -1,26 +1,22 @@
 import { CourseDetailsTopBar } from "@/components/courses";
 import { Container, Typography } from "@/components/ui";
 import useAuth from "@/hooks/auth/useAuth";
-import { useGetResourceDetails } from "@/services/courseService";
-import { router, useLocalSearchParams } from "expo-router";
-import { useEffect } from "react";
+import { useGetResourceDetails } from "@/services/ResourceService";
+import { Redirect, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native";
 
 export default function ResourceDetailsScreen() {
-  const { courseSlug, resourceSlug } = useLocalSearchParams();
+  const { courseId, resourceId } = useLocalSearchParams();
   const { token } = useAuth();
-  const { data } = useGetResourceDetails(resourceSlug as string);
+  const { data } = useGetResourceDetails(resourceId ? +resourceId : undefined);
 
-  useEffect(() => {
-    if (!token) {
-      router.navigate({
-        pathname: "signIn",
-        params: {
-          path: `/screens/myCurriculum/${courseSlug}/resources/${resourceSlug}`,
-        },
-      });
-    }
-  }, []);
+  if (!token) {
+    return (
+      <Redirect
+        href={`/signIn?path=/screens/myCurriculum/${courseId}/contents/${resourceId}`}
+      />
+    );
+  }
 
   return (
     <>
