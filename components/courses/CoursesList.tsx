@@ -9,7 +9,7 @@ import { Typography } from "../ui";
 type CourseCardProps = {
   item: Pick<
     CourseViewModel,
-    "id" | "title" | "price" | "discount" | "isFree" | "thumbnail"
+    "id" | "title" | "price" | "discount" | "isFree" | "thumbnail" | "slug"
   >;
 };
 

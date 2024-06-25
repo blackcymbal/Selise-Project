@@ -5,7 +5,9 @@ import {
   TicketPromoIcon,
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
+import useAuth from "@/hooks/auth/useAuth";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { useGetEnrolledCourses } from "@/services/enrollmentService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { Link } from "expo-router";
 import React, { useState } from "react";
@@ -23,9 +25,14 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
     : course?.price;
 
   // TODO: have to dynamic
-  const user = false;
-  const isEnrolled = false;
+
   const [isViewPromo, setIsViewPromo] = useState(true);
+
+  const { user } = useAuth();
+  const { data: enrolledCourses } = useGetEnrolledCourses();
+  const isEnrolled = enrolledCourses?.some(
+    (item) => item?.course?.id === course?.id
+  );
 
   return (
     <View style={styles.purchaseContainer}>
@@ -133,7 +140,11 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
             borderRadius: 8,
             textAlign: "center",
           }}
-          href={isEnrolled ? "" : `/screens/payment/${course?.id}`}
+          href={
+            isEnrolled
+              ? `/screens/myCurriculum/myCourse/${course?.id}`
+              : `/screens/payment/${course?.id}`
+          }
         >
           <Typography weight="bold" color="white">
             {user && isEnrolled ? "চালিয়ে যান" : "কোর্সটি কিনুন"}
