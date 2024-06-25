@@ -12,13 +12,12 @@ import ImageUploader from "./image-upload/ImageUploader";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
 type ProfileInfoProps = {
-  path?: string;
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   image: string;
 };
 
-const ProfileInfo = ({ path, bottomSheetRef, image }: ProfileInfoProps) => {
-  const updateProfileMutation = useUpdateProfile(path);
+const ProfileInfo = ({ bottomSheetRef, image }: ProfileInfoProps) => {
+  const updateProfileMutation = useUpdateProfile();
 
   const {
     control,
