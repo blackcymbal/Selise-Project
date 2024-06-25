@@ -132,7 +132,7 @@ export const useSignUp = () => {
   });
 };
 
-export const useUpdateProfile = (path?: string) => {
+export const useUpdateProfile = () => {
   const { setAuth, token } = useAuth();
   const axiosClient = useAxios();
 
@@ -151,11 +151,7 @@ export const useUpdateProfile = (path?: string) => {
     },
     onSuccess: (response) => {
       setAuth(response.data, token as string);
-      if (path) {
-        router.replace(path);
-      } else {
-        router.replace("/screens");
-      }
+      router.replace("/screens");
     },
   });
 };
