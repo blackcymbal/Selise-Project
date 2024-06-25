@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   ActivityStatus,
   ActivityType,
@@ -13,9 +13,10 @@ import {
   QuizIcon,
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
-import { Link, usePathname } from "expo-router";
+import { Link, Redirect, useLocalSearchParams, usePathname } from "expo-router";
 import { CourseUtils } from "@/utils/courseUtils";
 import { ReactNode } from "react";
+import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
 
 type CurriculumModuleContentProps = {
   type: ValueOf<typeof ActivityType>;
@@ -47,6 +48,20 @@ export default function CurriculumContent({
   const path = usePathname();
   const lessonId = decodeURIComponent(path.split("/")[5]);
 
+  const isEnrolled = getEnrollmentStatus(courseId);
+
+  const handleGoToContent = () => {
+    console.log(
+      "clicked",
+      isEnrolled,
+      isFree,
+      CourseUtils.curriculumContentTypeToLinkMap[type](courseId, id)
+    );
+    <Redirect
+      href={CourseUtils.curriculumContentTypeToLinkMap[type](courseId, id)}
+    />;
+  };
+
   const typeToIconMap: Record<ValueOf<typeof ActivityType>, ReactNode> = {
     LESSON: (
       <View
@@ -77,10 +92,21 @@ export default function CurriculumContent({
     ),
   };
 
+  //   const statusToIconMap: Record<
+  //   ValueOf<typeof ActivityStatus>,
+  //   ReactElement | null
+  // > = {
+  //   COMPLETED: (
+  //     <CheckMarkIcon className="h-[18px] w-[18px] ml-1 inline text-success-400" />
+  //   ),
+  //   IN_PROGRESS: null,
+  //   NOT_STARTED: null,
+  // };
+
   return (
     <View style={styles.iconAndLessonTitle}>
       <View style={{ zIndex: 1 }}>
-        {isFree ? (
+        {isEnrolled || isFree ? (
           <>{typeToIconMap[type]}</>
         ) : (
           <View
@@ -102,30 +128,34 @@ export default function CurriculumContent({
               id
             )}
           >
-            <Typography
-              style={
-                Number(lessonId) === id
-                  ? {
-                      textDecorationLine: "underline",
-                      textDecorationStyle: "solid",
-                      textDecorationColor: theme.colors.primary600,
-                      color: theme.colors.primary600,
-                    }
-                  : undefined
-              }
-            >
-              {numberToDigitFormat(moduleIndex ?? 0)}.
-              {numberToDigitFormat((index ?? 0) + 1)}. {label}
-            </Typography>
+            <TouchableOpacity>
+              <Typography
+                style={
+                  Number(lessonId) === id
+                    ? {
+                        textDecorationLine: "underline",
+                        textDecorationStyle: "solid",
+                        textDecorationColor: theme.colors.primary600,
+                        color: theme.colors.primary600,
+                      }
+                    : undefined
+                }
+              >
+                {numberToDigitFormat(moduleIndex ?? 0)}.
+                {numberToDigitFormat((index ?? 0) + 1)}.{" "}
+                {type === "QUIZ" ? "কুইজ" : label}
+              </Typography>
+            </TouchableOpacity>
           </Link>
         ) : (
           <Typography>
             {numberToDigitFormat(moduleIndex ?? 0)}.
-            {numberToDigitFormat((index ?? 0) + 1)}. {label}
+            {numberToDigitFormat((index ?? 0) + 1)}.{" "}
+            {type === "QUIZ" ? "কুইজ" : label}
           </Typography>
         )}
 
-        {type !== "QUIZ" && isFree && (
+        {!isEnrolled && isFree && (
           <Typography px={1} color="white" style={styles.freeCourseLabel}>
             ফ্রি প্রিভিউ
           </Typography>
