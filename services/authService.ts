@@ -173,7 +173,7 @@ export const useUpdateMyProfile = () => {
     mutationFn: (data) => {
       return axiosClient
         .put(`/auth/me`, data)
-        .then((response) => response?.data)
+        .then((response) => response?.data);
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["myProfile"], data.data);
@@ -195,13 +195,13 @@ export const useUploadProfilePicture = () => {
     mutationFn: (data: UseUploadProfilePictureRequest) => {
       return axiosClient
         .put(`/users/${user?.id}/uploads/profile`, data)
-        .then((response) => response?.data)
+        .then((response) => response?.data);
     },
     onSuccess: (response) => {},
   });
 };
 
-export const useGetMyProfile = (enabled: boolean) => {
+export const useGetMyProfile = () => {
   const { setAuth, token } = useAuth();
   const axiosClient = useAxios();
 
@@ -214,7 +214,6 @@ export const useGetMyProfile = (enabled: boolean) => {
       setAuth(data?.data, token as string);
       return data?.data;
     },
-    enabled,
   });
 };
 
