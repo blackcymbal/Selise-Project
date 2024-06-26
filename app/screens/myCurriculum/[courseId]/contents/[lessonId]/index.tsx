@@ -29,6 +29,9 @@ export default function LessonDetailsScreen() {
           videoId={videoId as string}
           playing={playing}
           setPlaying={setPlaying}
+          courseId={courseIdNumber}
+          moduleId={lessonDetails?.moduleId}
+          lessonId={lessonIdNumber}
         />
       </View>
 
