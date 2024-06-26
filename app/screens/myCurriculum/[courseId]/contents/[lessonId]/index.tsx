@@ -15,11 +15,10 @@ export default function LessonDetailsScreen() {
   const { courseId, lessonId } = useLocalSearchParams();
   const courseIdNumber = courseId ? +courseId : undefined;
   const lessonIdNumber = lessonId ? +lessonId : undefined;
-
   const { data: lessonDetails } = useGetLessonDetails(lessonIdNumber);
+  const { data: courseDetails } = useGetCourse(courseIdNumber);
 
   const videoId = lessonDetails?.url?.split("v=")?.[1];
-  const { data: courseDetails } = useGetCourse(courseIdNumber);
 
   return (
     <>
