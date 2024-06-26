@@ -1,26 +1,39 @@
-import { Notification, Search } from "@/assets/icons/icons";
+import { Notification, Search, User } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
+import useAuth from "@/hooks/auth/useAuth";
+import { FilePathUtils, fallbackImages } from "@/utils";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Typography } from "../ui";
 
 const TopBar = () => {
+  const { user } = useAuth();
   return (
     <SafeAreaView edges={["top"]} style={styles.container}>
       <View style={styles.inner}>
         <View style={styles.section}>
           <View>
-            <Image
-              source={{
-                uri: "https://lh3.googleusercontent.com/ogw/AF2bZyihErtCtRI3az31JHY16wxBlNEQ19R2C0ixWJXPPATULcc=s64-c-mo",
-              }}
-              style={styles.image}
-            />
+            {user?.picture ? (
+              <Image
+                source={{
+                  uri: user?.picture
+                    ? `${FilePathUtils.userProfilePath(user.id)}/${
+                        user.picture
+                      }`
+                    : fallbackImages.user,
+                }}
+                style={styles.image}
+              />
+            ) : (
+              <View style={styles.image}>
+                <User color={theme.colors.gray500} height={22} width={22} />
+              </View>
+            )}
           </View>
           <View style={styles.welcomeView}>
             <Typography weight="medium" size="lg" color="gray900">
-              স্মানসুর জোহা
+              {user?.name}
             </Typography>
           </View>
         </View>
@@ -59,5 +72,15 @@ const styles = StyleSheet.create({
   },
   welcomeView: { marginLeft: 5 },
   buttton: { marginHorizontal: 5 },
-  image: { height: 32, width: 32, borderRadius: 32, marginHorizontal: 5 },
+  image: {
+    height: 32,
+    width: 32,
+    borderRadius: 32,
+    marginHorizontal: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: theme.colors.gray200,
+    backgroundColor: theme.colors.gray100,
+  },
 });

@@ -5,7 +5,7 @@ import useAsyncStorage from "../useAsyncStorage";
 
 type IAuthContext = {
   isAuthenticated?: boolean;
-  user?: UserViewModel;
+  user?: UserViewModel | null;
   token?: string | null;
   setAuth: (user: UserViewModel, token: string) => void;
   removeAuth: () => void;
@@ -19,7 +19,6 @@ type Props = {
 };
 
 export default function AuthProvider({ children }: Props) {
-  const [userState, setUserState] = useState<UserViewModel>();
   const [token, setToken] = useAsyncStorage<string | null>("authKey", null);
   const [userInfo, setUserInfo] = useAsyncStorage<UserViewModel | null>(
     "user",
@@ -35,30 +34,28 @@ export default function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     if (!token) return;
-  }, [token, userState, userInfo]);
+  }, [token, userInfo]);
 
   const setAuth = (user: UserViewModel, token_: string) => {
-    setUserState(user);
     setToken(token_);
     setUserInfo(user);
     setIsAuthenticated(!!token_);
   };
 
   const removeAuth = () => {
-    setUserState(undefined);
     setToken(null);
     setUserInfo(null);
     setIsAuthenticated(false);
   };
 
   const setUser = (user: UserViewModel) => {
-    setUserState(user);
+    setUserInfo(user);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        user: userState,
+        user: userInfo,
         token,
         isAuthenticated,
         setAuth,
