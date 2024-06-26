@@ -75,7 +75,12 @@ const OtpScreen = () => {
         লিখুন
       </Typography>
       <OtpInputs getCodeFromInput={getCodeFromInput} />
-      <Button active={buttonActive} buttonStyle="inline" onPress={handlePress}>
+      <Button
+        active={buttonActive}
+        buttonStyle="inline"
+        style={{ width: "100%" }}
+        onPress={handlePress}
+      >
         এগিয়ে যান
       </Button>
       <OtpFooter phoneNumer={params?.phone as string} />

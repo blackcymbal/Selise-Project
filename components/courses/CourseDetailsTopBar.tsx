@@ -33,10 +33,14 @@ const CourseDetailsTopBar = ({ title }: props) => {
 export default CourseDetailsTopBar;
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#fff" },
+  container: {
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.gray100,
+  },
   innerContainer: {
     flexDirection: "row",
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 16,
     alignItems: "center",
     gap: 5,
