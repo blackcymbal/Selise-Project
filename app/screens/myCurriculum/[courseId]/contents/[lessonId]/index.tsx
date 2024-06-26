@@ -3,36 +3,27 @@ import { CourseDetailsTopBar } from "@/components/courses";
 import CurriculumModule from "@/components/courses/course-curriculum/CurriculumModule";
 import { Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import useAuth from "@/hooks/auth/useAuth";
 import { useGetLessonDetails } from "@/services/LessonService";
 import { useGetCourse } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
-import { Redirect, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function LessonDetailsScreen() {
-  const { courseId, lessonId } = useLocalSearchParams();
-  const { token } = useAuth();
-  const { data } = useGetLessonDetails(lessonId ? +lessonId : undefined);
   const [playing, setPlaying] = useState(false);
-  const videoId = data?.url?.split("v=")?.[1];
+  const { courseId, lessonId } = useLocalSearchParams();
+  const courseIdNumber = courseId ? +courseId : undefined;
+  const lessonIdNumber = lessonId ? +lessonId : undefined;
 
-  const { data: courseDetails } = useGetCourse(
-    courseId ? +courseId : undefined
-  );
+  const { data: lessonDetails } = useGetLessonDetails(lessonIdNumber);
 
-  if (!token) {
-    return (
-      <Redirect
-        href={`/signIn?path=/screens/myCurriculum/${courseId}/contents/${lessonId}`}
-      />
-    );
-  }
+  const videoId = lessonDetails?.url?.split("v=")?.[1];
+  const { data: courseDetails } = useGetCourse(courseIdNumber);
 
   return (
     <>
-      <CourseDetailsTopBar title={data?.title} />
+      <CourseDetailsTopBar title={lessonDetails?.title} />
 
       <View style={styles.bgWhite}>
         <PlayYoutubeVideo

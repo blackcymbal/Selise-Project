@@ -5,6 +5,7 @@ export { default as BookOpen } from "./book-open-01.svg";
 export { default as Camera } from "./camera.svg";
 export { default as CancelCircleIcon } from "./cancel-circle-icon.svg";
 export { default as CheckMarkIcon } from "./check-mark-icon.svg";
+export { default as CheckMarkSquareIcon } from "./check-mark-square-icon.svg";
 export { default as ClockIcon } from "./clock-icon.svg";
 export { default as DiscountIcon } from "./discount-icon.svg";
 export { default as DocumentFIleIcon } from "./document-file-icon.svg";

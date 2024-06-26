@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
   ActivityStatus,
   ActivityType,
@@ -7,13 +7,14 @@ import {
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { Typography } from "@/components/ui";
 import {
+  CheckMarkSquareIcon,
   DocumentFIleIcon,
   LockedIcon,
   PlayCircleIcon,
   QuizIcon,
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
-import { Link, Redirect, useLocalSearchParams, usePathname } from "expo-router";
+import { Link, usePathname } from "expo-router";
 import { CourseUtils } from "@/utils/courseUtils";
 import { ReactNode } from "react";
 import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
@@ -50,18 +51,6 @@ export default function CurriculumContent({
 
   const isEnrolled = getEnrollmentStatus(courseId);
 
-  const handleGoToContent = () => {
-    console.log(
-      "clicked",
-      isEnrolled,
-      isFree,
-      CourseUtils.curriculumContentTypeToLinkMap[type](courseId, id)
-    );
-    <Redirect
-      href={CourseUtils.curriculumContentTypeToLinkMap[type](courseId, id)}
-    />;
-  };
-
   const typeToIconMap: Record<ValueOf<typeof ActivityType>, ReactNode> = {
     LESSON: (
       <View
@@ -92,16 +81,20 @@ export default function CurriculumContent({
     ),
   };
 
-  //   const statusToIconMap: Record<
-  //   ValueOf<typeof ActivityStatus>,
-  //   ReactElement | null
-  // > = {
-  //   COMPLETED: (
-  //     <CheckMarkIcon className="h-[18px] w-[18px] ml-1 inline text-success-400" />
-  //   ),
-  //   IN_PROGRESS: null,
-  //   NOT_STARTED: null,
-  // };
+  const statusToIconMap: Record<
+    ValueOf<typeof ActivityStatus>,
+    ReactNode | null
+  > = {
+    COMPLETED: (
+      <CheckMarkSquareIcon
+        color={theme.colors.success400}
+        width={20}
+        height={20}
+      />
+    ),
+    IN_PROGRESS: null,
+    NOT_STARTED: null,
+  };
 
   return (
     <View style={styles.iconAndLessonTitle}>
@@ -121,31 +114,29 @@ export default function CurriculumContent({
       </View>
       {index !== (contentLength ?? 0) - 1 && <View style={styles.dottedLine} />}
       <View style={{ width: "92%" }}>
-        {isFree ? (
+        {isEnrolled || isFree ? (
           <Link
             href={CourseUtils.curriculumContentTypeToLinkMap[type](
               courseId,
               id
             )}
           >
-            <TouchableOpacity>
-              <Typography
-                style={
-                  Number(lessonId) === id
-                    ? {
-                        textDecorationLine: "underline",
-                        textDecorationStyle: "solid",
-                        textDecorationColor: theme.colors.primary600,
-                        color: theme.colors.primary600,
-                      }
-                    : undefined
-                }
-              >
-                {numberToDigitFormat(moduleIndex ?? 0)}.
-                {numberToDigitFormat((index ?? 0) + 1)}.{" "}
-                {type === "QUIZ" ? "কুইজ" : label}
-              </Typography>
-            </TouchableOpacity>
+            <Typography
+              style={
+                Number(lessonId) === id
+                  ? {
+                      textDecorationLine: "underline",
+                      textDecorationStyle: "solid",
+                      textDecorationColor: theme.colors.primary600,
+                      color: theme.colors.primary600,
+                    }
+                  : undefined
+              }
+            >
+              {numberToDigitFormat(moduleIndex ?? 0)}.
+              {numberToDigitFormat((index ?? 0) + 1)}.{" "}
+              {type === "QUIZ" ? "কুইজ" : label}
+            </Typography>
           </Link>
         ) : (
           <Typography>
@@ -155,7 +146,7 @@ export default function CurriculumContent({
           </Typography>
         )}
 
-        {!isEnrolled && isFree && (
+        {isFree && (
           <Typography px={1} color="white" style={styles.freeCourseLabel}>
             ফ্রি প্রিভিউ
           </Typography>

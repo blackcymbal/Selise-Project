@@ -12,7 +12,6 @@ export const useGetCourses = () => {
       );
       return data.data;
     },
-    enabled: true,
   });
 };
 
