@@ -6,10 +6,10 @@ import { StyleSheet, View } from "react-native";
 
 export default function ResultDetails() {
   const data = [
-    { icon: Policy, title: "", subTitle: "" },
-    { icon: StopWatch, title: "", subTitle: "" },
-    { icon: FileUnknown, title: "", subTitle: "" },
-    { icon: Medal, title: "", subTitle: "" },
+    { icon: Policy, title: "সঠিক উত্তর", subTitle: "৩/১০" },
+    { icon: StopWatch, title: "সময় নিয়েছেন", subTitle: "৮ মিনিট" },
+    { icon: FileUnknown, title: "ভুল উত্তর", subTitle: "৭" },
+    { icon: Medal, title: "অর্জিত স্কোর", subTitle: "৩০%" },
   ];
   return (
     <Container
@@ -58,8 +58,8 @@ function ResultCard({ Icon, title, subTitle }) {
         <Icon height={20} width={20} color={"#D92D20"} />
       </View>
       <View>
-        <Typography>ভুল উত্তর</Typography>
-        <Typography>৭</Typography>
+        <Typography>{title}</Typography>
+        <Typography>{subTitle}</Typography>
       </View>
     </Container>
   );
