@@ -39,6 +39,8 @@ export default function QuizSolution() {
                 answers={item.answers}
               />
             )}
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={() => <View style={styles.footer} />}
           />
         </Container>
       </Container>
@@ -52,4 +54,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: theme.colors.gray100,
   },
+  footer: { height: 100 },
 });

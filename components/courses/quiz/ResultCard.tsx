@@ -27,9 +27,10 @@ export default function ResultCard({
         <Icon height={20} width={20} color={iconColor} />
       </View>
       <View>
-        <Typography>{title}</Typography>
-        <Typography size="2xl" mr={2} weight="semiBold" color="gray900">
-          {subTitle} {title == "সময় নিয়েছেন" && <Typography>মিনিট</Typography>}
+        <Typography size="sm">{title}</Typography>
+        <Typography size="xl" weight="semiBold" color="gray900">
+          {subTitle}{" "}
+          {title == "সময় নিয়েছেন" && <Typography size="sm">মিনিট</Typography>}
         </Typography>
       </View>
     </Container>
