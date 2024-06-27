@@ -1,10 +1,13 @@
 export { default as Album } from "./album.svg";
 export { default as ArrowLeft } from "./arrow-left.svg";
 export { default as ArrowRight } from "./arrow-right.svg";
+export { default as ArrowUpRight } from "./arrow-up-right.svg";
 export { default as BookOpen } from "./book-open-01.svg";
 export { default as Camera } from "./camera.svg";
 export { default as CancelCircleIcon } from "./cancel-circle-icon.svg";
+export { default as CancelSquare } from "./cancel-square.svg";
 export { default as CheckMarkIcon } from "./check-mark-icon.svg";
+export { default as CheckmarkSquare } from "./checkmark-square.svg";
 export { default as ClockIcon } from "./clock-icon.svg";
 export { default as DiscountIcon } from "./discount-icon.svg";
 export { default as DocumentFIleIcon } from "./document-file-icon.svg";

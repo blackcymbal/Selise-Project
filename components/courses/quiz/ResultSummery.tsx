@@ -1,13 +1,18 @@
 import { FailIcon, PassIcon } from "@/assets/icons/icons";
+import Divider from "@/components/global/Divider";
 import { Button, Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-export default function ResultSummery({ isFailed = true }) {
+type ResultSummeryProps = {
+  isFailed?: boolean;
+};
+
+export default function ResultSummery({ isFailed = true }: ResultSummeryProps) {
   return (
     <Container>
-      <Container py={6} my={4} style={styles.container}>
+      <Container py={6} mt={4} style={styles.container}>
         <View style={{ alignItems: "center" }}>
           {isFailed ? <FailIcon height={56} /> : <PassIcon height={56} />}
           <Typography
@@ -25,7 +30,7 @@ export default function ResultSummery({ isFailed = true }) {
           </Typography>
         </View>
       </Container>
-      <View style={styles.divider} />
+      <Divider />
       <Container py={6} flexDirection="row" gap={4} style={styles.container2}>
         <View style={styles.buttonContainer}>
           <Button
@@ -53,16 +58,17 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderWidth: 1,
     borderColor: theme.colors.gray100,
+    borderBottomWidth: 0,
   },
   container2: {
     backgroundColor: theme.colors.gray50,
     borderBottomRightRadius: 8,
     borderBottomLeftRadius: 8,
     borderWidth: 1,
+    borderTopWidth: 0,
     borderColor: theme.colors.gray100,
     overflow: "hidden",
   },
-  divider: { height: 1, backgroundColor: theme.colors.gray200 },
   buttonContainer: {
     flex: 1,
   },

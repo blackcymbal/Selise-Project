@@ -12,7 +12,9 @@ export default function HomeScreen() {
       <TopBarHome />
       <Button
         active={true}
-        onPress={() => router.navigate("/screens/quizResult/1")}
+        onPress={() => {
+          router.navigate("/screens/(tabs)/myCourses/quizResult/1");
+        }}
       >
         Goto Quiz Result
       </Button>
