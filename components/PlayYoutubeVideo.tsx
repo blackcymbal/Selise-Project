@@ -27,7 +27,6 @@ const PlayYoutubeVideo = ({
   const onStateChange = useCallback(
     (state: string) => {
       if (state === "playing") {
-        console.log("playing", moduleId);
         if (courseId && moduleId && lessonId) {
           activityForLesson.mutate(
             {
