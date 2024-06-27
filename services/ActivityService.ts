@@ -1,4 +1,3 @@
-import useAuth from "@/hooks/auth/useAuth";
 import useAxios from "@/hooks/useAxios";
 import {
   ActivityViewModel,
@@ -31,7 +30,6 @@ export const createActivityForLesson = () => {
       return response.data;
     },
     onError: (error: ApiErrorResponse) => {
-      console.log("lesson error activity:", error);
     },
   });
 };

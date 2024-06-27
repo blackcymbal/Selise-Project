@@ -1,4 +1,5 @@
 import { createActivityForLesson } from "@/services/ActivityService";
+import { useGetCourse } from "@/services/courseService";
 import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import YoutubePlayer from "react-native-youtube-iframe";
 
@@ -21,12 +22,19 @@ const PlayYoutubeVideo = ({
 }: PlayYoutubeVideoProps) => {
   const [activityId, setActivityId] = useState<number>();
   const activityForLesson = createActivityForLesson();
+  const { data: course } = useGetCourse(courseId);
 
+  const content = course?.curriculum
+    ?.flatMap((module) => module.contents)
+    .find((content) => content.id === lessonId);
+
+  console.log("activity id:", activityId);
+  console.log("content :", content);
   console.log("player", courseId, moduleId, lessonId);
 
   const onStateChange = useCallback(
     (state: string) => {
-      if (state === "playing") {
+      if (state === "playing" || !activityId) {
         if (courseId && moduleId && lessonId) {
           activityForLesson.mutate(
             {
@@ -37,7 +45,7 @@ const PlayYoutubeVideo = ({
             },
             {
               onSuccess: (response) => {
-                console.log(response);
+                console.log("response", response);
                 setActivityId(response.data?.id);
               },
               onError: (error) => {
@@ -50,7 +58,7 @@ const PlayYoutubeVideo = ({
         setPlaying(false);
       }
     },
-    [setPlaying]
+    [setPlaying, moduleId, courseId, lessonId, activityForLesson]
   );
 
   return (
