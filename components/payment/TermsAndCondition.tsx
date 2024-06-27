@@ -1,8 +1,7 @@
 import theme from "@/constants/theme";
-import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Container, Typography } from "../ui";
+import { CheckBoxSquareIcon, UncheckSquareIcon } from "@/assets/icons/icons";
 
 type TermsAndConditionProps = {
   isFreeCourse: boolean;
@@ -23,16 +22,26 @@ export default function TermsAndCondition({
           style={{
             gap: 4,
             flexDirection: "row",
-            alignItems: "center",
           }}
         >
-          <MaterialIcons
-            name={isChecked ? "check-box" : "check-box-outline-blank"}
-            size={24}
-            color={isChecked ? theme.colors.primary700 : theme.colors.gray200}
-          />
-          <Typography style={{ fontSize: 16 }}>
-            আমি <Typography color="primary600">টার্মস এবং কন্ডিশনস</Typography>{" "}
+          {isChecked ? (
+            <CheckBoxSquareIcon
+              width={16}
+              height={16}
+              color={theme.colors.primary500}
+            />
+          ) : (
+            <UncheckSquareIcon
+              width={16}
+              height={16}
+              color={theme.colors.primary500}
+            />
+          )}
+          <Typography size="sm">
+            আমি{" "}
+            <Typography size="sm" color="primary600">
+              টার্মস এবং কন্ডিশনস
+            </Typography>{" "}
             এর সাথে একমত
           </Typography>
         </Pressable>

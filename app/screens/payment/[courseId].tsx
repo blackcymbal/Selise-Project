@@ -11,7 +11,7 @@ import theme from "@/constants/theme";
 import { useGetCourse } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 
 export default function CoursePayment() {
