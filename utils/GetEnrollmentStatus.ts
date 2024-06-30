@@ -1,6 +1,6 @@
 import { useGetEnrolledCourses } from "@/services/enrollmentService";
 
-export const getEnrollmentStatus = (id: number) => {
+export const getEnrollmentStatus = (id: number | undefined) => {
   const { data } = useGetEnrolledCourses();
 
   if (!data) {
