@@ -3,7 +3,6 @@ import {
   QuizViewModel,
 } from "@tajdid-academy/tajdid-corelib";
 import QuizInProgress from "./QuizInProgress";
-import { getCurrentModuleAndContentInfo } from "@/utils/GetCurrentModuleContentInfo";
 import { CourseDetailsTopBar } from "@/components/courses";
 
 type QuizDashboardProps = {
@@ -23,7 +22,11 @@ export default function QuizDashboard({
     <>
       <CourseDetailsTopBar title={quizDetails?.title} />
 
-      <QuizInProgress courseId={courseId} quizDetails={quizDetails} />
+      <QuizInProgress
+        courseId={courseId}
+        quizDetails={quizDetails}
+        numberOfQuestions={quizDetails?.questions.length}
+      />
     </>
   );
 }

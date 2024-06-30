@@ -1,9 +1,13 @@
 import QuizDashboard from "@/components/Quizzes/GivingQuiz/QuizDashboard";
+import Loader from "@/components/global/Loader";
+import { Container } from "@/components/ui";
+import theme from "@/constants/theme";
 import { useGetQuizzesDetails } from "@/services/QuizService";
 import { useGetCourse } from "@/services/courseService";
 import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
 import { QuizViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useLocalSearchParams } from "expo-router";
+import { StyleSheet, View } from "react-native";
 
 export default function QuizDetailsScreen() {
   const { courseId, quizId } = useLocalSearchParams();
@@ -11,18 +15,26 @@ export default function QuizDetailsScreen() {
   const quizIdNumber = quizId ? +quizId : undefined;
 
   const { data: courseDetails } = useGetCourse(courseIdNumber);
-  const { data: quizDetails } = useGetQuizzesDetails(quizIdNumber);
+  const { data: quizDetails, isPending } = useGetQuizzesDetails(quizIdNumber);
 
   const isEnrolled = getEnrollmentStatus(courseIdNumber);
 
   return (
-    <>
-      <QuizDashboard
-        isEnrolled={isEnrolled}
-        curriculum={courseDetails?.curriculum}
-        quizDetails={quizDetails as QuizViewModel}
-        courseId={courseIdNumber}
-      />
-    </>
+    <View style={{ backgroundColor: theme.colors.white }}>
+      {isPending ? (
+        <Loader style={styles.loaderContainer} />
+      ) : (
+        <QuizDashboard
+          isEnrolled={isEnrolled}
+          curriculum={courseDetails?.curriculum}
+          quizDetails={quizDetails as QuizViewModel}
+          courseId={courseIdNumber}
+        />
+      )}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  loaderContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
+});

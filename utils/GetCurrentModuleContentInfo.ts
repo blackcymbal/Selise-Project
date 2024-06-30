@@ -1,7 +1,7 @@
 import { CourseCurriculum } from "@tajdid-academy/tajdid-corelib";
 
 export function getCurrentModuleAndContentInfo(
-  contentId: number,
+  contentId: number | undefined,
   curriculum: CourseCurriculum[]
 ) {
   const currentModuleIndex =
