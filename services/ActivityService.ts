@@ -29,8 +29,7 @@ export const createActivityForLesson = () => {
     onSuccess: (response) => {
       return response.data;
     },
-    onError: (error: ApiErrorResponse) => {
-    },
+    onError: (error: ApiErrorResponse) => {},
   });
 };
 
@@ -53,3 +52,30 @@ export const createActivityForLesson = () => {
 //     },
 //   });
 // };
+
+type CreateActivityForQuizRequest = {
+  courseId: number | undefined;
+  moduleId: number | undefined;
+  lessonId: number | undefined;
+  type: "QUIZ";
+};
+
+export const createActivityForQuiz = () => {
+  const axiosClient = useAxios();
+
+  return useMutation<
+    ApiSuccessResponse<ActivityViewModel>,
+    ApiErrorResponse,
+    CreateActivityForQuizRequest
+  >({
+    mutationFn: async (data) => {
+      return axiosClient
+        .post("/activities", data)
+        .then((response) => response?.data);
+    },
+    onSuccess: (response) => {
+      return response.data;
+    },
+    onError: (error: ApiErrorResponse) => {},
+  });
+};

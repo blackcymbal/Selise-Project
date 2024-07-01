@@ -8,12 +8,16 @@ type QuizInProgressQuestionsProps = {
   question: QuizQuestionViewModel;
   index: number;
   numberOfQuestions?: number;
+  quizAnswer: { questionId: number; optionId: number }[];
+  handleSetQuizAnswer: (questionId: number, optionId: number) => void;
 };
 
 export default function QuizInProgressQuestions({
   question,
   index,
   numberOfQuestions,
+  quizAnswer,
+  handleSetQuizAnswer,
 }: QuizInProgressQuestionsProps) {
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
@@ -25,7 +29,13 @@ export default function QuizInProgressQuestions({
 
       <Container gap={4} px={0}>
         {question.options?.map((option, index) => (
-          <Option option={option} index={index} key={option.id} />
+          <Option
+            option={option}
+            index={index}
+            key={option.id}
+            handleSetQuizAnswer={handleSetQuizAnswer}
+            isActive={!!quizAnswer.find((item) => item.optionId === option.id)}
+          />
         ))}
         {index !== (numberOfQuestions ?? 0) - 1 && (
           <SectionDivider marginVertical={8} backgroundColor="gray200" />

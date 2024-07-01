@@ -4,22 +4,59 @@ import { QuizViewModel } from "@tajdid-academy/tajdid-corelib";
 import QuizInProgressQuestions from "./QuizInProgressQuestions";
 import { Container, ProgressBar, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
+import { useState } from "react";
 
 type QuizInProgressProps = {
   courseId: number | undefined;
   quizDetails: QuizViewModel;
   numberOfQuestions?: number;
+  quizActivityId?: number;
+  myQuizAnswer: {
+    id: number;
+    quizId: number;
+    questionId: number;
+    optionId: number;
+  }[];
 };
 
 export default function QuizInProgress({
   courseId,
   quizDetails,
   numberOfQuestions,
+  myQuizAnswer,
+  quizActivityId,
 }: QuizInProgressProps) {
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
+  const [quizAnswer, setQuizAnswer] = useState<
+    { questionId: number; optionId: number }[]
+  >([]);
 
   const handleSubmitQuiz = () => {
     console.log("clicked");
+  };
+
+  const handleSetQuizAnswer = (questionId: number, optionId: number) => {
+    const existingAnswer = !!quizAnswer.find(
+      (answer) => answer.questionId === questionId
+    );
+
+    console.log("quizAnswer: ", quizAnswer);
+
+    if (existingAnswer) {
+      setQuizAnswer(
+        quizAnswer.map((answer) => {
+          if (answer.questionId === questionId) {
+            return {
+              ...answer,
+              optionId,
+            };
+          }
+          return answer;
+        })
+      );
+    } else {
+      setQuizAnswer([...quizAnswer, { questionId, optionId }]);
+    }
   };
 
   return (
@@ -49,8 +86,9 @@ export default function QuizInProgress({
           <Typography color="white">শেষ করুন</Typography>
         </TouchableOpacity>
       </Container>
+
       <ScrollView>
-        <Container p={4} pb={28}>
+        <Container p={4} mb={36}>
           <Container gap={4} py={4} style={styles.container}>
             {quizDetails?.questions?.map((item, index) => (
               <QuizInProgressQuestions
@@ -58,6 +96,8 @@ export default function QuizInProgress({
                 question={item}
                 index={index}
                 numberOfQuestions={numberOfQuestions}
+                quizAnswer={quizAnswer}
+                handleSetQuizAnswer={handleSetQuizAnswer}
               />
             ))}
           </Container>

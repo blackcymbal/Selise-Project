@@ -5,6 +5,13 @@ import {
 } from "@tajdid-academy/tajdid-corelib";
 import { useQuery } from "@tanstack/react-query";
 
+export type QuizAnswerViewModel = {
+  id: number;
+  quizId: number;
+  questionId: number;
+  optionId: number;
+};
+
 export const useGetQuizzesDetails = (id: number | undefined) => {
   const axios = useAxios();
 
@@ -19,14 +26,14 @@ export const useGetQuizzesDetails = (id: number | undefined) => {
   });
 };
 
-export const useGetQuizzesQuestions = (id: number | undefined) => {
+export const useGetMyQuizAnswers = (id: number | undefined) => {
   const axios = useAxios();
 
-  return useQuery<QuizViewModel, Error>({
-    queryKey: ["quizzes-questions", id],
+  return useQuery<QuizAnswerViewModel, Error>({
+    queryKey: ["myAnswers", id],
     queryFn: async () => {
-      const { data } = await axios.get<ApiSuccessResponse<QuizViewModel>>(
-        `/quiz-question/${id}`
+      const { data } = await axios.get<ApiSuccessResponse<QuizAnswerViewModel>>(
+        `/quiz-answers/me/quiz/${id}`
       );
       return data?.data;
     },
