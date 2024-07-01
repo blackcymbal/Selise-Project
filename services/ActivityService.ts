@@ -56,7 +56,7 @@ export const createActivityForLesson = () => {
 type CreateActivityForQuizRequest = {
   courseId: number | undefined;
   moduleId: number | undefined;
-  lessonId: number | undefined;
+  quizId: number | undefined;
   type: "QUIZ";
 };
 
