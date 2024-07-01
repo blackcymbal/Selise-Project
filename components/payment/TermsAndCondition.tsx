@@ -1,7 +1,7 @@
 import theme from "@/constants/theme";
 import { Pressable, StyleSheet } from "react-native";
 import { Container, Typography } from "../ui";
-import { CheckBoxSquare, UncheckSquare } from "@/assets/icons/icons";
+import { CheckBoxSquareIcon, UncheckSquareIcon } from "@/assets/icons/icons";
 
 type TermsAndConditionProps = {
   isFreeCourse: boolean;
@@ -25,13 +25,13 @@ export default function TermsAndCondition({
           }}
         >
           {isChecked ? (
-            <CheckBoxSquare
+            <CheckBoxSquareIcon
               width={16}
               height={16}
               color={theme.colors.primary500}
             />
           ) : (
-            <UncheckSquare
+            <UncheckSquareIcon
               width={16}
               height={16}
               color={theme.colors.primary500}
