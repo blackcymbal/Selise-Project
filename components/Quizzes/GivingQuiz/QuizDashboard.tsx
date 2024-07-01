@@ -5,18 +5,14 @@ import {
 import QuizInProgress from "./QuizInProgress";
 import { CourseDetailsTopBar } from "@/components/courses";
 import { useState } from "react";
+import { QuizAnswerViewModel } from "@/services/quizServices";
 
 type QuizDashboardProps = {
   curriculum?: CourseCurriculum[];
   isEnrolled: boolean;
   quizDetails: QuizViewModel;
   courseId: number | undefined;
-  myQuizAnswer: {
-    id: number;
-    quizId: number;
-    questionId: number;
-    optionId: number;
-  }[];
+  myQuizAnswer: QuizAnswerViewModel[];
 };
 
 export default function QuizDashboard({

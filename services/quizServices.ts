@@ -29,10 +29,10 @@ export const useGetQuizzesDetails = (id: number | undefined) => {
 export const useGetMyQuizAnswers = (id: number | undefined) => {
   const axios = useAxios();
 
-  return useQuery<QuizAnswerViewModel, Error>({
+  return useQuery<QuizAnswerViewModel[], Error>({
     queryKey: ["myAnswers", id],
     queryFn: async () => {
-      const { data } = await axios.get<ApiSuccessResponse<QuizAnswerViewModel>>(
+      const { data } = await axios.get<ApiSuccessResponse<QuizAnswerViewModel[]>>(
         `/quiz-answers/me/quiz/${id}`
       );
       return data?.data;

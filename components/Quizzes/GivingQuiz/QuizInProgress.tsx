@@ -5,18 +5,14 @@ import QuizInProgressQuestions from "./QuizInProgressQuestions";
 import { Container, ProgressBar, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useState } from "react";
+import { QuizAnswerViewModel } from "@/services/quizServices";
 
 type QuizInProgressProps = {
   courseId: number | undefined;
   quizDetails: QuizViewModel;
   numberOfQuestions?: number;
   quizActivityId?: number;
-  myQuizAnswer: {
-    id: number;
-    quizId: number;
-    questionId: number;
-    optionId: number;
-  }[];
+  myQuizAnswer: QuizAnswerViewModel[];
 };
 
 export default function QuizInProgress({
@@ -31,6 +27,8 @@ export default function QuizInProgress({
     { questionId: number; optionId: number }[]
   >([]);
 
+  console.log("quiz answer :", quizAnswer);
+
   const handleSubmitQuiz = () => {
     console.log("clicked");
   };
@@ -39,8 +37,6 @@ export default function QuizInProgress({
     const existingAnswer = !!quizAnswer.find(
       (answer) => answer.questionId === questionId
     );
-
-    console.log("quizAnswer: ", quizAnswer);
 
     if (existingAnswer) {
       setQuizAnswer(
@@ -59,6 +55,8 @@ export default function QuizInProgress({
     }
   };
 
+  const progress = ((quizAnswer.length / (numberOfQuestions ?? 0)) * 100) | 0;
+
   return (
     <>
       <Container
@@ -71,13 +69,13 @@ export default function QuizInProgress({
           <ProgressBar
             color={theme.colors.primary600}
             height={8}
-            progress={25}
+            progress={progress}
             width={170}
           />
 
           <View>
             <Typography>
-              {numberToDigitFormat(2)}/
+              {numberToDigitFormat(quizAnswer?.length)}/
               {numberToDigitFormat(numberOfQuestions ?? 0)}
             </Typography>
           </View>

@@ -2,7 +2,10 @@ import QuizDashboard from "@/components/Quizzes/GivingQuiz/QuizDashboard";
 import Loader from "@/components/global/Loader";
 import theme from "@/constants/theme";
 import { useGetCourse } from "@/services/courseService";
-import { useGetMyQuizAnswers, useGetQuizzesDetails } from "@/services/quizServices";
+import {
+  useGetMyQuizAnswers,
+  useGetQuizzesDetails,
+} from "@/services/quizServices";
 import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
 import { QuizViewModel } from "@tajdid-academy/tajdid-corelib";
 import { useLocalSearchParams } from "expo-router";
@@ -29,7 +32,7 @@ export default function QuizDetailsScreen() {
           curriculum={courseDetails?.curriculum}
           quizDetails={quizDetails as QuizViewModel}
           courseId={courseIdNumber}
-          myQuizAnswer={myQuizAnswer}
+          myQuizAnswer={myQuizAnswer ?? []}
         />
       )}
     </View>
