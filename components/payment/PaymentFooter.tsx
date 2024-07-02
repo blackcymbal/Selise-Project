@@ -2,8 +2,9 @@ import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { useCreateTransactions } from "@/services/courseService";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
+import { useQueryClient } from "@tanstack/react-query";
 import * as Linking from "expo-linking";
-import { useLocalSearchParams, usePathname } from "expo-router";
+import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import React, { useEffect } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
@@ -18,12 +19,13 @@ export default function PaymentFooter({
   isFreeCourse,
   course,
 }: PaymentFooterProps) {
-  const params = useLocalSearchParams();
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
   const transactionsMutation = useCreateTransactions();
+  const queryClient = useQueryClient();
 
-  const pathName = usePathname();
-  const redirectUrl = Linking.createURL(pathName);
+  // const pathName = usePathname();
+
+  const redirectUrl = Linking.createURL("/screens/(tabs)/myCourses");
 
   const finalPrice = course?.discount
     ? course?.price * (1 - course?.discount / 100)
@@ -31,23 +33,29 @@ export default function PaymentFooter({
 
   const handlePayment = () => {
     const requestBody = {
-      courseSlug: params?.courseSlug,
+      courseId: course?.id,
+      courseSlug: course?.slug,
       paymentMethod: "NAGAD",
       curriculumType: "COURSE",
       redirectUrl: redirectUrl,
     };
     transactionsMutation.mutate(requestBody, {
       onSuccess: async (data) => {
-        const result = await WebBrowser.openBrowserAsync(
-          data?.data?.redirectGatewayURL
-        );
-        console.log(result);
+        queryClient.invalidateQueries({ queryKey: ["enrolledCourse"] });
+        if (data?.data?.redirectGatewayURL) {
+          const result = await WebBrowser.openBrowserAsync(
+            data?.data?.redirectGatewayURL
+          );
+          console.log(result);
+        } else {
+          router.replace("/screens/(tabs)/myCourses");
+        }
       },
     });
   };
 
   useEffect(() => {
-    const handleRedirect = (event) => {
+    const handleRedirect = (event: Linking.EventType) => {
       const { url } = event;
       console.log("Redirect URL:", url);
 
