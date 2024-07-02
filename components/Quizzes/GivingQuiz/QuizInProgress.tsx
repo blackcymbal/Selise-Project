@@ -108,7 +108,7 @@ export default function QuizInProgress({
       </Container>
 
       <ScrollView>
-        <Container p={4} mb={36}>
+        <Container p={4} >
           <Container gap={4} py={4} style={styles.container}>
             {quizDetails?.questions?.map((item, index) => (
               <QuizInProgressQuestions

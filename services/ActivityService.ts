@@ -74,6 +74,7 @@ export const createActivityForQuiz = () => {
         .then((response) => response?.data);
     },
     onSuccess: (response) => {
+      console.log(response.data);
       return response.data;
     },
     onError: (error: ApiErrorResponse) => {},

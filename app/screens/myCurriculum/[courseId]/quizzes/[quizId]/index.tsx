@@ -23,7 +23,7 @@ export default function QuizDetailsScreen() {
   const isEnrolled = getEnrollmentStatus(courseIdNumber);
 
   return (
-    <View style={{ backgroundColor: theme.colors.white }}>
+    <View style={{ backgroundColor: theme.colors.white, height: "100%" }}>
       {isPending ? (
         <Loader style={styles.loaderContainer} />
       ) : (
@@ -32,6 +32,8 @@ export default function QuizDetailsScreen() {
           curriculum={courseDetails?.curriculum}
           quizDetails={quizDetails as QuizViewModel}
           courseId={courseIdNumber}
+          moduleId={quizDetails?.moduleId}
+          quizId={quizDetails?.id}
           myQuizAnswer={myQuizAnswer ?? []}
         />
       )}

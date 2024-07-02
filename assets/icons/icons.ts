@@ -17,6 +17,7 @@ export { default as FacebookIcon } from "./facebook-icon.svg";
 export { default as File } from "./file.svg";
 export { default as Home } from "./home-01.svg";
 export { default as ImageUploadIcon } from "./image-upload-icon.svg";
+export { default as InformationIcon } from "./information-icon.svg";
 export { default as LeadInstructor } from "./lead-instructor-icon.svg";
 export { default as LockIcon } from "./lock-icon.svg";
 export { default as LockedIcon } from "./locked-icon.svg";
