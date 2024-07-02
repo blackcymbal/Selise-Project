@@ -4,8 +4,10 @@ import { QuizViewModel } from "@tajdid-academy/tajdid-corelib";
 import QuizInProgressQuestions from "./QuizInProgressQuestions";
 import { Container, ProgressBar, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QuizAnswerViewModel } from "@/services/quizServices";
+import { StopwatchIcon } from "@/assets/icons/icons";
+import { formatTime } from "@/utils/formatTime";
 
 type QuizInProgressProps = {
   courseId: number | undefined;
@@ -22,16 +24,17 @@ export default function QuizInProgress({
   myQuizAnswer,
   quizActivityId,
 }: QuizInProgressProps) {
-  const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
+  const [timer, setTimer] = useState(quizDetails.duration * 60);
   const [quizAnswer, setQuizAnswer] = useState<
     { questionId: number; optionId: number }[]
   >([]);
-
-  console.log("quiz answer :", quizAnswer);
+  const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
   const handleSubmitQuiz = () => {
     console.log("clicked");
   };
+
+  const progress = ((quizAnswer.length / (numberOfQuestions ?? 0)) * 100) | 0;
 
   const handleSetQuizAnswer = (questionId: number, optionId: number) => {
     const existingAnswer = !!quizAnswer.find(
@@ -55,7 +58,18 @@ export default function QuizInProgress({
     }
   };
 
-  const progress = ((quizAnswer.length / (numberOfQuestions ?? 0)) * 100) | 0;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer <= 0) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timer]);
 
   return (
     <>
@@ -73,11 +87,19 @@ export default function QuizInProgress({
             width={170}
           />
 
-          <View>
+          <View style={styles.timerContainer}>
             <Typography>
               {numberToDigitFormat(quizAnswer?.length)}/
               {numberToDigitFormat(numberOfQuestions ?? 0)}
             </Typography>
+            <View style={styles.iconTimerContainer}>
+              <StopwatchIcon
+                width={16}
+                height={16}
+                color={theme.colors.primary600}
+              />
+              <Typography>{formatTime(timer)}</Typography>
+            </View>
           </View>
         </View>
         <TouchableOpacity style={styles.submitButton}>
@@ -114,6 +136,17 @@ const styles = StyleSheet.create({
   progressContainer: {
     justifyContent: "space-between",
     backgroundColor: theme.colors.gray50,
+  },
+  timerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  iconTimerContainer: {
+    gap: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   submitButton: {
     backgroundColor: theme.colors.primary600,
