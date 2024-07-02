@@ -1,5 +1,5 @@
-import QuizDashboard from "@/components/Quizzes/GivingQuiz/QuizDashboard";
 import Loader from "@/components/global/Loader";
+import QuizDashboard from "@/components/quizzes/giving-quiz/QuizDashboard";
 import theme from "@/constants/theme";
 import { useGetCourse } from "@/services/courseService";
 import {
