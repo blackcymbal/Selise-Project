@@ -28,10 +28,16 @@ export default function ResultCard({
       </View>
       <View>
         <Typography size="sm">{title}</Typography>
-        <Typography size="xl" weight="semiBold" color="gray900">
-          {subTitle}{" "}
-          {title == "সময় নিয়েছেন" && <Typography size="sm">মিনিট</Typography>}
-        </Typography>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Typography size="xl" weight="semiBold" color="gray900">
+            {subTitle}{" "}
+          </Typography>
+          <Typography>
+            {(title == "সময় নিয়েছেন" || title == "সময় কাল") && (
+              <Typography size="sm">মিনিট</Typography>
+            )}
+          </Typography>
+        </View>
       </View>
     </Container>
   );
@@ -39,7 +45,7 @@ export default function ResultCard({
 
 const styles = StyleSheet.create({
   container: {
-    flexBasis: "47.5%",
+    flexBasis: "46.5%",
     borderWidth: 1,
     borderColor: theme.colors.gray200,
     borderRadius: 8,

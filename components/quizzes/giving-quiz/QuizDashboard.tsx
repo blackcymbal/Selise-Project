@@ -9,10 +9,18 @@ import { QuizAnswerViewModel } from "@/services/quizServices";
 import { Container, Typography } from "@/components/ui";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import theme from "@/constants/theme";
-import { ArrowRight, InformationIcon } from "@/assets/icons/icons";
+import {
+  ArrowRight,
+  FileUnknown,
+  InformationIcon,
+  Medal,
+  Policy,
+  StopwatchIcon,
+} from "@/assets/icons/icons";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { createActivityForQuiz } from "@/services/ActivityService";
 import { getCurrentModuleAndContentInfo } from "@/utils/getCurrentModuleContentInfo";
+import ResultCard from "@/components/courses/quiz/ResultCard";
 
 type QuizDashboardProps = {
   curriculum?: CourseCurriculum[];
@@ -68,6 +76,37 @@ export default function QuizDashboard({
     // );
   };
 
+  const quizData = [
+    {
+      icon: Policy,
+      title: "টোটাল মার্ক",
+      subTitle: quizDetails?.questions.length,
+      iconColor: theme.colors.blue600,
+      backgroundColor: theme.colors.blue50,
+    },
+    {
+      icon: StopwatchIcon,
+      title: "সময় কাল",
+      subTitle: quizDetails?.duration,
+      iconColor: theme.colors.purple600,
+      backgroundColor: theme.colors.purple50,
+    },
+    {
+      icon: FileUnknown,
+      title: "প্রশ্নসংখ্যা",
+      subTitle: quizDetails?.questions.length,
+      iconColor: theme.colors.error600,
+      backgroundColor: theme.colors.error50,
+    },
+    {
+      icon: Medal,
+      title: "পাশ মার্ক",
+      subTitle: `${quizDetails?.passMarks}%`,
+      iconColor: theme.colors.cyan600,
+      backgroundColor: theme.colors.cyan50,
+    },
+  ];
+
   return (
     <>
       <CourseDetailsTopBar
@@ -79,32 +118,25 @@ export default function QuizDashboard({
       {!isQuizActive ? (
         <>
           <Container gap={14} py={4}>
-            <View>
-              <Typography>
-                {`কুইজ : ${numberToDigitFormat(
-                  currentModuleIndex ?? 0
-                )}.${numberToDigitFormat(contentIndex ?? 0)} `}{" "}
-                : {currentModule?.title}
-              </Typography>
+            <Container
+              flexDirection="row"
+              gap={5}
+              px={0}
+              py={4}
+              style={{ justifyContent: "space-between", flexWrap: "wrap" }}
+            >
+              {quizData.map((item, idx) => (
+                <ResultCard
+                  key={idx}
+                  Icon={item.icon}
+                  title={item.title}
+                  subTitle={item.subTitle.toString()}
+                  iconColor={item.iconColor}
+                  backgroundColor={item.backgroundColor}
+                />
+              ))}
+            </Container>
 
-              <Typography>
-                টোটাল মার্ক:{" "}
-                {numberToDigitFormat(quizDetails?.questions.length)}
-              </Typography>
-
-              <Typography>
-                সময় কাল: {numberToDigitFormat(quizDetails?.duration)} মিনিট
-              </Typography>
-
-              <Typography>
-                প্রশ্ন সংখ্যা:{" "}
-                {numberToDigitFormat(quizDetails?.questions.length)}
-              </Typography>
-
-              <Typography>
-                পাশ মার্ক: {numberToDigitFormat(quizDetails?.passMarks)}%
-              </Typography>
-            </View>
             <Container
               py={8}
               gap={4}

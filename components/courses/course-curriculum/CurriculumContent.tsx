@@ -146,11 +146,12 @@ export default function CurriculumContent({
           </Typography>
         )}
 
-        {isFree && (
-          <Typography px={1} color="white" style={styles.freeCourseLabel}>
-            ফ্রি প্রিভিউ
-          </Typography>
-        )}
+        {isEnrolled ||
+          (isFree && (
+            <Typography px={1} color="white" style={styles.freeCourseLabel}>
+              ফ্রি প্রিভিউ
+            </Typography>
+          ))}
       </View>
     </View>
   );

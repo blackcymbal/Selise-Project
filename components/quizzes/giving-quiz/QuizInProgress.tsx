@@ -84,7 +84,7 @@ export default function QuizInProgress({
             color={theme.colors.primary600}
             height={8}
             progress={progress}
-            width={170}
+            width={180}
           />
 
           <View style={styles.timerContainer}>
