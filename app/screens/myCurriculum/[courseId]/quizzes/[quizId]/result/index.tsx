@@ -1,4 +1,9 @@
 import { CourseDetailsTopBar } from "@/components/courses";
+import ResultCard from "@/components/courses/quiz/ResultCard";
+import ResultDetails from "@/components/courses/quiz/ResultDetails";
+import ResultSummery from "@/components/courses/quiz/ResultSummery";
+import { Container } from "@/components/ui";
+import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { useGetCourse } from "@/services/courseService";
 import {
@@ -8,7 +13,7 @@ import {
 import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
 import { getCurrentModuleAndContentInfo } from "@/utils/getCurrentModuleAndContentInfo";
 import { useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function QuizResultScreen() {
   const { courseId, quizId } = useLocalSearchParams();
@@ -23,22 +28,75 @@ export default function QuizResultScreen() {
 
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
-  const { currentModule, currentModuleIndex, contentIndex } =
+  const { currentModule, currentModuleIndex, contentIndex, content } =
     getCurrentModuleAndContentInfo(
       quizIdNumber,
       courseDetails?.curriculum ?? []
     );
 
-  console.log("My answer: ", myQuizAnswer);
+  const calculateCorrectAnswers = () => {
+    const correctAnswers = myQuizAnswer.filter((userAnswer) => {
+      const question = quizDetails.questions.find(
+        (q) => q.id === userAnswer.questionId
+      );
+      if (question) {
+        const isCorrect = question?.options?.some(
+          (option) => option.id === userAnswer.optionId && option.isCorrect
+        );
+        return isCorrect;
+      }
+      return false;
+    });
+
+    return correctAnswers.length;
+  };
+
+  const correctAnswersCount = calculateCorrectAnswers();
+  const totalQuestions = quizDetails?.questions.length || 0;
+
+  const acquiredScore = Math.round(
+    (correctAnswersCount / totalQuestions) * 100
+  );
+
+  const wrongAnswer =
+    quizDetails?.questions.length &&
+    quizDetails?.questions.length - correctAnswersCount;
+
+  const takenTime =
+    quizDetails.duration * 60 -
+    ((content?.type === "QUIZ" && content?.timeTaken) || 0);
+
+  const isPassed = acquiredScore >= quizDetails.passMarks ? true : false;
+
+  console.log(
+    "My answer: ",
+    correctAnswersCount,
+    wrongAnswer,
+    takenTime,
+    isPassed,
+    acquiredScore
+  );
 
   return (
-    <View>
+    <View style={styles.container}>
       <CourseDetailsTopBar
         title={`কুইজ ফলাফল : ${numberToDigitFormat(
           currentModuleIndex ?? 0
         )}.${numberToDigitFormat(contentIndex ?? 0)} `}
       />
-      <Text>QuizResultScreen</Text>
+      <ResultSummery isPassed={isPassed} acquiredScore={acquiredScore} />
+
+      <ResultDetails
+        totalQuestion={totalQuestions}
+        rightAnswer={correctAnswersCount}
+        wrongAnswer={wrongAnswer}
+        score={acquiredScore}
+        takenTime={takenTime}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { backgroundColor: theme.colors.white, height: "100%" },
+});

@@ -2,31 +2,38 @@ import { FailIcon, PassIcon } from "@/assets/icons/icons";
 import Divider from "@/components/global/Divider";
 import { Button, Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
 type ResultSummeryProps = {
-  isFailed?: boolean;
+  isPassed?: boolean;
+  acquiredScore?: number;
 };
 
-export default function ResultSummery({ isFailed = true }: ResultSummeryProps) {
+export default function ResultSummery({
+  isPassed,
+  acquiredScore,
+}: ResultSummeryProps) {
+  const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
+
   return (
     <Container>
       <Container py={6} mt={4} style={styles.container}>
         <View style={{ alignItems: "center" }}>
-          {isFailed ? <FailIcon height={56} /> : <PassIcon height={56} />}
+          {!isPassed ? <FailIcon height={56} /> : <PassIcon height={56} />}
           <Typography
             size="lg"
             weight="semiBold"
-            color={isFailed ? "error600" : "successDefault"}
+            color={!isPassed ? "error600" : "successDefault"}
             mt={6}
           >
-            {isFailed
+            {!isPassed
               ? "দুঃখিত, আপনি পাশ করেন নি"
               : "অভিনন্দন, আপনি পাশ করেছেন"}
           </Typography>
           <Typography size="sm" color="gray700">
-            আপনি ৩০% স্কোর অর্জন করেছেন
+            আপনি {numberToDigitFormat(acquiredScore ?? 0)}% স্কোর অর্জন করেছেন
           </Typography>
         </View>
       </Container>

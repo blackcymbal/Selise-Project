@@ -8,37 +8,56 @@ import {
 import { Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { Link } from "expo-router";
-import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import ResultCard from "./ResultCard";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { formatTime } from "@/utils/formatTime";
 
-export default function ResultDetails() {
+type ResultDetailsProps = {
+  totalQuestion?: number;
+  rightAnswer?: number;
+  takenTime?: number;
+  wrongAnswer?: number;
+  score?: number;
+};
+
+export default function ResultDetails({
+  totalQuestion,
+  rightAnswer,
+  takenTime,
+  wrongAnswer,
+  score,
+}: ResultDetailsProps) {
+  const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
+
   const data = [
     {
       icon: Policy,
       title: "সঠিক উত্তর",
-      subTitle: "৩/১০",
+      subTitle: `${numberToDigitFormat(rightAnswer ?? 0)}/${numberToDigitFormat(
+        totalQuestion ?? 0
+      )}`,
       iconColor: theme.colors.blue600,
       backgroundColor: theme.colors.blue50,
     },
     {
       icon: StopWatch,
       title: "সময় নিয়েছেন",
-      subTitle: "৮",
+      subTitle: formatTime(takenTime ?? 0),
       iconColor: theme.colors.purple600,
       backgroundColor: theme.colors.purple50,
     },
     {
       icon: FileUnknown,
       title: "ভুল উত্তর",
-      subTitle: "৭",
+      subTitle: numberToDigitFormat(wrongAnswer ?? 0),
       iconColor: theme.colors.error600,
       backgroundColor: theme.colors.error50,
     },
     {
       icon: Medal,
       title: "অর্জিত স্কোর",
-      subTitle: "৩০%",
+      subTitle: `${numberToDigitFormat(score ?? 0)}%`,
       iconColor: theme.colors.cyan600,
       backgroundColor: theme.colors.cyan50,
     },
@@ -51,7 +70,7 @@ export default function ResultDetails() {
             key={idx}
             Icon={item.icon}
             title={item.title}
-            subTitle={item.subTitle}
+            subTitle={item.subTitle.toString()}
             iconColor={item.iconColor}
             backgroundColor={item.backgroundColor}
           />

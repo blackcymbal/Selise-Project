@@ -1,6 +1,5 @@
 import { Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SvgProps } from "react-native-svg";
 
