@@ -5,9 +5,17 @@ import QuizInProgressQuestions from "./QuizInProgressQuestions";
 import { Container, ProgressBar, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useEffect, useState } from "react";
-import { QuizAnswerViewModel } from "@/services/quizServices";
+import {
+  QuizAnswerViewModel,
+  useCreateBulkQuizAnswers,
+  useUpdateBulkQuizAnswers,
+} from "@/services/quizServices";
 import { StopwatchIcon } from "@/assets/icons/icons";
 import { formatTime } from "@/utils/formatTime";
+import { router } from "expo-router";
+import ShowAlert from "@/components/global/ShowAlert";
+import { useCompleteActivity } from "@/services/activityService";
+import { CourseUtils } from "@/utils/courseUtils";
 
 type QuizInProgressProps = {
   courseId: number | undefined;
@@ -30,9 +38,33 @@ export default function QuizInProgress({
   >([]);
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
-  const handleSubmitQuiz = () => {
-    console.log("clicked");
+  const createBulkQuizAnswers = useCreateBulkQuizAnswers();
+  const updateBulkQuizAnswers = useUpdateBulkQuizAnswers();
+  const completeActivity = useCompleteActivity();
+
+  const findAnswerIdByQuestionId = (questionId: number) => {
+    const answer = myQuizAnswer.find((item) => item.questionId === questionId);
+    return answer && answer.id;
   };
+
+  const updatedQuizAnswer = quizAnswer.map(({ questionId, optionId }) => ({
+    id: findAnswerIdByQuestionId(questionId),
+    optionId,
+  }));
+
+  const filteredUpdateQuizAnswer = updatedQuizAnswer.filter(
+    (item) => item.id !== undefined
+  );
+
+  const filteredUndefinedUpdateQuizAnswer = updatedQuizAnswer.filter(
+    (item) => item.id === undefined
+  );
+
+  const newQuizAnswer = quizAnswer.filter((item) =>
+    filteredUndefinedUpdateQuizAnswer.some(
+      (answer) => answer.optionId === item.optionId
+    )
+  );
 
   const progress = ((quizAnswer.length / (numberOfQuestions ?? 0)) * 100) | 0;
 
@@ -71,6 +103,86 @@ export default function QuizInProgress({
     return () => clearInterval(interval);
   }, [timer]);
 
+  const handleSubmitQuizAnswers = async () => {
+    if (!quizActivityId) {
+      const data = {
+        quizId: quizDetails?.id,
+        answers: quizAnswer,
+      };
+
+      createBulkQuizAnswers.mutate(data, {
+        onSuccess: (response) => {
+          if (response) {
+            router.replace(
+              `${CourseUtils.curriculumContentTypeToLinkMap["QUIZ"](
+                courseId ?? 0,
+                quizDetails.id
+              )}/result`
+            );
+          } else {
+            ShowAlert({
+              type: "Error",
+              message: `Failed to submit quiz answers.`,
+            });
+          }
+        },
+      });
+    } else if (quizActivityId && newQuizAnswer.length) {
+      const data = {
+        quizId: quizDetails?.id,
+        answers: newQuizAnswer,
+      };
+
+      createBulkQuizAnswers.mutate(data, {
+        onSuccess: (response) => {
+          if (response) {
+            completeActivity.mutate({
+              activityId: quizActivityId,
+              timeTaken: timer,
+            });
+            router.replace(
+              `${CourseUtils.curriculumContentTypeToLinkMap["QUIZ"](
+                courseId ?? 0,
+                quizDetails.id
+              )}/result`
+            );
+          } else {
+            ShowAlert({
+              type: "Error",
+              message: `Failed to submit quiz answers.`,
+            });
+          }
+        },
+      });
+    } else {
+      const data = {
+        answers: filteredUpdateQuizAnswer,
+      };
+
+      updateBulkQuizAnswers.mutate(data, {
+        onSuccess: (response) => {
+          if (response) {
+            completeActivity.mutate({
+              activityId: quizActivityId,
+              timeTaken: timer,
+            });
+            router.replace(
+              `${CourseUtils.curriculumContentTypeToLinkMap["QUIZ"](
+                courseId ?? 0,
+                quizDetails.id
+              )}/result`
+            );
+          } else {
+            ShowAlert({
+              type: "Error",
+              message: `Failed to submit quiz answers.`,
+            });
+          }
+        },
+      });
+    }
+  };
+
   return (
     <>
       <Container
@@ -102,13 +214,16 @@ export default function QuizInProgress({
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.submitButton}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleSubmitQuizAnswers}
+        >
           <Typography color="white">শেষ করুন</Typography>
         </TouchableOpacity>
       </Container>
 
       <ScrollView>
-        <Container p={4} >
+        <Container p={4}>
           <Container gap={4} py={4} style={styles.container}>
             {quizDetails?.questions?.map((item, index) => (
               <QuizInProgressQuestions

@@ -13,6 +13,11 @@ type CreateActivityForLessonRequest = {
   type: "LESSON";
 };
 
+type CompleteActivityRequest = {
+  activityId: number | undefined;
+  timeTaken?: number;
+};
+
 export const createActivityForLesson = () => {
   const axiosClient = useAxios();
 
@@ -70,6 +75,34 @@ export const useGetActivityForACourse = (courseId: number | undefined) => {
         `/activities/me/course/${courseId}`
       );
       return data?.data;
+    },
+  });
+};
+
+export const useCompleteActivity = () => {
+  const axiosClient = useAxios();
+  return useMutation<
+    ApiSuccessResponse<ActivityViewModel>,
+    ApiErrorResponse,
+    CompleteActivityRequest
+  >({
+    mutationFn: async (data) => {
+      // Below I have to clearify from Sohaib or Mohib bhai how it works
+      const requestBody = {
+        timeTaken: data?.timeTaken,
+      };
+      return axiosClient
+        .put(
+          `/activities/${data?.activityId}/complete`,
+          JSON.stringify(requestBody)
+        )
+        .then((response) => response?.data);
+    },
+    onSuccess: (response) => {
+      return response.data;
+    },
+    onError: (error: ApiErrorResponse) => {
+      console.log("lesson error activity:", error);
     },
   });
 };
