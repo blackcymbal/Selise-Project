@@ -7,7 +7,7 @@ import { CourseDetailsTopBar } from "@/components/courses";
 import { useState } from "react";
 import { QuizAnswerViewModel } from "@/services/quizServices";
 import { Container, Typography } from "@/components/ui";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import theme from "@/constants/theme";
 import {
   ArrowRight,
@@ -18,9 +18,12 @@ import {
   StopwatchIcon,
 } from "@/assets/icons/icons";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { createActivityForQuiz } from "@/services/ActivityService";
-import { getCurrentModuleAndContentInfo } from "@/utils/getCurrentModuleContentInfo";
 import ResultCard from "@/components/courses/quiz/ResultCard";
+import { getCurrentModuleAndContentInfo } from "@/utils/getCurrentModuleAndContentInfo";
+import {
+  createActivityForQuiz,
+  useGetActivityForACourse,
+} from "@/services/activityService";
 
 type QuizDashboardProps = {
   curriculum?: CourseCurriculum[];
@@ -49,31 +52,36 @@ export default function QuizDashboard({
   const { currentModule, currentModuleIndex, contentIndex } =
     getCurrentModuleAndContentInfo(quizDetails.id, curriculum ?? []);
 
-  const activityForQuiz = createActivityForQuiz();
+  const { data: myActivities } = useGetActivityForACourse(courseId);
 
-  const content = curriculum
-    ?.flatMap((module) => module.contents)
-    .find((content) => content.id === quizId);
-  // console.log("content :", content?.activityStatus);
+  const quizActivityData = myActivities?.QUIZ
+    ? myActivities?.QUIZ[`${quizId}`]
+    : undefined;
+
+  const activityForQuiz = createActivityForQuiz();
 
   const handleStartQuiz = () => {
     setIsQuizActive(true);
 
-    // activityForQuiz.mutate(
-    //   {
-    //     courseId,
-    //     moduleId,
-    //     quizId,
-    //     type: "QUIZ",
-    //   },
-    //   {
-    //     onSuccess: (response) => {
-    //       if (response.status === "success") {
-    //         setActivityId(response.data?.id);
-    //       }
-    //     },
-    //   }
-    // );
+    if (!quizActivityData) {
+      activityForQuiz.mutate(
+        {
+          courseId,
+          moduleId,
+          quizId,
+          type: "QUIZ",
+        },
+        {
+          onSuccess: (response) => {
+            if (response.status === "success") {
+              setActivityId(response.data?.id);
+            }
+          },
+        }
+      );
+    } else {
+      setActivityId(quizActivityData?.activityId);
+    }
   };
 
   const quizData = [

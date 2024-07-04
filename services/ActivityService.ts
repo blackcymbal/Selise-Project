@@ -4,7 +4,7 @@ import {
   ApiErrorResponse,
   ApiSuccessResponse,
 } from "@tajdid-academy/tajdid-corelib";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 type CreateActivityForLessonRequest = {
   courseId: number | undefined;
@@ -33,26 +33,6 @@ export const createActivityForLesson = () => {
   });
 };
 
-// /activities/${activityId}/complete
-
-// export const completeActivity = (activityId?: number, timeTaken?: number) => {
-//   const axiosClient = useAxios();
-
-//   return useMutation<ApiSuccessResponse<ActivityViewModel>, ApiErrorResponse>({
-//     mutationFn: async (data) => {
-//       return axiosClient
-//         .put(`/activities/${activityId}/complete`, data)
-//         .then((response) => response?.data);
-//     },
-//     onSuccess: (response) => {
-//       return response.data;
-//     },
-//     onError: (error: ApiErrorResponse) => {
-//       console.log("lesson error activity:", error);
-//     },
-//   });
-// };
-
 type CreateActivityForQuizRequest = {
   courseId: number | undefined;
   moduleId: number | undefined;
@@ -78,5 +58,18 @@ export const createActivityForQuiz = () => {
       return response.data;
     },
     onError: (error: ApiErrorResponse) => {},
+  });
+};
+
+export const useGetActivityForACourse = (courseId: number | undefined) => {
+  const axios = useAxios();
+  return useQuery<ActivityViewModel, Error>({
+    queryKey: ["courseActivity"],
+    queryFn: async () => {
+      const { data } = await axios.get<ApiSuccessResponse<ActivityViewModel>>(
+        `/activities/me/course/${courseId}`
+      );
+      return data?.data;
+    },
   });
 };
