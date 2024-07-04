@@ -68,15 +68,6 @@ export default function QuizResultScreen() {
 
   const isPassed = acquiredScore >= quizDetails.passMarks ? true : false;
 
-  console.log(
-    "My answer: ",
-    correctAnswersCount,
-    wrongAnswer,
-    takenTime,
-    isPassed,
-    acquiredScore
-  );
-
   return (
     <View style={styles.container}>
       <CourseDetailsTopBar
