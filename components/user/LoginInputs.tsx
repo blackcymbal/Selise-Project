@@ -1,6 +1,7 @@
 import theme from "@/constants/theme";
 import { useCheckUserExistence } from "@/services/authService";
-import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useRef, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
@@ -8,7 +9,9 @@ import { Button, Typography } from "../ui";
 import ErrorMessage from "../ui/ErrorMessage";
 
 const LoginInputs = () => {
-  const [phoneNumer, setPhoneNumber] = useState("");
+  const params = useLocalSearchParams();
+
+  const [phoneNumber, setPhoneNumber] = useState(params?.phoneNumber);
   const [countryCode, setCountryCode] = useState("BD");
   const [dialCode, setDialCode] = useState("+88");
   const [errorMessage, setErrorMessage] = useState<string | null>();
@@ -17,12 +20,13 @@ const LoginInputs = () => {
 
   const { mutate, isPending } = useCheckUserExistence();
 
-  const handlePress = () => {
+  const handlePress = async () => {
     const finalData = {
-      phone: "0" + phoneNumer,
+      phone: "0" + phoneNumber,
       countryCode: countryCode,
       dialCode: dialCode,
     };
+    await AsyncStorage.setItem("phoneNumber", phoneNumber);
 
     mutate(finalData, {
       onSuccess: (data) => {
@@ -50,8 +54,9 @@ const LoginInputs = () => {
       </Typography>
       <PhoneInput
         ref={phoneInput}
-        placeholder={" "}
+        placeholder={""}
         defaultCode={"BD"}
+        value={params?.phoneNumber ? String(params?.phoneNumber) : ""}
         layout="first"
         onChangeCountry={(code) => {
           setDialCode("+" + code?.callingCode[0]?.slice(0, -1));
@@ -67,7 +72,7 @@ const LoginInputs = () => {
         codeTextStyle={styles.codeTextStyle}
       />
       <Button
-        active={phoneNumer?.length > 9 ? true : false}
+        active={phoneNumber?.length > 9 ? true : false}
         isLoading={isPending}
         buttonStyle="inline"
         onPress={handlePress}

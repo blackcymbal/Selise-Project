@@ -6,6 +6,7 @@ import {
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
 import useAuth from "@/hooks/auth/useAuth";
+import useGetLocalData from "@/hooks/useGetLocalData";
 import {
   UpdateMyProfileRequest,
   useUpdateMyProfile,
@@ -38,6 +39,8 @@ type ProfileDetailsProps = {
 export default function ProfileDetails({ user }: ProfileDetailsProps) {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
+  const { data: phoneNumber, loading: phoneNumerLoading } =
+    useGetLocalData("phoneNumber");
   const { removeAuth } = useAuth();
   const { mutate, isPending } = useUpdateMyProfile();
 
@@ -84,7 +87,12 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
 
   const handleLogout = () => {
     removeAuth();
-    router.replace("/signIn");
+    if (!phoneNumerLoading) {
+      router.replace({
+        pathname: "/signIn",
+        params: { phoneNumber: String(phoneNumber) },
+      });
+    }
   };
 
   return (
