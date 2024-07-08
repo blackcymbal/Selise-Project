@@ -82,8 +82,6 @@ export default LoginInputs;
 const styles = StyleSheet.create({
   container: { width: "100%", marginTop: 20 },
   input: {
-    marginTop: 8,
-    marginBottom: 16,
     width: "100%",
     height: 48,
   },
@@ -96,6 +94,7 @@ const styles = StyleSheet.create({
     height: 48,
     padding: 0,
     marginTop: 8,
+    marginBottom: 16,
   },
   textContainerStyle: {
     backgroundColor: "#fff",
