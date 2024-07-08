@@ -6,6 +6,10 @@ import {
 } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
 import useAuth from "@/hooks/auth/useAuth";
+import {
+  UpdateMyProfileRequest,
+  useUpdateMyProfile,
+} from "@/services/authService";
 import { FilePathUtils, fallbackImages } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
@@ -23,13 +27,9 @@ import {
 } from "react-native";
 import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
-import { Container, SectionDivider, Typography } from "../ui";
+import { Button, Container, SectionDivider, Typography } from "../ui";
 import ErrorMessage from "../ui/ErrorMessage";
 import { profileSchema } from "./profile-schema";
-import {
-  UpdateMyProfileRequest,
-  useUpdateMyProfile,
-} from "@/services/authService";
 
 type ProfileDetailsProps = {
   user: UserViewModel | null;
@@ -39,7 +39,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
   const { removeAuth } = useAuth();
-  const updateMyProfileMutation = useUpdateMyProfile();
+  const { mutate, isPending } = useUpdateMyProfile();
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -79,7 +79,7 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
     const requestData = {
       ...data,
     };
-    updateMyProfileMutation.mutate(requestData);
+    mutate(requestData);
   };
 
   const handleLogout = () => {
@@ -355,14 +355,15 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
           </View>
-          <TouchableOpacity
-            style={styles.updateBtn}
+
+          <Button
+            active={true}
+            isLoading={isPending}
+            buttonStyle="inline"
             onPress={handleSubmit(onSubmit)}
           >
-            <Typography weight="semiBold" color="white">
-              প্রোফাইল তথ্য আপডেট করুন
-            </Typography>
-          </TouchableOpacity>
+            প্রোফাইল তথ্য আপডেট করুন
+          </Button>
         </Container>
       </ScrollView>
     </>
@@ -437,13 +438,5 @@ const styles = StyleSheet.create({
   },
   errorInput: {
     borderColor: theme.colors.error500,
-  },
-  updateBtn: {
-    paddingHorizontal: 32,
-    paddingVertical: 12,
-    backgroundColor: theme.colors.primary600,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
   },
 });

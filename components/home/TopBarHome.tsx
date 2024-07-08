@@ -1,4 +1,4 @@
-import { Notification, Search, User } from "@/assets/icons/icons";
+import { User } from "@/assets/icons/icons";
 import React from "react";
 import {
   Image,
@@ -12,6 +12,7 @@ import bgImage from "@/assets/images/topbar-bg.png";
 import theme from "@/constants/theme";
 import useAuth from "@/hooks/auth/useAuth";
 import { FilePathUtils, fallbackImages } from "@/utils";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Typography } from "../ui";
 
@@ -21,7 +22,10 @@ const TopBarHome = () => {
   return (
     <SafeAreaView edges={["top"]} style={styles.container}>
       <ImageBackground source={bgImage} resizeMode="cover" style={styles.inner}>
-        <View style={styles.section}>
+        <TouchableOpacity
+          style={styles.section}
+          onPress={() => router.navigate("/screens/(tabs)/userProfile")}
+        >
           <View>
             {user?.picture ? (
               <Image
@@ -48,15 +52,16 @@ const TopBarHome = () => {
               তাজদিদ একাডেমির সাথে শিখুন
             </Typography>
           </View>
-        </View>
-        <View style={styles.section}>
+        </TouchableOpacity>
+        {/* Instructed to be hidden for now */}
+        {/* <View style={styles.section}>
           <TouchableOpacity>
             <Search color={"#fff"} height={24} width={24} />
           </TouchableOpacity>
           <TouchableOpacity>
             <Notification color={"#fff"} height={24} width={24} />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ImageBackground>
     </SafeAreaView>
   );

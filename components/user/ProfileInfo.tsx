@@ -17,7 +17,7 @@ type ProfileInfoProps = {
 };
 
 const ProfileInfo = ({ bottomSheetRef, image }: ProfileInfoProps) => {
-  const updateProfileMutation = useUpdateProfile();
+  const { mutate, isPending } = useUpdateProfile();
 
   const {
     control,
@@ -30,7 +30,7 @@ const ProfileInfo = ({ bottomSheetRef, image }: ProfileInfoProps) => {
   });
 
   const onSubmit = (data: UserUpdateRequest) => {
-    updateProfileMutation.mutate(data);
+    mutate(data);
   };
 
   return (
@@ -129,6 +129,7 @@ const ProfileInfo = ({ bottomSheetRef, image }: ProfileInfoProps) => {
 
       <Button
         active={isValid ? true : false}
+        isLoading={isPending}
         buttonStyle="inline"
         style={styles.button}
         onPress={handleSubmit(onSubmit)}

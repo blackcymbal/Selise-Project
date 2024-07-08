@@ -15,7 +15,7 @@ const LoginInputs = () => {
 
   const phoneInput = useRef<PhoneInput>(null);
 
-  const checkUserExistenceMutation = useCheckUserExistence();
+  const { mutate, isPending } = useCheckUserExistence();
 
   const handlePress = () => {
     const finalData = {
@@ -24,7 +24,7 @@ const LoginInputs = () => {
       dialCode: dialCode,
     };
 
-    checkUserExistenceMutation.mutate(finalData, {
+    mutate(finalData, {
       onSuccess: (data) => {
         setErrorMessage(undefined);
         router.replace({
@@ -68,6 +68,7 @@ const LoginInputs = () => {
       />
       <Button
         active={phoneNumer?.length > 9 ? true : false}
+        isLoading={isPending}
         buttonStyle="inline"
         onPress={handlePress}
       >
