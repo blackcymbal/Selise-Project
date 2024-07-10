@@ -14,9 +14,14 @@ import { profileInfoSchema } from "./schema/SignupSchemas";
 type ProfileInfoProps = {
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   image: string;
+  uploadedImagePath: string;
 };
 
-const ProfileInfo = ({ bottomSheetRef, image }: ProfileInfoProps) => {
+const ProfileInfo = ({
+  bottomSheetRef,
+  image,
+  uploadedImagePath,
+}: ProfileInfoProps) => {
   const { mutate, isPending } = useUpdateProfile();
 
   const {
@@ -30,7 +35,11 @@ const ProfileInfo = ({ bottomSheetRef, image }: ProfileInfoProps) => {
   });
 
   const onSubmit = (data: UserUpdateRequest) => {
-    mutate(data);
+    const requestData = {
+      ...data,
+      picture: uploadedImagePath,
+    };
+    mutate(requestData);
   };
 
   return (

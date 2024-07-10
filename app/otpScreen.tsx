@@ -76,7 +76,7 @@ const OtpScreen = () => {
       >
         এগিয়ে যান
       </Button>
-      <OtpFooter phoneNumer={params?.phone as string} />
+      <OtpFooter phoneNumber={params?.phone as string} />
     </LoginScreenContainer>
   );
 };

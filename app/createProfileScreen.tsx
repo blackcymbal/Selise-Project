@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 const createProfileScreen = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [image, setImage] = useState("");
+  const [uploadedImagePath, setUploadedImagePath] = useState("");
 
   return (
     <KeyboardAvoidingContainer>
@@ -14,13 +15,17 @@ const createProfileScreen = () => {
           <Typography weight="semiBold" size="xl" color="gray900" mt={10}>
             প্রোফাইল তথ্যাবলি
           </Typography>
-          <ProfileInfo bottomSheetRef={bottomSheetRef} image={image} />
+          <ProfileInfo
+            bottomSheetRef={bottomSheetRef}
+            image={image}
+            uploadedImagePath={uploadedImagePath}
+          />
         </LoginScreenContainer>
 
         <ImageUploadBottomSheet
           bottomSheetRef={bottomSheetRef}
-          image={image}
           setImage={setImage}
+          setUploadedImagePath={setUploadedImagePath}
         />
       </>
     </KeyboardAvoidingContainer>

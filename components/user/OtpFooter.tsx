@@ -5,12 +5,16 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Container, Typography } from "../ui";
 
-type OtpFooterProps = { phoneNumer: string };
+type OtpFooterProps = { phoneNumber: string };
 
-export default function OtpFooter({ phoneNumer }: OtpFooterProps) {
+export default function OtpFooter({ phoneNumber }: OtpFooterProps) {
   const handleGoSignIn = () => {
-    router.replace("/signIn");
+    router.replace({
+      pathname: "/signIn",
+      params: { phoneNumber: phoneNumber.substring(1) },
+    });
   };
+
   return (
     <Container px={0} mt={8} style={styles.container}>
       <Typography>কোন কোড পাননি?</Typography>
@@ -30,7 +34,7 @@ export default function OtpFooter({ phoneNumer }: OtpFooterProps) {
         }}
       >
         <Typography style={styles.text1}>
-          মোবাইল নম্বরটি ভুল হয়নি তো? {phoneNumer}
+          মোবাইল নম্বরটি ভুল হয়নি তো? {phoneNumber}
         </Typography>
 
         <TouchableOpacity style={styles.button} onPress={handleGoSignIn}>
