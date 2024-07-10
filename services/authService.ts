@@ -1,4 +1,4 @@
-import ShowAlert from "@/components/global/ShowAlert";
+import { ShowToast } from "@/components/global/ShowAlert";
 import useAuth from "@/hooks/auth/useAuth";
 import useAxios, {
   ApiErrorResponse,
@@ -174,7 +174,7 @@ export const useUpdateMyProfile = () => {
     onSuccess: (data) => {
       queryClient.setQueryData(["myProfile"], data.data);
       setAuth(data.data, token as string);
-      ShowAlert({ message: "Profile Successfully Updated!", type: "Success" });
+      ShowToast({ message: "Profile Successfully Updated!", type: "success" });
     },
   });
 };

@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   container: { height: 250, borderRadius: 16, overflow: "hidden", zIndex: 1 },
   promoUrl: {
     width: "100%",
-    height: 200,
+    height: 250,
     borderRadius: 16,
   },
   promoPlayButton: {
