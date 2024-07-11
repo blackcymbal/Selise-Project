@@ -1,21 +1,22 @@
-import { StyleSheet, View } from "react-native";
-import {
-  ActivityStatus,
-  ActivityType,
-  ValueOf,
-} from "@tajdid-academy/tajdid-corelib";
-import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { Typography } from "@/components/ui";
 import {
   DocumentFIleIcon,
   LockedIcon,
   PlayCircleIcon,
   QuizIcon,
 } from "@/assets/icons/icons";
+import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { Link, usePathname } from "expo-router";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { useGetEnrolledCourses } from "@/services/enrollmentService";
 import { CourseUtils } from "@/utils/courseUtils";
+import {
+  ActivityStatus,
+  ActivityType,
+  ValueOf,
+} from "@tajdid-academy/tajdid-corelib";
+import { Link, usePathname } from "expo-router";
 import { ReactNode } from "react";
+import { StyleSheet, View } from "react-native";
 
 type CurriculumModuleContentProps = {
   type: ValueOf<typeof ActivityType>;
@@ -46,6 +47,10 @@ export default function CurriculumContent({
 
   const path = usePathname();
   const lessonId = decodeURIComponent(path.split("/")[5]);
+  const { data: enrolledCourses } = useGetEnrolledCourses();
+  const isEnrolled = enrolledCourses?.some(
+    (item) => item?.course?.id === courseId
+  );
 
   const typeToIconMap: Record<ValueOf<typeof ActivityType>, ReactNode> = {
     LESSON: (
@@ -125,7 +130,7 @@ export default function CurriculumContent({
           </Typography>
         )}
 
-        {type !== "QUIZ" && isFree && (
+        {type !== "QUIZ" && isFree && !isEnrolled && (
           <Typography px={1} color="white" style={styles.freeCourseLabel}>
             ফ্রি প্রিভিউ
           </Typography>
