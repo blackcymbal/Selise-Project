@@ -8,7 +8,7 @@ export const useGetCourses = () => {
     queryKey: ["courses"],
     queryFn: async () => {
       const { data } = await axios.get<ApiSuccessResponse<CourseViewModel[]>>(
-        `/courses?status=PUBLISHED&includeLessonCount=true`
+        `/courses?status=PUBLISHED&includeLessonCount=true&type=STANDALONE`
       );
       return data.data;
     },

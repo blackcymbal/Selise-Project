@@ -13,20 +13,22 @@ import { Link } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Container, Typography } from "../ui";
+import PromoInput from "./PromoInput";
 
 type CoursePurchaseProps = {
   course: CourseViewModel;
 };
 
 export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
+  const [isViewPromo, setIsViewPromo] = useState(true);
+  const [showPromoInput, setShowPromoInput] = useState(false);
+
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
   const discountPrice = course?.discount
     ? course?.price * (1 - course?.discount / 100)
     : course?.price;
 
   // TODO: have to dynamic
-
-  const [isViewPromo, setIsViewPromo] = useState(true);
 
   const { user } = useAuth();
   const { data: enrolledCourses } = useGetEnrolledCourses();
@@ -87,10 +89,9 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
         </View>
       )}
 
-      <View style={{ paddingHorizontal: 15, paddingVertical: 15 }}>
+      <Container py={4}>
         <View
           style={{
-            marginBottom: 15,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -122,16 +123,22 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
             </View>
           )}
           {!course?.isFree ? (
-            <View style={{ flexDirection: "row", gap: 8 }}>
+            <TouchableOpacity
+              onPress={() => setShowPromoInput(true)}
+              style={{ flexDirection: "row", gap: 8 }}
+            >
               <TicketPromoIcon />
               <Typography weight="bold" color="primary700">
-                এ্যাপ্লাই প্রমো কোড
+                এ্যাপ্লাই প্রোমো কোড
               </Typography>
-            </View>
+            </TouchableOpacity>
           ) : (
             ""
           )}
         </View>
+        {showPromoInput && <PromoInput setShowPromoInput={setShowPromoInput} />}
+        <View style={{ marginBottom: 16 }} />
+
         <Link
           style={{
             backgroundColor: theme.colors.primary600,
@@ -150,7 +157,7 @@ export default function CourseDetailsPurchase({ course }: CoursePurchaseProps) {
             {user && isEnrolled ? "চালিয়ে যান" : "কোর্সটি কিনুন"}
           </Typography>
         </Link>
-      </View>
+      </Container>
     </View>
   );
 }

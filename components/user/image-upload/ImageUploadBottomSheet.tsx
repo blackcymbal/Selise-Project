@@ -13,15 +13,17 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useCallback } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
+type ImageUploadBottomSheetProps = {
+  bottomSheetRef: React.RefObject<BottomSheetMethods>;
+  setImage: React.Dispatch<React.SetStateAction<string>>;
+  setUploadedImagePath: React.Dispatch<React.SetStateAction<string>>;
+};
+
 export default function ImageUploadBottomSheet({
   bottomSheetRef,
-  image,
   setImage,
-}: {
-  bottomSheetRef: React.RefObject<BottomSheetMethods>;
-  image: string;
-  setImage: React.Dispatch<React.SetStateAction<string>>;
-}) {
+  setUploadedImagePath,
+}: ImageUploadBottomSheetProps) {
   const { user } = useAuth();
 
   const uploadUserProfile = useUploadUserProfile();
@@ -66,11 +68,26 @@ export default function ImageUploadBottomSheet({
 
   const handleImagePicked = async (result: ImagePicker.ImagePickerResult) => {
     if (!result.canceled) {
+      console.log("image >>> ", result.assets);
+
       setImage(result.assets[0].uri);
-      // const formData = new FormData();
-      // formData.append("file", result.assets[0].uri);
-      // formData.append("id", user?.id?.toString());
-      // uploadUserProfile.mutate(formData);
+
+      const file = {
+        path: result.assets[0].uri,
+        name: result.assets[0].fileName,
+        type: result.assets[0].mimeType,
+        size: result.assets[0].fileSize,
+        webkitRelativePath: "",
+      };
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("id", user ? user?.id?.toString() : "");
+      uploadUserProfile.mutate(formData, {
+        onSuccess: (data) => {
+          setUploadedImagePath(data?.data?.name);
+        },
+      });
       bottomSheetRef.current?.close();
     } else {
       alert("You did not select any image.");

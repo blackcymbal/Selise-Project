@@ -5,7 +5,11 @@ import CourseCard from "../courses/CourseCard";
 import { Typography } from "../ui";
 
 export default function RecommendedCourses() {
-  const { data: courses } = useGetCourses();
+  const { data } = useGetCourses();
+
+  const filteredCourses = data?.filter(
+    (item) => item.id !== 59 && item.id !== 60
+  );
 
   return (
     <View style={styles.container}>
@@ -13,7 +17,7 @@ export default function RecommendedCourses() {
         রিকমেন্ডেড কোর্স
       </Typography>
       <View>
-        {courses?.slice(0, 3)?.map((course, idx) => (
+        {filteredCourses?.map((course, idx) => (
           <CourseCard course={course} key={idx} />
         ))}
       </View>
