@@ -1,20 +1,18 @@
-import {
-  DotsVerticalIcon,
-  ImageUploadIcon,
-  LogOutIcon,
-  User,
-} from "@/assets/icons/icons";
+import { DotsVerticalIcon, LogOutIcon } from "@/assets/icons/icons";
 import theme from "@/constants/theme";
 import useAuth from "@/hooks/auth/useAuth";
-import { FilePathUtils, fallbackImages } from "@/utils";
+import useGetLocalData from "@/hooks/useGetLocalData";
+import {
+  UpdateMyProfileRequest,
+  useUpdateMyProfile,
+} from "@/services/authService";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserViewModel } from "@tajdid-academy/tajdid-corelib";
-import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Image,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -23,36 +21,28 @@ import {
 } from "react-native";
 import Radio from "../radio/Radio";
 import RadioItem from "../radio/RadioItem";
-import { Container, SectionDivider, Typography } from "../ui";
+import { Button, Container, SectionDivider, Typography } from "../ui";
 import ErrorMessage from "../ui/ErrorMessage";
+import ImageUploadBottomSheet from "../user/image-upload/ImageUploadBottomSheet";
+import ImageUpdate from "./ImageUpdate";
 import { profileSchema } from "./profile-schema";
-import {
-  UpdateMyProfileRequest,
-  useUpdateMyProfile,
-} from "@/services/authService";
 
 type ProfileDetailsProps = {
   user: UserViewModel | null;
 };
 
 export default function ProfileDetails({ user }: ProfileDetailsProps) {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
   const [isShow, setIsShow] = useState(true);
   const [image, setImage] = useState("");
+  const [uploadedImagePath, setUploadedImagePath] = useState("");
+  const { data: phoneNumber, loading: phoneNumerLoading } =
+    useGetLocalData("phoneNumber");
   const { removeAuth } = useAuth();
-  const updateMyProfileMutation = useUpdateMyProfile();
+  const { mutate, isPending } = useUpdateMyProfile();
 
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    } else {
-      alert("You did not select any image.");
-    }
-  };
+  // console.log("Photo >>>>>>>> ", user?.picture);
 
   const {
     handleSubmit,
@@ -65,7 +55,6 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
       phone: user?.phone?.trim(),
       email: user?.email ?? "",
       designation: user?.designation ?? "",
-      picture: user?.picture ?? "",
       age: user?.age ? user?.age : undefined,
       gender: user?.gender,
     },
@@ -78,13 +67,21 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
 
     const requestData = {
       ...data,
+      picture:
+        uploadedImagePath.length !== 0 ? uploadedImagePath : user?.picture,
     };
-    updateMyProfileMutation.mutate(requestData);
+    console.log("requestData ????? ", requestData);
+    mutate(requestData);
   };
 
   const handleLogout = () => {
     removeAuth();
-    router.replace("/signIn");
+    if (!phoneNumerLoading) {
+      router.replace({
+        pathname: "/signIn",
+        params: { phoneNumber: String(phoneNumber) },
+      });
+    }
   };
 
   return (
@@ -123,51 +120,11 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
         </Container>
 
         <SectionDivider marginVertical={16} />
-
-        <Container>
-          <View style={styles.imageContainer}>
-            {image || user?.picture ? (
-              <Image
-                source={{
-                  uri: image
-                    ? image
-                    : user?.picture
-                    ? `${FilePathUtils.userProfilePath(user.id)}/${
-                        user.picture
-                      }`
-                    : fallbackImages.user,
-                }}
-                style={styles.imageStyle}
-              />
-            ) : (
-              <View style={styles.imageStyle}>
-                <User color={theme.colors.gray500} height={36} width={36} />
-              </View>
-            )}
-            <View>
-              <Typography weight="bold" size="xl" color="gray900">
-                {user?.name}
-              </Typography>
-              <Typography size="lg" color="gray600">
-                {user?.designation}
-              </Typography>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={styles.profilePicUpdateBtn}
-            onPress={pickImageAsync}
-          >
-            <ImageUploadIcon
-              width={20}
-              height={20}
-              color={theme.colors.primary700}
-            />
-            <Typography weight="semiBold" color="primary700">
-              ছবি আপলোড করুন
-            </Typography>
-          </TouchableOpacity>
-        </Container>
-
+        <ImageUpdate
+          image={image}
+          user={user}
+          bottomSheetRef={bottomSheetRef}
+        />
         <SectionDivider marginVertical={24} />
 
         <Container gap={4} pb={4}>
@@ -355,16 +312,22 @@ export default function ProfileDetails({ user }: ProfileDetailsProps) {
               )}
             />
           </View>
-          <TouchableOpacity
-            style={styles.updateBtn}
+
+          <Button
+            active={true}
+            isLoading={isPending}
+            buttonStyle="inline"
             onPress={handleSubmit(onSubmit)}
           >
-            <Typography weight="semiBold" color="white">
-              প্রোফাইল তথ্য আপডেট করুন
-            </Typography>
-          </TouchableOpacity>
+            প্রোফাইল তথ্য আপডেট করুন
+          </Button>
         </Container>
       </ScrollView>
+      <ImageUploadBottomSheet
+        bottomSheetRef={bottomSheetRef}
+        setImage={setImage}
+        setUploadedImagePath={setUploadedImagePath}
+      />
     </>
   );
 }
@@ -374,13 +337,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-  imageContainer: {
-    gap: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-start",
-    marginBottom: 16,
   },
   logOutButtonContainer: {
     position: "absolute",
@@ -401,28 +357,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 8,
   },
-  imageStyle: {
-    width: 72,
-    height: 72,
-    borderRadius: 200,
-    borderWidth: 1,
-    borderColor: theme.colors.gray200,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: theme.colors.gray100,
-  },
-  profilePicUpdateBtn: {
-    gap: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderWidth: 1,
-    borderColor: theme.colors.primary600,
-    backgroundColor: theme.colors.primary50,
-    borderRadius: 8,
-  },
   fieldContainer: {
     gap: 8,
   },
@@ -437,13 +371,5 @@ const styles = StyleSheet.create({
   },
   errorInput: {
     borderColor: theme.colors.error500,
-  },
-  updateBtn: {
-    paddingHorizontal: 32,
-    paddingVertical: 12,
-    backgroundColor: theme.colors.primary600,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
   },
 });

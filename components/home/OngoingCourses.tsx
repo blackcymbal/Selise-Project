@@ -1,6 +1,7 @@
 import MyCourseCard from "@/components/courses/MyCourseCard";
 import { Container, Typography } from "@/components/ui";
 import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
+import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -18,7 +19,9 @@ export default function OngoingCourses() {
         <Typography weight="bold" size="xl" color="gray900">
           অনগোয়িং কোর্স
         </Typography>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.navigate("/screens/(tabs)/myCourses")}
+        >
           <Typography weight="semiBold" size="sm" color="primary700">
             সব দেখুন
           </Typography>

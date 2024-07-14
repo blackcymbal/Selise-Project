@@ -12,13 +12,17 @@ import ImageUploader from "./image-upload/ImageUploader";
 import { profileInfoSchema } from "./schema/SignupSchemas";
 
 type ProfileInfoProps = {
-  path?: string;
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   image: string;
+  uploadedImagePath: string;
 };
 
-const ProfileInfo = ({ path, bottomSheetRef, image }: ProfileInfoProps) => {
-  const updateProfileMutation = useUpdateProfile(path);
+const ProfileInfo = ({
+  bottomSheetRef,
+  image,
+  uploadedImagePath,
+}: ProfileInfoProps) => {
+  const { mutate, isPending } = useUpdateProfile();
 
   const {
     control,
@@ -31,7 +35,11 @@ const ProfileInfo = ({ path, bottomSheetRef, image }: ProfileInfoProps) => {
   });
 
   const onSubmit = (data: UserUpdateRequest) => {
-    updateProfileMutation.mutate(data);
+    const requestData = {
+      ...data,
+      picture: uploadedImagePath,
+    };
+    mutate(requestData);
   };
 
   return (
@@ -130,6 +138,7 @@ const ProfileInfo = ({ path, bottomSheetRef, image }: ProfileInfoProps) => {
 
       <Button
         active={isValid ? true : false}
+        isLoading={isPending}
         buttonStyle="inline"
         style={styles.button}
         onPress={handleSubmit(onSubmit)}

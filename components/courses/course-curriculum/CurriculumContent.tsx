@@ -1,11 +1,3 @@
-import { StyleSheet, View } from "react-native";
-import {
-  ActivityStatus,
-  ActivityType,
-  ValueOf,
-} from "@tajdid-academy/tajdid-corelib";
-import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { Typography } from "@/components/ui";
 import {
   CheckMarkSquareIcon,
   DocumentFIleIcon,
@@ -13,11 +5,19 @@ import {
   PlayCircleIcon,
   QuizIcon,
 } from "@/assets/icons/icons";
+import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { Link, usePathname } from "expo-router";
+import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { CourseUtils } from "@/utils/courseUtils";
+import {
+  ActivityStatus,
+  ActivityType,
+  ValueOf,
+} from "@tajdid-academy/tajdid-corelib";
+import { Link, usePathname } from "expo-router";
 import { ReactNode } from "react";
 import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
+import { StyleSheet, View } from "react-native";
 
 type CurriculumModuleContentProps = {
   type: ValueOf<typeof ActivityType>;
@@ -146,12 +146,11 @@ export default function CurriculumContent({
           </Typography>
         )}
 
-        {isEnrolled ||
-          (isFree && (
-            <Typography px={1} color="white" style={styles.freeCourseLabel}>
-              ফ্রি প্রিভিউ
-            </Typography>
-          ))}
+        {!isEnrolled && isFree && (
+          <Typography px={1} color="white" style={styles.freeCourseLabel}>
+            ফ্রি প্রিভিউ
+          </Typography>
+        )}
       </View>
     </View>
   );

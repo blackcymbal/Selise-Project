@@ -1,4 +1,4 @@
-import { createActivityForLesson } from "@/services/activityService";
+import { createActivityForLesson } from "@/services/ActivityService";
 import { useGetCourse } from "@/services/courseService";
 import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import YoutubePlayer from "react-native-youtube-iframe";

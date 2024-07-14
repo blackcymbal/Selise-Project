@@ -51,6 +51,14 @@ const MyCourses = () => {
       {/* courses list */}
       {isLoading ? (
         <Loader style={{ marginTop: 200 }} />
+      ) : isOnGoingCourse && onGoingCourses?.length === 0 ? (
+        <Typography style={styles.notEnrolledText}>
+          আপনি এখনও কোন কোর্সে এনরোল করেননি
+        </Typography>
+      ) : !isOnGoingCourse && completedCourses?.length === 0 ? (
+        <Typography style={styles.notEnrolledText}>
+          আপনি এখনও কোর্স শেষ করেননি
+        </Typography>
       ) : (
         <FlatList
           data={isOnGoingCourse ? onGoingCourses : completedCourses}
@@ -108,4 +116,5 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingHorizontal: 16,
   },
+  notEnrolledText: { textAlign: "center", marginTop: 200 },
 });

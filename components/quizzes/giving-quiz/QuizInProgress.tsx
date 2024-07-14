@@ -14,8 +14,8 @@ import { StopwatchIcon } from "@/assets/icons/icons";
 import { formatTime } from "@/utils/formatTime";
 import { router } from "expo-router";
 import ShowAlert from "@/components/global/ShowAlert";
-import { useCompleteActivity } from "@/services/activityService";
 import { CourseUtils } from "@/utils/courseUtils";
+import { useCompleteActivity } from "@/services/ActivityService";
 
 type QuizInProgressProps = {
   courseId: number | undefined;
