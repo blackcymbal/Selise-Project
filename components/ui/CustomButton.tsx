@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 8,
     paddingVertical: 8,
-    paddingHorizontal: 40,
+    paddingHorizontal: 0,
   },
   outline: {
     borderWidth: 1,

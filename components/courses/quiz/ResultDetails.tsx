@@ -7,11 +7,12 @@ import {
 } from "@/assets/icons/icons";
 import { Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import ResultCard from "./ResultCard";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { formatTime } from "@/utils/formatTime";
+import { CourseUtils } from "@/utils/courseUtils";
 
 type ResultDetailsProps = {
   totalQuestion?: number;
@@ -29,6 +30,9 @@ export default function ResultDetails({
   score,
 }: ResultDetailsProps) {
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
+  const { courseId, quizId } = useLocalSearchParams();
+  const courseIdNumber = courseId ? +courseId : undefined;
+  const quizIdNumber = quizId ? +quizId : undefined;
 
   const data = [
     {
@@ -77,7 +81,12 @@ export default function ResultDetails({
         ))}
       </Container>
       <Container mx={4} style={styles.footer}>
-        <Link href={"/screens/(tabs)/myCourses/quizSolution/1"} asChild>
+        <Link
+          href={`${CourseUtils.curriculumContentTypeToLinkMap["QUIZ"](
+            courseIdNumber ?? 0,
+            quizIdNumber ?? 0
+          )}/solution`}
+        asChild>
           <TouchableOpacity
             style={{ flexDirection: "row", gap: 8, alignItems: "center" }}
           >
