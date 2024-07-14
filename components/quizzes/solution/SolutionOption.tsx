@@ -29,21 +29,23 @@ export default function SolutionOption({
           : styles.optionStyle,
       ]}
     >
-      <Typography>
+      <Typography style={{ width: "92%" }}>
         {numberToDigitFormat(index + 1)} । {option?.content}
       </Typography>
 
-      {isSelectedOption && !option.isCorrect ? (
-        <CancelSquare width={20} height={20} color={theme.colors.error600} />
-      ) : (
-        option?.isCorrect && (
-          <CheckMarkSquareIcon
-            width={20}
-            height={20}
-            color={theme.colors.success600}
-          />
-        )
-      )}
+      <View style={{ width: "8%" }}>
+        {isSelectedOption && !option.isCorrect ? (
+          <CancelSquare width={20} height={20} color={theme.colors.error600} />
+        ) : (
+          option?.isCorrect && (
+            <CheckMarkSquareIcon
+              width={20}
+              height={20}
+              color={theme.colors.success600}
+            />
+          )
+        )}
+      </View>
     </View>
   );
 }

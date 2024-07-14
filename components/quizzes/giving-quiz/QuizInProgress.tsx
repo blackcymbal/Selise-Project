@@ -215,8 +215,14 @@ export default function QuizInProgress({
           </View>
         </View>
         <TouchableOpacity
-          style={styles.submitButton}
+          style={[
+            styles.submitButton,
+            quizAnswer?.length !== quizDetails?.questions?.length
+              ? { backgroundColor: theme.colors.gray400 }
+              : { backgroundColor: theme.colors.primary600 },
+          ]}
           onPress={handleSubmitQuizAnswers}
+          disabled={quizAnswer?.length !== quizDetails?.questions?.length}
         >
           <Typography color="white">শেষ করুন</Typography>
         </TouchableOpacity>
@@ -264,7 +270,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   submitButton: {
-    backgroundColor: theme.colors.primary600,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 8,

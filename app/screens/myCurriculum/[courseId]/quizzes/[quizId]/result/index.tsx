@@ -1,8 +1,6 @@
 import { CourseDetailsTopBar } from "@/components/courses";
-import ResultCard from "@/components/courses/quiz/ResultCard";
 import ResultDetails from "@/components/courses/quiz/ResultDetails";
 import ResultSummery from "@/components/courses/quiz/ResultSummery";
-import { Container } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { useGetCourse } from "@/services/courseService";
@@ -10,10 +8,9 @@ import {
   useGetMyQuizAnswers,
   useGetQuizzesDetails,
 } from "@/services/quizServices";
-import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
 import { getCurrentModuleAndContentInfo } from "@/utils/getCurrentModuleAndContentInfo";
 import { useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function QuizResultScreen() {
   const { courseId, quizId } = useLocalSearchParams();
@@ -23,8 +20,6 @@ export default function QuizResultScreen() {
   const { data: courseDetails } = useGetCourse(courseIdNumber);
   const { data: quizDetails, isPending } = useGetQuizzesDetails(quizIdNumber);
   const { data: myQuizAnswer } = useGetMyQuizAnswers(quizIdNumber);
-
-  const isEnrolled = getEnrollmentStatus(courseIdNumber);
 
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
