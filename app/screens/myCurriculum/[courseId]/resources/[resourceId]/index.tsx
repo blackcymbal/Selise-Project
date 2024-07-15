@@ -1,4 +1,7 @@
-import { CourseDetailsTopBar } from "@/components/courses";
+import {
+  CourseDetailsTopBar,
+  MyCourseContentNavigation,
+} from "@/components/courses";
 import { Container, Typography } from "@/components/ui";
 import { useGetResourceDetails } from "@/services/ResourceService";
 import { useLocalSearchParams } from "expo-router";
@@ -18,6 +21,7 @@ export default function ResourceDetailsScreen() {
           <Typography>{data?.title}</Typography>
         </Container>
       </ScrollView>
+      <MyCourseContentNavigation />
     </>
   );
 }
