@@ -73,10 +73,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     height: 48,
-    width: "100%",
     borderRadius: 8,
     paddingVertical: 8,
-    paddingHorizontal: 40,
+    paddingHorizontal: 0,
   },
   outline: {
     borderWidth: 1,

@@ -1,4 +1,5 @@
 import {
+  CheckMarkSquareIcon,
   DocumentFIleIcon,
   LockedIcon,
   PlayCircleIcon,
@@ -7,7 +8,6 @@ import {
 import { Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
-import { useGetEnrolledCourses } from "@/services/enrollmentService";
 import { CourseUtils } from "@/utils/courseUtils";
 import {
   ActivityStatus,
@@ -16,6 +16,7 @@ import {
 } from "@tajdid-academy/tajdid-corelib";
 import { Link, usePathname } from "expo-router";
 import { ReactNode } from "react";
+import { getEnrollmentStatus } from "@/utils/GetEnrollmentStatus";
 import { StyleSheet, View } from "react-native";
 
 type CurriculumModuleContentProps = {
@@ -47,10 +48,8 @@ export default function CurriculumContent({
 
   const path = usePathname();
   const lessonId = decodeURIComponent(path.split("/")[5]);
-  const { data: enrolledCourses } = useGetEnrolledCourses();
-  const isEnrolled = enrolledCourses?.some(
-    (item) => item?.course?.id === courseId
-  );
+
+  const isEnrolled = getEnrollmentStatus(courseId);
 
   const typeToIconMap: Record<ValueOf<typeof ActivityType>, ReactNode> = {
     LESSON: (
@@ -82,10 +81,25 @@ export default function CurriculumContent({
     ),
   };
 
+  const statusToIconMap: Record<
+    ValueOf<typeof ActivityStatus>,
+    ReactNode | null
+  > = {
+    COMPLETED: (
+      <CheckMarkSquareIcon
+        color={theme.colors.success400}
+        width={20}
+        height={20}
+      />
+    ),
+    IN_PROGRESS: null,
+    NOT_STARTED: null,
+  };
+
   return (
     <View style={styles.iconAndLessonTitle}>
       <View style={{ zIndex: 1 }}>
-        {isFree ? (
+        {isEnrolled || isFree ? (
           <>{typeToIconMap[type]}</>
         ) : (
           <View
@@ -100,7 +114,7 @@ export default function CurriculumContent({
       </View>
       {index !== (contentLength ?? 0) - 1 && <View style={styles.dottedLine} />}
       <View style={{ width: "92%" }}>
-        {isFree ? (
+        {isEnrolled || isFree ? (
           <Link
             href={CourseUtils.curriculumContentTypeToLinkMap[type](
               courseId,
@@ -120,17 +134,19 @@ export default function CurriculumContent({
               }
             >
               {numberToDigitFormat(moduleIndex ?? 0)}.
-              {numberToDigitFormat((index ?? 0) + 1)}. {label}
+              {numberToDigitFormat((index ?? 0) + 1)}.{" "}
+              {type === "QUIZ" ? "কুইজ" : label}
             </Typography>
           </Link>
         ) : (
           <Typography>
             {numberToDigitFormat(moduleIndex ?? 0)}.
-            {numberToDigitFormat((index ?? 0) + 1)}. {label}
+            {numberToDigitFormat((index ?? 0) + 1)}.{" "}
+            {type === "QUIZ" ? "কুইজ" : label}
           </Typography>
         )}
 
-        {type !== "QUIZ" && isFree && !isEnrolled && (
+        {!isEnrolled && isFree && (
           <Typography px={1} color="white" style={styles.freeCourseLabel}>
             ফ্রি প্রিভিউ
           </Typography>
