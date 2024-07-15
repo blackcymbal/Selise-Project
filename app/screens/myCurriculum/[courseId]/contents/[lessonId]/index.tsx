@@ -1,6 +1,7 @@
 import PlayYoutubeVideo from "@/components/PlayYoutubeVideo";
 import { CourseDetailsTopBar } from "@/components/courses";
 import CurriculumModule from "@/components/courses/course-curriculum/CurriculumModule";
+import Loader from "@/components/global/Loader";
 import { Container, Typography } from "@/components/ui";
 import theme from "@/constants/theme";
 import { useGetLessonDetails } from "@/services/LessonService";
@@ -11,35 +12,49 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function LessonDetailsScreen() {
-  const { courseId, lessonId } = useLocalSearchParams();
-  const { data } = useGetLessonDetails(lessonId ? +lessonId : undefined);
   const [playing, setPlaying] = useState(false);
-  const videoId = data?.url?.split("v=")?.[1];
+  const { courseId, lessonId } = useLocalSearchParams();
+  const courseIdNumber = courseId ? +courseId : undefined;
+  const lessonIdNumber = lessonId ? +lessonId : undefined;
+  const { data: lessonDetails, isPending } =
+    useGetLessonDetails(lessonIdNumber);
+  const { data: courseDetails } = useGetCourse(courseIdNumber);
 
-  const { data: courseDetails } = useGetCourse(
-    courseId ? +courseId : undefined
-  );
+  const videoId = lessonDetails?.url?.split("v=")?.[1];
 
   return (
     <>
-      <CourseDetailsTopBar title={data?.title} />
+      {isPending ? (
+        <View style={styles.loaderContainer}>
+          <Loader />
+        </View>
+      ) : (
+        <>
+          <CourseDetailsTopBar title={lessonDetails?.title} />
 
-      <View style={styles.bgWhite}>
-        <PlayYoutubeVideo
-          videoId={videoId as string}
-          playing={playing}
-          setPlaying={setPlaying}
-        />
-      </View>
+          <View style={styles.bgWhite}>
+            <PlayYoutubeVideo
+              videoId={videoId as string}
+              playing={playing}
+              setPlaying={setPlaying}
+              courseId={courseIdNumber}
+              moduleId={lessonDetails?.moduleId}
+              lessonId={lessonIdNumber}
+            />
+          </View>
 
-      <ScrollView style={styles.bgWhite}>
-        <Container pt={4} gap={4}>
-          <Typography weight="semiBold" size="xl" color="gray900" px={4}>
-            কোর্স কারিকুলাম
-          </Typography>
-          <CurriculumModule courseDetails={courseDetails as CourseViewModel} />
-        </Container>
-      </ScrollView>
+          <ScrollView style={styles.bgWhite}>
+            <Container pt={4} gap={4}>
+              <Typography weight="semiBold" size="xl" color="gray900" px={4}>
+                কোর্স কারিকুলাম
+              </Typography>
+              <CurriculumModule
+                courseDetails={courseDetails as CourseViewModel}
+              />
+            </Container>
+          </ScrollView>
+        </>
+      )}
     </>
   );
 }
@@ -48,4 +63,5 @@ const styles = StyleSheet.create({
   bgWhite: {
     backgroundColor: theme.colors.white,
   },
+  loaderContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
 });

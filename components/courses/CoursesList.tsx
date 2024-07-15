@@ -21,7 +21,10 @@ const headerComponent = () => (
 
 const CoursesList = () => {
   const { data, isLoading } = useGetCourses();
-  
+
+  const filteredCourses = data?.filter(
+    (item) => item.id !== 59 && item.id !== 60
+  );
 
   const renderItem = ({ item }: CourseCardProps) => (
     <CourseCard course={item} />
@@ -32,7 +35,7 @@ const CoursesList = () => {
         <Loader style={styles.loader} />
       ) : (
         <FlatList
-          data={data}
+          data={filteredCourses}
           renderItem={renderItem}
           keyExtractor={(item) => item.id?.toString()}
           showsVerticalScrollIndicator={false}

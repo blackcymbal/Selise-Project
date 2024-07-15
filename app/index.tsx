@@ -5,12 +5,17 @@ import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 const Welcome = () => {
+  const { data: phoneNumber, loading: phoneNumerLoading } =
+    useGetLocalData("phoneNumber");
   const { data: token, loading } = useGetLocalData("authKey");
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading || !phoneNumerLoading) {
       if (token == "null") {
-        router.replace("/signIn");
+        router.replace({
+          pathname: "/signIn",
+          params: { phoneNumber: String(phoneNumber) },
+        });
       } else {
         router.replace("/screens");
       }

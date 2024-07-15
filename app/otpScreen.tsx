@@ -9,8 +9,8 @@ const OtpScreen = () => {
   const [buttonActive, setButtonActive] = useState(false);
   const [otp, setOtp] = useState<number | undefined>(undefined);
 
-  const signUpMutation = useSignUp();
-  const loginMutation = useLogin();
+  const { mutate: signUpMutation, isPending: isSignUpLoading } = useSignUp();
+  const { mutate: loginMutation, isPending: isLoginLoading } = useLogin();
 
   const params = useLocalSearchParams();
 
@@ -40,22 +40,15 @@ const OtpScreen = () => {
     };
 
     if (params?.isNewUser === "true") {
-      signUpMutation.mutate(signUpData, {
+      signUpMutation(signUpData, {
         onSuccess: () => {
-          router.replace({
-            pathname: "/createProfileScreen",
-            params: { path: params?.path },
-          });
+          router.replace({ pathname: "/createProfileScreen" });
         },
       });
     } else {
-      loginMutation.mutate(loginData, {
+      loginMutation(loginData, {
         onSuccess: () => {
-          if (params?.path) {
-            router.replace(params?.path as string);
-          } else {
-            router.replace("/screens");
-          }
+          router.replace("/screens");
         },
       });
     }
@@ -75,10 +68,15 @@ const OtpScreen = () => {
         লিখুন
       </Typography>
       <OtpInputs getCodeFromInput={getCodeFromInput} />
-      <Button active={buttonActive} buttonStyle="inline" onPress={handlePress}>
+      <Button
+        active={buttonActive}
+        isLoading={isSignUpLoading || isLoginLoading}
+        buttonStyle="inline"
+        onPress={handlePress}
+      >
         এগিয়ে যান
       </Button>
-      <OtpFooter phoneNumer={params?.phone as string} />
+      <OtpFooter phoneNumber={params?.phone as string} />
     </LoginScreenContainer>
   );
 };
