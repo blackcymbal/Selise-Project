@@ -42,7 +42,11 @@ export default function CourseCardPreview({
                   { backgroundColor: theme.colors.cyan50 },
                 ]}
               >
-                <UsersIcon width={20} height={20} />
+                <UsersIcon
+                  width={20}
+                  height={20}
+                  color={theme.colors.cyan600}
+                />
               </View>
               <View>
                 <Typography weight="regular" size="sm" color="body">
@@ -61,7 +65,11 @@ export default function CourseCardPreview({
                   { backgroundColor: theme.colors.moss50 },
                 ]}
               >
-                <ClockIcon width={20} height={20} />
+                <ClockIcon
+                  width={20}
+                  height={20}
+                  color={theme.colors.moss600}
+                />
               </View>
               <View>
                 <Typography weight="regular" size="sm" color="body">
@@ -84,7 +92,11 @@ export default function CourseCardPreview({
                   { backgroundColor: theme.colors.primary50 },
                 ]}
               >
-                <PlayCircleIcon width={20} height={20} />
+                <PlayCircleIcon
+                  width={20}
+                  height={20}
+                  color={theme.colors.primary600}
+                />
               </View>
               <View>
                 <Typography weight="regular" size="sm" color="body">
@@ -103,7 +115,11 @@ export default function CourseCardPreview({
                   { backgroundColor: theme.colors.warning50 },
                 ]}
               >
-                <DocumentFIleIcon width={20} height={20} />
+                <DocumentFIleIcon
+                  width={20}
+                  height={20}
+                  color={theme.colors.warning600}
+                />
               </View>
               <View>
                 <Typography weight="regular" size="sm" color="body">
@@ -129,7 +145,11 @@ export default function CourseCardPreview({
                   { backgroundColor: theme.colors.purple50 },
                 ]}
               >
-                <QuizIcon width={20} height={20} />
+                <QuizIcon
+                  width={20}
+                  height={20}
+                  color={theme.colors.purple600}
+                />
               </View>
               <View>
                 <Typography weight="regular" size="sm" color="body">
@@ -149,7 +169,11 @@ export default function CourseCardPreview({
                   { backgroundColor: theme.colors.blue50 },
                 ]}
               >
-                <FacebookIcon width={20} height={20} />
+                <FacebookIcon
+                  width={20}
+                  height={20}
+                  color={theme.colors.blue600}
+                />
               </View>
               <View>
                 <Typography weight="regular" size="sm" color="body">

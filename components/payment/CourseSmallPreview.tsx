@@ -3,7 +3,6 @@ import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import { FilePathUtils, fallbackImages } from "@/utils";
 import { CourseViewModel, groupBy } from "@tajdid-academy/tajdid-corelib";
-import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Container, Typography } from "../ui";
 
@@ -36,12 +35,13 @@ export default function CourseSmallPreview({
           style={{
             gap: 4,
             flexDirection: "row",
+            alignItems: "center",
           }}
         >
           <DocumentFIleIcon
-            width={20}
-            height={20}
-            color={theme.colors.primary600}
+            width={16}
+            height={16}
+            color={theme.colors.gray600}
           />
           <Typography>
             {numberToDigitFormat(contentGroupByType?.LESSON?.length ?? 0)}

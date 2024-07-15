@@ -80,6 +80,7 @@ const theme = {
     blue900: "#194185",
     mossDefault: "#3F621A",
     moss50: "#F5FBEE",
+    moss600: "#4F7A21",
     moss700: "#3F621A",
     blueLightDefault: "#026AA2",
     blueLight50: "#F0F9FF",

@@ -59,14 +59,18 @@ export default function CurriculumContent({
           { backgroundColor: theme.colors.primary50 },
         ]}
       >
-        <PlayCircleIcon />
+        <PlayCircleIcon
+          width={20}
+          height={20}
+          color={theme.colors.primary600}
+        />
       </View>
     ),
     QUIZ: (
       <View
         style={[styles.iconBgStyle, { backgroundColor: theme.colors.purple50 }]}
       >
-        <QuizIcon />
+        <QuizIcon width={20} height={20} color={theme.colors.purple600} />
       </View>
     ),
     RESOURCE: (
@@ -76,7 +80,11 @@ export default function CurriculumContent({
           { backgroundColor: theme.colors.warning50 },
         ]}
       >
-        <DocumentFIleIcon />
+        <DocumentFIleIcon
+          width={20}
+          height={20}
+          color={theme.colors.warning600}
+        />
       </View>
     ),
   };
