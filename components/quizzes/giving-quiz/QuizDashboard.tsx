@@ -20,8 +20,10 @@ import {
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
 import ResultCard from "@/components/courses/quiz/ResultCard";
 import { getCurrentModuleAndContentInfo } from "@/utils/getCurrentModuleAndContentInfo";
-import { createActivityForQuiz, useGetActivityForACourse } from "@/services/ActivityService";
-
+import {
+  createActivityForQuiz,
+  useGetActivityForACourse,
+} from "@/services/ActivityService";
 
 type QuizDashboardProps = {
   curriculum?: CourseCurriculum[];

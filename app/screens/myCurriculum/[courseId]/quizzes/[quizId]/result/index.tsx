@@ -3,6 +3,7 @@ import ResultDetails from "@/components/courses/quiz/ResultDetails";
 import ResultSummery from "@/components/courses/quiz/ResultSummery";
 import theme from "@/constants/theme";
 import { useNumberToLocalizedDigitFormat } from "@/hooks/useNumberToLocalDigitFormat";
+import { useGetActivityForACourse } from "@/services/ActivityService";
 import { useGetCourse } from "@/services/courseService";
 import {
   useGetMyQuizAnswers,
@@ -28,6 +29,12 @@ export default function QuizResultScreen() {
       quizIdNumber,
       courseDetails?.curriculum ?? []
     );
+
+  const { data: myActivities } = useGetActivityForACourse(courseIdNumber);
+
+  const quizActivityData = myActivities?.QUIZ
+    ? myActivities?.QUIZ[`${quizId}`]
+    : undefined;
 
   const calculateCorrectAnswers = () => {
     const correctAnswers = myQuizAnswer.filter((userAnswer) => {
@@ -59,7 +66,7 @@ export default function QuizResultScreen() {
 
   const takenTime =
     quizDetails.duration * 60 -
-    ((content?.type === "QUIZ" && content?.timeTaken) || 0);
+    ((content?.type === "QUIZ" && quizActivityData?.timeTaken) || 0);
 
   const isPassed = acquiredScore >= quizDetails.passMarks ? true : false;
 
