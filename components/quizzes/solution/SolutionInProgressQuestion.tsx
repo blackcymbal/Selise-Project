@@ -21,7 +21,7 @@ export default function SolutionInProgressQuestion({
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
 
   return (
-    <View>
+    <>
       <View>
         <Typography weight="semiBold" mb={4}>
           প্রশ্ন {numberToDigitFormat(index + 1)} । {question?.content}
@@ -44,7 +44,7 @@ export default function SolutionInProgressQuestion({
           )}
         </Container>
       </View>
-    </View>
+    </>
   );
 }
 
