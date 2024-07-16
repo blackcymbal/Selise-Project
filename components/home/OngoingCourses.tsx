@@ -1,17 +1,12 @@
 import MyCourseCard from "@/components/courses/MyCourseCard";
 import { Container, Typography } from "@/components/ui";
-import { CourseViewModel } from "@tajdid-academy/tajdid-corelib";
+import { useGetEnrolledCourses } from "@/services/enrollmentService";
 import { router } from "expo-router";
-import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function OngoingCourses() {
-  //TODO: Have to dynamic
-  const onGoingCourse: Pick<CourseViewModel, "title">[] = [
-    {
-      title: "হজ্জ ও উমরাহ প্রশিক্ষণ ২০২৪",
-    },
-  ];
+  const { data } = useGetEnrolledCourses();
+  const onGoingCourses = data?.filter((item) => item?.status !== "COMPLETED");
 
   return (
     <Container pt={5} gap={3} style={styles.container}>
@@ -27,8 +22,13 @@ export default function OngoingCourses() {
           </Typography>
         </TouchableOpacity>
       </View>
-      {onGoingCourse.map((data, index) => (
-        <MyCourseCard course={data} key={index} isOnGoingCourse={true} />
+      {onGoingCourses?.slice(0, 1).map((data, index) => (
+        <MyCourseCard
+          course={data}
+          key={index}
+          courseId={data.course.id}
+          isOnGoingCourse={true}
+        />
       ))}
     </Container>
   );
