@@ -1,4 +1,7 @@
-import { CourseDetailsTopBar } from "@/components/courses";
+import {
+  CourseDetailsTopBar,
+  MyCourseContentNavigation,
+} from "@/components/courses";
 import SolutionInProgressQuestion from "@/components/quizzes/solution/SolutionInProgressQuestion";
 import { Container } from "@/components/ui";
 import theme from "@/constants/theme";
@@ -18,7 +21,7 @@ export default function QuizSolutionScreen() {
   const quizIdNumber = quizId ? +quizId : undefined;
 
   const { data: courseDetails } = useGetCourse(courseIdNumber);
-  const { data: quizDetails, isPending } = useGetQuizzesDetails(quizIdNumber);
+  const { data: quizDetails } = useGetQuizzesDetails(quizIdNumber);
   const { data: myQuizAnswer } = useGetMyQuizAnswers(quizIdNumber);
 
   const { numberToDigitFormat } = useNumberToLocalizedDigitFormat();
@@ -37,7 +40,7 @@ export default function QuizSolutionScreen() {
         )}.${numberToDigitFormat(contentIndex ?? 0)} কুইজের বিস্তারিত সমাধান`}
       />
 
-      <ScrollView style={{backgroundColor: theme.colors.white}}>
+      <ScrollView style={{ backgroundColor: theme.colors.white }}>
         <Container p={4}>
           <Container py={4} gap={4} style={styles.container}>
             {quizDetails?.questions?.map((item, index) => (
@@ -52,6 +55,12 @@ export default function QuizSolutionScreen() {
           </Container>
         </Container>
       </ScrollView>
+
+      <MyCourseContentNavigation
+        curriculum={courseDetails?.curriculum ?? []}
+        courseId={courseIdNumber ?? 0}
+        contentId={content?.id ?? 0}
+      />
     </>
   );
 }
