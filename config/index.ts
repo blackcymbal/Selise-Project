@@ -1,28 +1,9 @@
-import { BookOpen, Home, MortarBoard, UserSquare } from "@/assets/icons/icons";
+import { Home } from "@/assets/icons/icons";
 
 export const navList = [
   {
-    name: "হোম",
+    name: "Home",
     navTo: "index",
     icon: Home,
   },
-  {
-    name: "কোর্স সমূহ",
-    navTo: "courses",
-    icon: BookOpen,
-  },
-  {
-    name: "আমার কোর্স",
-    navTo: "myCourses",
-    icon: MortarBoard,
-  },
-  {
-    name: "প্রোফাইল",
-    navTo: "userProfile",
-    icon: UserSquare,
-  },
 ];
-
-const apiEndpoint = "https://api.dev.tajdidacademy.com";
-const assetsUrl = "https://dev-assets.tajdidacademy.com";
-export { apiEndpoint, assetsUrl };

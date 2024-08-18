@@ -1,5 +1,4 @@
 import theme from "@/constants/theme";
-import useAuth from "@/hooks/auth/useAuth";
 import * as Haptics from "expo-haptics";
 import React from "react";
 import {
@@ -30,8 +29,6 @@ export default function TabBarButton({
   onPress,
   accessibilityState,
 }: TabBarButtonProps) {
-  const { token } = useAuth();
-
   return (
     <AnimatedPressable
       onPress={(e) => {

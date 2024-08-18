@@ -1,4 +1,4 @@
-import AuthProvider from "@/hooks/auth/authContext";
+import { BookmarkProvider } from "@/contexts/bookmarkContext";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
@@ -33,18 +33,15 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <AuthProvider>
+      <BookmarkProvider>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider value={DefaultTheme}>
             <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen name="signIn" />
-              <Stack.Screen name="otpScreen" />
-              <Stack.Screen name="createProfileScreen" />
+              <Stack.Screen name="(tabs)" />
             </Stack>
           </ThemeProvider>
         </QueryClientProvider>
-      </AuthProvider>
+      </BookmarkProvider>
       <Toast topOffset={55} />
     </GestureHandlerRootView>
   );
